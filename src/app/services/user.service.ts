@@ -2,10 +2,11 @@ import { Http, Response, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
+import { GLOBAL } from '../global';
 
 @Injectable()
 export class UserService {
-    public url: string = 'http://localhost:3548/api/';
+    public url: string = GLOBAL.apiUrl;
     constructor(private _http: Http){
 
     }
@@ -15,5 +16,22 @@ export class UserService {
         let headers = new Headers({ 'Content-Type': 'application/json' })
         return this._http.post(this.url + 'login', json, { headers: headers })
                         .map(res => res.json());
+    }
+
+    setToken(token: string) {
+        localStorage.setItem('token', token);
+    }
+    getToken () {
+        return localStorage.getItem('token');
+    }
+    setUserIdentity (user: any) {
+        localStorage.setItem('identity', JSON.stringify(user));
+    }
+    getUserIdentity () {
+        return JSON.parse(localStorage.getItem('identity'));
+    }
+    clear() {
+        localStorage.clear();
+
     }
 }

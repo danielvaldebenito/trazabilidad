@@ -1,1 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
+:root{
+    --color-primary: #DF691A;
+}
+
+.navbar-inverse .navbar-nav .nav-link {
+    text-transform: uppercase;
+}
+    .navbar-inverse .navbar-nav .nav-link fa {
+        font-size: 14pt;
+        margin-right: 10px;
+    }
+    .navbar-inverse .navbar-nav .nav-link:hover {
+        color: var(--color-primary);
+    } 
+.dropdown-menu {
+    margin-left: -30px;
+}
+.form-control-filter::-webkit-input-placeholder { color: #DDD; }  /* WebKit, Blink, Edge */
+.form-control-filter:-moz-placeholder { color: #DDD; }  /* Mozilla Firefox 4 to 18 */
+.form-control-filter::-moz-placeholder { color: #DDD; }  /* Mozilla Firefox 19+ */
+.form-control-filter:-ms-input-placeholder { color: #DDD; }  /* Internet Explorer 10-11 */
+.form-control-filter::-ms-input-placeholder { color: #DDD; }  /* Microsoft Edge */
+
+.form-control-filter:focus::-webkit-input-placeholder { color: #DDD; }  /* WebKit, Blink, Edge */
+.form-control-filter:focus:-moz-placeholder { color: #DDD; }  /* Mozilla Firefox 4 to 18 */
+.form-control-filter:focus::-moz-placeholder { color: #DDD; }  /* Mozilla Firefox 19+ */
+.form-control-filter:focus:-ms-input-placeholder { color: #DDD; }  /* Internet Explorer 10-11 */
+.form-control-filter:focus::-ms-input-placeholder { color: #DDD; }  /* Microsoft Edge */
+.form-control-filter {
+    width: 100%;
+    border: none;
+    background: none;
+    color: #fff;
+    border-bottom: 1px solid #ddd;
+    outline: none;
+    padding: 5px 15px;
+    font-size: 16pt;
+}
+.form-control-filter:focus {
+    border-bottom-color: var(--color-primary);
+}
+.card {
+    margin: 0;
+    margin-bottom: 5px;
+    border-color: #aaa;
+}
