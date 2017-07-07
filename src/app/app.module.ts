@@ -12,19 +12,24 @@ import { appRoutes } from './routing';
 import { UserService } from './services/user.service';
 import { VehicleService } from './services/vehicles.service';
 import { PagerService } from './services/pager.service';
+import { SelectsService } from './services/selects.service';
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { VehiculosComponent } from './components/vehiculos/vehiculos.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { CreateVehicleComponent } from './components/vehiculos/create/create.component';
+import { EditVehicleComponent } from './components/vehiculos/edit-vehicle/edit-vehicle.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MainComponent,
     VehiculosComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    CreateVehicleComponent,
+    EditVehicleComponent
   ],
   imports: [
     FormsModule,
@@ -36,7 +41,7 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
       { enableTracing: true } // <-- debugging purposes only
     )
   ],
-  providers: [ UserService, VehicleService, PagerService ],
+  providers: [ UserService, VehicleService, PagerService, SelectsService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -16,6 +16,13 @@
 .dropdown-menu {
     margin-left: -30px;
 }
+
+.form-control::-webkit-input-placeholder { color: #CCC; }  /* WebKit, Blink, Edge */
+.form-control:-moz-placeholder { color: #CCC; }  /* Mozilla Firefox 4 to 18 */
+.form-control::-moz-placeholder { color: #CCC; }  /* Mozilla Firefox 19+ */
+.form-control:-ms-input-placeholder { color: #CCC; }  /* Internet Explorer 10-11 */
+.form-control::-ms-input-placeholder { color: #CCC; }  /* Microsoft Edge */
+
 .form-control-filter::-webkit-input-placeholder { color: #DDD; }  /* WebKit, Blink, Edge */
 .form-control-filter:-moz-placeholder { color: #DDD; }  /* Mozilla Firefox 4 to 18 */
 .form-control-filter::-moz-placeholder { color: #DDD; }  /* Mozilla Firefox 19+ */
@@ -43,5 +50,9 @@
 .card {
     margin: 0;
     margin-bottom: 5px;
+    margin-top: 5px;
     border-color: #aaa;
+}
+.danger {
+    color: #F44336;
 }

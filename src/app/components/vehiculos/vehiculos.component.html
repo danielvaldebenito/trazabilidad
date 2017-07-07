@@ -1,7 +1,7 @@
 <br>
 <div class="container">
   <div class="page-header d-flex p-2 flex-row justify-content-between align-items-center">
-    <h1>Vehículos</h1> <button class="btn btn-outline-primary"><fa name="plus"></fa> NUEVO</button>
+    <h1>Vehículos</h1> <a class="btn btn-outline-primary" routerLink="/vehicles/create"><fa name="plus"></fa> NUEVO</a>
   </div>
   <!-- Filtros -->
   <div class="card">
@@ -29,7 +29,7 @@
         
       </div>
       <div class="card-footer d-flex flex-row justify-content-between align-items-center">
-        <a class="btn btn-outline-primary">
+        <a class="btn btn-outline-primary" [routerLink]="['/vehicles/edit', item._id]">
           <fa name="pencil"></fa>
         </a>
         <a class="btn btn-outline-danger">
