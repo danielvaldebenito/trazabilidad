@@ -32,7 +32,7 @@
         <a class="btn btn-outline-primary" [routerLink]="['/vehicles/edit', item._id]">
           <fa name="pencil"></fa>
         </a>
-        <a class="btn btn-outline-danger">
+        <a class="btn btn-outline-danger" (click)="tryDelete(item._id)">
           <fa name="trash"></fa>
         </a>
       </div>

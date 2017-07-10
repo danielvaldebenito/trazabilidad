@@ -5,6 +5,7 @@
 
 .navbar-inverse .navbar-nav .nav-link {
     text-transform: uppercase;
+    padding: 5px 20px;
 }
     .navbar-inverse .navbar-nav .nav-link fa {
         font-size: 14pt;
@@ -56,3 +57,18 @@
 .danger {
     color: #F44336;
 }
+.btn {
+    cursor: pointer;
+}
+.footer {
+    position: fixed;
+    text-align: center;
+    height: 25px;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px;
+}
+    .footer img {
+        height: 18px;
+    }

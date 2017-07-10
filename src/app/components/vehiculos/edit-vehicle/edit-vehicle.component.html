@@ -1,3 +1,79 @@
-<p>
-  edit-vehicle works! {{ id }}
-</p>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
+        
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex flex-row justify-content-between align-items-center">
+         <button class="btn btn-secondary" (click)="onCancel()" title="Volver">
+          <fa name="arrow-left"></fa>
+        </button>
+         <h1>Editar Vehículo</h1>  
+        <fa name="truck" size="3x"></fa>
+      </div>
+      <form novalidate #form="ngForm" (ngSubmit)="onSubmit()">
+        <div class="card-block">
+          <div class="form-group" [ngClass]="{'has-success': !licensePlate.errors, 'has-danger': licensePlate.errors && (licensePlate.dirty || licensePlate.touched) }">
+            <label class="form-control-label" for="">Placa (*)</label>
+            <input required type="text" #licensePlate="ngModel" name="licensePlate" [(ngModel)]="vehicle.licensePlate" class="form-control" placeholder="Placa">
+            <div class="form-control-feedback">
+              <div *ngIf="licensePlate.errors && (licensePlate.dirty || licensePlate.touched)" class="danger">
+                <div [hidden]="!licensePlate.errors.required">
+                  Ingrese el número de placa
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+          <div class="form-group" [ngClass]="{'has-success': !trademark.errors, 'has-danger': trademark.errors && (trademark.dirty || trademark.touched)}">
+            <label class="form-control-label" for="">Marca</label>
+            <input type="text" #trademark="ngModel" name="trademark" [(ngModel)]="vehicle.trademark" class="form-control" placeholder="Marca">
+          </div>
+          <div class="form-group" [ngClass]="{'has-success': !type.errors, 'has-danger': type.errors && (type.dirty || type.touched)}">
+            <label class="form-control-label" for="">Tipo (*) </label>
+            <select required #type="ngModel" name="type" [(ngModel)]="vehicle.type" class="form-control" placeholder="Tipo">
+              <option *ngFor="let t of vehicleTypes" value="{{ t }}">
+                {{ t }}
+              </option>
+            </select>
+            <div class="form-control-feedback">
+              <div *ngIf="type.errors && (type.dirty || type.touched)" class="danger">
+                <div [hidden]="!type.errors.required">
+                  Ingrese el tipo de vehículo
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{'has-success': !capacity.errors, 'has-danger': capacity.errors && (capacity.dirty || capacity.touched)}">
+            <label class="form-control-label" for="">Capacidad (*)</label>
+            <div class="input-group">
+              <input type="number" min="1" required #capacity="ngModel" name="capacity" [(ngModel)]="vehicle.capacity" class="form-control" placeholder="Capacidad">
+              <span *ngIf="type.value" class="input-group-addon">
+                {{ type.value == 'ENVASADO' ? 'UNIDADES' : 'LITROS' }}
+              </span>
+            </div>
+            <div *ngIf="capacity.errors && (capacity.dirty || capacity.touched)" class="danger">
+              <div [hidden]="!capacity.errors.required">
+                Ingrese la capacidad del vehículo
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary btn-block" [disabled]="!form.form.valid"> <fa name="save"></fa> GUARDAR </button>
+        </div>
+      </form>
+    </div>
+    <div class="card" *ngIf="errorMessage || successMessage">
+      <div class="card-block">
+        <div *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
+        <div *ngIf="successMessage" class="alert alert-success">{{successMessage}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
+
+  </div>
+</div>

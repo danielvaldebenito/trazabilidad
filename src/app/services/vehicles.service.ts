@@ -20,17 +20,34 @@ export class VehicleService {
     getVehicles (filter: string, limit: number, page: number) {
         
         var myDistributor = this._us.getUserIdentity().distributor;
-        var url = this.url + 'vehicle/' + myDistributor;
+        var url = this.url + 'vehicles/' + myDistributor;
         var params = { filter: filter, limit: limit, page: page }
         return this._http.get(url, { headers: this.headers, params: params })
                 .map(res => res.json());
     }
 
     postVehicle (vehicle: any) {
-        var myDistributor = this._us.getUserIdentity().distributor;
         var url = this.url + 'vehicle/';
         var params = vehicle;
         return this._http.post(url, params, { headers: this.headers })
+                        .map(res => res.json());
+    }
+
+    getOneVehicle(id: string) {
+        var url = this.url + 'vehicle/' + id;
+        return this._http.get(url, { headers: this.headers })
+                        .map(res => res.json());
+    }
+
+    updateVehicle (id: string, vehicle: any) {
+        var url = this.url + 'vehicle/' + id;
+        return this._http.put(url, vehicle, { headers: this.headers })
+                        .map(res => res.json());
+    }
+
+    deleteVehicle (id: string) {
+        var url = this.url + 'vehicle/' + id;
+        return this._http.delete(url, { headers: this.headers })
                         .map(res => res.json());
     }
 }
