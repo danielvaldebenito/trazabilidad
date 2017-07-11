@@ -17,6 +17,7 @@ import { appRoutes } from './routing';
 // services
 import { UserService } from './services/user.service';
 import { VehicleService } from './services/vehicles.service';
+import { OrderService } from './services/order.service';
 import { PagerService } from './services/pager.service';
 import { SelectsService } from './services/selects.service';
 // components
@@ -54,7 +55,7 @@ import { OrderComponent } from './components/order/order.component';
       { enableTracing: true } 
     )
   ],
-  providers: [ UserService, VehicleService, PagerService, SelectsService ],
+  providers: [ UserService, VehicleService, PagerService, SelectsService, OrderService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

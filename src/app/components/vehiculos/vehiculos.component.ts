@@ -38,10 +38,8 @@ export class VehiculosComponent implements OnInit {
           res => {
             if(res.done){
               this.allItems = res.data;
-              console.log(this.allItems)
               this.total = res.total;
               this.pager = this.pagerService.getPager(this.total, this.currentPage, limit);
-              console.log('pager', this.pager)
             }
           },
           error => console.log(error))

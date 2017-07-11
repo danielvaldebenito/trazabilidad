@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DatePipe } from '../../pipes/date.pipe';
-
+import { OrderService } from '../../services/order.service';
+import { PagerService } from '../../services/pager.service';
+import * as moment from 'moment'
+moment.locale('es')
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
@@ -8,9 +10,19 @@ import { DatePipe } from '../../pipes/date.pipe';
 })
 export class OrderComponent implements OnInit {
 
-  momentValue: Date = new Date();
+  private allItems: any[];
+  currentPage: number = 1;
+  totalItems: number = 0;
+  limit: number = 10;
+  selectedState: string = 'RECIBIDO';
+  filter: string;
+  pager: any = {};
+  pagedItems: any[];
+  momentValue: any = moment().format('YYYY-MM-DD');
   formatDate: any;
-  view: any[] = [700, 400];
+  sidx: string = 'destinyWarehouse.name';
+  sord: number = 1;
+  view: any[] = [1000, 200];
   colorScheme = {
     domain: ['#F44336', '#FFEB3B', '#00C853', '#0091EA', '#000000']
   };
@@ -36,21 +48,62 @@ export class OrderComponent implements OnInit {
     "value": 3
   }
 ];
+  constructor(
+    private _orderService : OrderService,
+    private _pagerService: PagerService
+  ) {}
 
-
-
-  constructor() {
-    //Object.assign(this, {single, multi})   
-   }
-  
   ngOnInit() {
-    this.formatDate = new DatePipe().transform(new Date())
+    this.refresh();
   }
-  onSelect(event) {
-    console.log(event);
+  setPage(page: number) {
+      this.currentPage = page;
+      this.refresh();
   }
   
-  setMoment(moment: any): any {
-    this.momentValue = moment;
+  onSelect(event) {
+    this.selectedState = event.name;
+    this.refresh();
+  }
+  onKey (value: string) {
+    this.filter = value;
+    this.refresh();
+  }
+  setMoment(date: any): any {
+    this.momentValue = moment(date).format('YYYY-MM-DD');
+    this.refresh();
+  }
+  setSidxSord(sidx: string) {
+    this.sidx = sidx;
+    this.sord = this.sord * -1;
+    this.refresh();
+  }
+  
+  refresh() {
+    this.getOrders(this.selectedState, this.filter, this.momentValue, this.limit, this.currentPage, this.sidx, this.sord);
+  }
+
+  getOrders (selectedState, filter, date, limit, currentPage, sidx, sord)
+  {
+    this._orderService
+        .getOrders(
+          selectedState, 
+          filter,
+          date,
+          limit, 
+          currentPage,
+          sidx,
+          sord
+        )
+        .subscribe(
+          res => {
+            if(res.done){
+              this.allItems = res.data;
+              this.totalItems = res.total;
+              this.pager = this._pagerService.getPager(res.total, this.currentPage, this.limit);
+              console.log('pager', this.pager)
+            }
+          },
+          error => console.log(error))
   }
 }

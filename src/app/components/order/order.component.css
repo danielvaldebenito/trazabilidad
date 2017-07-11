@@ -1,7 +1,5 @@
 .totals {
-    width: 100%;
-    border-left: 1px double #fff;
-    height: 100%;
+    margin-top: 30px;
 
 }
 input.form-control-filter {
@@ -11,4 +9,8 @@ input.form-control-filter {
 select.form-control-filter {
     width: 20%;
     margin-bottom: -2px;
+}
+#table {
+    max-height: 235px;
+    overflow: auto;
 }
