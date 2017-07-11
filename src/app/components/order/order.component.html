@@ -1,3 +1,39 @@
-<p>
-  order works!
-</p>
+<br>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+    <div class="container">
+      <div class="page-header d-flex p-2 flex-row justify-content-between align-items-center">
+        <h1>Pedidos</h1> <a class="btn btn-outline-primary" routerLink="/order/create"><fa name="plus"></fa> NUEVO</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-block">
+        <input type="text" class="form-control-filter" #filter placeholder="Buscar" (keyup)="onKey(filter.value)" >
+        <input class="form-control-filter" placeholder="Fecha" 
+        [ngModel]="momentValue | date:'dd/MM/yyyy'" 
+        [dateTimePicker]="momentValue"
+        [autoClose]="true"
+        [locale]="'es'"
+        [pickerType]="'date'"
+        (dateTimePickerChange)="setMoment($event)" readonly />
+      </div>
+      
+    </div>
+    <div class="card">
+      <div class="card-block">
+        <ngx-charts-advanced-pie-chart
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="single"
+      [gradient]="gradient"
+      (select)="onSelect($event)">
+    </ngx-charts-advanced-pie-chart>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+    <div class="totals">
+      
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.totals {
+    width: 100%;
+    border-left: 1px double #fff;
+    height: 100%;
+
+}
+input.form-control-filter {
+    width: 45%;
+    margin-left: 10px;
+}
+select.form-control-filter {
+    width: 20%;
+    margin-bottom: -2px;
+}

@@ -8,7 +8,9 @@ import { HttpModule } from '@angular/http';
 // external modules
 import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 import { SimpleNotificationsModule } from 'angular2-notifications';
-import { JasperoConfirmationsModule } from '@jaspero/ng2-confirmations'
+import { JasperoConfirmationsModule } from '@jaspero/ng2-confirmations';
+import { DateTimePickerModule } from 'ng-pick-datetime';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 // routes
 import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
@@ -45,6 +47,8 @@ import { OrderComponent } from './components/order/order.component';
     SimpleNotificationsModule.forRoot(),
     JasperoConfirmationsModule,
     AngularFontAwesomeModule,
+    DateTimePickerModule,
+    NgxChartsModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } 

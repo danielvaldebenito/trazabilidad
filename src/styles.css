@@ -1,8 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 :root{
     --color-primary: #DF691A;
+    --color-secondary: #37424A;
 }
-
+*:not(i){
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
 .navbar-inverse .navbar-nav .nav-link {
     text-transform: uppercase;
     padding: 5px 20px;
@@ -68,7 +71,34 @@
     width: 100%;
     background: rgba(0, 0, 0, 0.5);
     padding: 2px;
+    z-index: 5;
 }
     .footer img {
         height: 18px;
     }
+
+/* Date Picker */
+.picker-banner {
+    background: #DF691A !important;
+}
+.picker-control.footer {
+    background:var(--color-secondary);
+    color: #fff;
+}
+.picker-day.picker-show.picker-day-selected {
+    background: var(--color-primary) !important;
+}
+.picker-day.picker-show:hover {
+    background: rgba(0,0,0,0.1) !important;
+}
+.today-icon {
+    border-top-color: var(--color-primary) !important;
+}
+.picker-year.picker-year-current,
+.picker-month.picker-month-current {
+    background: var(--color-primary) !important;
+}
+.picker-year:hover,
+.picker-month:hover {
+    background: rgba(0,0,0,0.1) !important;
+}

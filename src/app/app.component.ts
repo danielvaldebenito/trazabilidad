@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
     confirmText: 'Sí',
     declineText: 'No'
   }
+
   constructor(
     private _userService: UserService,
     private _router: Router,
