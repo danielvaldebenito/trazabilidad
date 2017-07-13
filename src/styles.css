@@ -107,3 +107,39 @@
 .picker-month:hover {
     background: rgba(0,0,0,0.1) !important;
 }
+
+
+/* SELECT*/
+ng-select > div {
+    background: #FFF !important;
+    height: 38px;
+}
+select-dropdown > div .options ul li {
+    color: #37424A;
+}
+ng-select > div > div.single > div.value, 
+.option-select 
+{
+    color: #37424A !important
+}
+
+ng-select > div > div.single > div.placeholder {
+    color: #888 !important
+}
+
+.form-group.has-danger ng-select.ng-invalid{
+    border: 1px solid #F44336;
+}
+.form-group.has-success ng-select.ng-valid{
+    border: 1px solid #5cb85c;
+}
+
+.no-padding {
+    padding: 0 !important
+}
+
+/*MAP*/
+.agm-map-container-inner.sebm-google-map-container-inner {
+    border: 5px solid #FFF;
+    box-shadow: 2px 2px 20px #ccc;
+}

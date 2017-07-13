@@ -20,4 +20,8 @@ export class SelectsService {
         return this._http.get(this.url + 'vehicleTypes', {headers: this.headers})
                     .map(res => res.json());
     }
+    getCountryData () {
+        return this._http.get(this.url + 'country', { headers: this.headers })
+                        .map(res => res.json())
+    }
 }

@@ -11,15 +11,18 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
 import { JasperoConfirmationsModule } from '@jaspero/ng2-confirmations';
 import { DateTimePickerModule } from 'ng-pick-datetime';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { SelectModule } from 'ng-select';
+import { AgmCoreModule } from '@agm/core';
 // routes
 import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
-// services
+// services (providers)
 import { UserService } from './services/user.service';
 import { VehicleService } from './services/vehicles.service';
 import { OrderService } from './services/order.service';
 import { PagerService } from './services/pager.service';
 import { SelectsService } from './services/selects.service';
+import { GoogleMapService }  from './services/googlemap.service'; 
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -29,6 +32,11 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
 import { CreateVehicleComponent } from './components/vehiculos/create/create.component';
 import { EditVehicleComponent } from './components/vehiculos/edit-vehicle/edit-vehicle.component';
 import { OrderComponent } from './components/order/order.component';
+import { OrderCreateComponent } from './components/order/order-create/order-create.component';
+
+// entorno
+import { environment } from '../environments/environment'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +46,8 @@ import { OrderComponent } from './components/order/order.component';
     NotfoundComponent,
     CreateVehicleComponent,
     EditVehicleComponent,
-    OrderComponent
+    OrderComponent,
+    OrderCreateComponent
   ],
   imports: [
     FormsModule,
@@ -50,12 +59,14 @@ import { OrderComponent } from './components/order/order.component';
     AngularFontAwesomeModule,
     DateTimePickerModule,
     NgxChartsModule,
+    SelectModule,
+    AgmCoreModule.forRoot({ apiKey: environment.GOOGLE_MAPS_API_KEY }),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } 
     )
   ],
-  providers: [ UserService, VehicleService, PagerService, SelectsService, OrderService ],
+  providers: [ UserService, VehicleService, PagerService, SelectsService, OrderService, GoogleMapService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

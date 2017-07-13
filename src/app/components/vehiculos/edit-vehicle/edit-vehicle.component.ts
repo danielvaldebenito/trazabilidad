@@ -25,10 +25,8 @@ export class EditVehicleComponent implements OnInit {
 
   ngOnInit() {
     this.getVehicleTypes();
-    this.sub = this._route.params.subscribe(params => {
-       this.id = params['id'];
-       this.getVehicle(this.id);
-    });
+    var id = this._route.snapshot.params['id'];
+    this.getVehicle(id);
   }
 
   onCancel () {

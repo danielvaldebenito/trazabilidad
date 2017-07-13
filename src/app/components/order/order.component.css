@@ -1,7 +1,3 @@
-.totals {
-    margin-top: 30px;
-
-}
 input.form-control-filter {
     width: 45%;
     margin-left: 10px;
@@ -13,4 +9,8 @@ select.form-control-filter {
 #table {
     max-height: 235px;
     overflow: auto;
+}
+.advanced-pie-legend-wrapper {
+    display: block !important;
+    width: 100%;
 }

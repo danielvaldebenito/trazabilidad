@@ -36,4 +36,9 @@ export class OrderService {
                 .map(res => res.json());
   }
 
+  getProductTypes () {
+      return this._http.get(this.url + 'productType', { headers: this.headers })
+                      .map(res => res.json())
+  }
+
 }

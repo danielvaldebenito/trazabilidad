@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { PagerService } from '../../services/pager.service';
+import { ConfirmationComponent, ConfirmationService } from '@jaspero/ng2-confirmations'
+import { ResolveEmit } from "@jaspero/ng2-confirmations/src/interfaces/resolve-emit";
 import * as moment from 'moment'
 moment.locale('es')
 @Component({
@@ -10,6 +12,7 @@ moment.locale('es')
 })
 export class OrderComponent implements OnInit {
 
+  innerWidth: number;
   private allItems: any[];
   currentPage: number = 1;
   totalItems: number = 0;
@@ -22,7 +25,7 @@ export class OrderComponent implements OnInit {
   formatDate: any;
   sidx: string = 'destinyWarehouse.name';
   sord: number = 1;
-  view: any[] = [1000, 200];
+  view: any[] = [800, 200];
   colorScheme = {
     domain: ['#F44336', '#FFEB3B', '#00C853', '#0091EA', '#000000']
   };
@@ -50,9 +53,27 @@ export class OrderComponent implements OnInit {
 ];
   constructor(
     private _orderService : OrderService,
-    private _pagerService: PagerService
-  ) {}
+    private _pagerService: PagerService,
+    private _cdr: ChangeDetectorRef
+  ) {
 
+    let getWindow = () => { return window.innerWidth }
+    window.onresize = () => {
+      
+      this._cdr.detectChanges();
+      this.OnResize();
+    }
+    
+    this.OnResize();
+  }
+  
+  OnResize() {
+    this.innerWidth = window.innerWidth;
+      if(this.innerWidth < 700)
+        this.view = [this.innerWidth - 50, this.innerWidth / 2]
+      else
+        this.view = [700,200]
+  }
   ngOnInit() {
     this.refresh();
   }
