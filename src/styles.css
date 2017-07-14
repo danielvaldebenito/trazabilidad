@@ -2,6 +2,9 @@
 :root{
     --color-primary: #DF691A;
     --color-secondary: #37424A;
+    --color-danger: #d9534f;
+    --color-success: #5cb85c;
+    --color-inverse: #9E9E9E;
 }
 *:not(i){
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
@@ -63,7 +66,7 @@
     border-color: #aaa;
 }
 .danger {
-    color: #F44336;
+    color: var(--color-danger);
 }
 .btn {
     cursor: pointer;
@@ -84,7 +87,7 @@
 
 /* Date Picker */
 .picker-banner {
-    background: #DF691A !important;
+    background: var(--color-primary) !important;
 }
 .picker-control.footer {
     background:var(--color-secondary);
@@ -115,12 +118,12 @@ ng-select > div {
     height: 38px;
 }
 select-dropdown > div .options ul li {
-    color: #37424A;
+    color: var(--color-secondary);
 }
 ng-select > div > div.single > div.value, 
 .option-select 
 {
-    color: #37424A !important
+    color: var(--color-secondary) !important
 }
 
 ng-select > div > div.single > div.placeholder {
@@ -128,10 +131,10 @@ ng-select > div > div.single > div.placeholder {
 }
 
 .form-group.has-danger ng-select.ng-invalid{
-    border: 1px solid #F44336;
+    border: 1px solid var(--color-danger);
 }
 .form-group.has-success ng-select.ng-valid{
-    border: 1px solid #5cb85c;
+    border: 1px solid var(--color-success);
 }
 
 .no-padding {
@@ -142,4 +145,23 @@ ng-select > div > div.single > div.placeholder {
 .agm-map-container-inner.sebm-google-map-container-inner {
     border: 5px solid #FFF;
     box-shadow: 2px 2px 20px #ccc;
+}
+
+/* autocomplete */
+.match {
+    background: var(--color-secondary);
+    color: #FFF;
+}
+.completer-selected-row:hover {
+    background: #DDD !important;
+    color: var(--color-secondary) !important;
+}
+.completer-no-results {
+    color: var(--color-secondary);
+    width: 100%;
+}
+
+
+.granel-color > fa i {
+    color: var(--color-inverse)
 }

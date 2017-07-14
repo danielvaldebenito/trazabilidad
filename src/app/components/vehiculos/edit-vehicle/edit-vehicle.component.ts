@@ -15,6 +15,7 @@ export class EditVehicleComponent implements OnInit {
   private sub: any;
   vehicle: any = {};
   vehicleTypes: any[];
+  dependences: any[] = []
   constructor(
     private _route: ActivatedRoute,
     private _vehicleService: VehicleService,
@@ -26,6 +27,7 @@ export class EditVehicleComponent implements OnInit {
   ngOnInit() {
     this.getVehicleTypes();
     var id = this._route.snapshot.params['id'];
+    this.getDependences();
     this.getVehicle(id);
   }
 
@@ -39,12 +41,26 @@ export class EditVehicleComponent implements OnInit {
           error => console.log(error)
         )
   }
+  getDependences () {
+    this._selectService.getDependences()
+        .subscribe(
+          res => {
+            if(res.done) {
+              this.dependences = res.data;
+            }
+          },
+          error => console.log(error)
+        )
+  }
   getVehicle (id) {
     this._vehicleService.getOneVehicle(id)
         .subscribe(
           res => {
-            if(res.done)
+            if(res.done){
               this.vehicle = res.record;
+              this.vehicle.dependence = res.record.warehouse.dependence;
+              console.log(this.vehicle)
+            }
           },
           err => console.log('error' , err));
   }

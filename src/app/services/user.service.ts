@@ -34,4 +34,20 @@ export class UserService {
         localStorage.clear();
 
     }
+    setRegionLocalUser (region: any) {
+        localStorage.setItem('region', JSON.stringify(region));
+    }
+    setCityLocalUser (city: any) {
+        localStorage.setItem('city', JSON.stringify(city));
+    }
+    getRegionLocalUser () {
+        var region = localStorage.getItem('region');
+        if(region) { return JSON.parse(region) }
+        else { return null }
+    }
+    getCityLocalUser () {
+        var city = localStorage.getItem('city');
+        if(city) { return JSON.parse(city) }
+        else return null
+    }
 }

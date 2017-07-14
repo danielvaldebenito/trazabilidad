@@ -64,6 +64,6 @@
 <router-outlet></router-outlet>
 <app-login *ngIf="!token"></app-login>
 <jaspero-confirmations [defaultSettings]="confirmOptions"></jaspero-confirmations>
-<simple-notifications></simple-notifications>
+<simple-notifications  [options]="notificationsOptions"></simple-notifications>
 
 

@@ -11,10 +11,11 @@ import { ResolveEmit } from "@jaspero/ng2-confirmations/src/interfaces/resolve-e
 })
 export class CreateVehicleComponent implements OnInit {
 
-  vehicle: any = {}
+  vehicle: any = { type: 'ENVASADO' }
   vehicleTypes: any[];
   errorMessage: string;
   successMessage: string;
+  dependences: any[] = []
   constructor(
       private _selectService: SelectsService, 
       private _location: Location,
@@ -26,6 +27,7 @@ export class CreateVehicleComponent implements OnInit {
 
   ngOnInit() {
     this.getVehicleTypes();
+    this.getDependences();
   }
 
   getVehicleTypes () {
@@ -35,7 +37,18 @@ export class CreateVehicleComponent implements OnInit {
           error => console.log(error)
         )
   }
-  
+  getDependences () {
+    this._selectService.getDependences()
+        .subscribe(
+          res => {
+            if(res.done) {
+              this.dependences = res.data;
+            }
+            
+          },
+          error => console.log(error)
+        )
+  }
   onCancel () {
     this._location.back();
   }

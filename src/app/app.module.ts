@@ -13,6 +13,7 @@ import { DateTimePickerModule } from 'ng-pick-datetime';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SelectModule } from 'ng-select';
 import { AgmCoreModule } from '@agm/core';
+import { Ng2CompleterModule } from "ng2-completer";
 // routes
 import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
@@ -22,7 +23,8 @@ import { VehicleService } from './services/vehicles.service';
 import { OrderService } from './services/order.service';
 import { PagerService } from './services/pager.service';
 import { SelectsService } from './services/selects.service';
-import { GoogleMapService }  from './services/googlemap.service'; 
+import { GoogleMapService }  from './services/googlemap.service';
+import { AddressService } from './services/addresses.service';
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -60,13 +62,22 @@ import { environment } from '../environments/environment'
     DateTimePickerModule,
     NgxChartsModule,
     SelectModule,
+    Ng2CompleterModule,
     AgmCoreModule.forRoot({ apiKey: environment.GOOGLE_MAPS_API_KEY }),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } 
     )
   ],
-  providers: [ UserService, VehicleService, PagerService, SelectsService, OrderService, GoogleMapService ],
+  providers: [ 
+    UserService, 
+    VehicleService, 
+    PagerService, 
+    SelectsService, 
+    OrderService, 
+    GoogleMapService,
+    AddressService 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

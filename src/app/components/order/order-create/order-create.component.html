@@ -2,17 +2,45 @@
   <div class="row">
     <div class="col">
       <div class="card">
-        <div class="card-header">
-          <h1>Nuevo Pedido</h1>
+        <div class="card-header d-flex flex-row justify-content-between align-items-center">
+          <button class="btn btn-secondary" (click)="onCancel()" title="Volver">
+          <fa name="arrow-left"></fa>
+        </button>
+         <h1>Nuevo Pedido</h1>  
+         <fa name="truck" size="3x"></fa>
         </div>
           <div class="card-block">
             <div class="container">
               <form novalidate #form="ngForm" (ngSubmit)="onSubmit()">
                 <div class="row">
-                  <div class="col">
+                  <div class="col" [ngClass]="{'col-12 col-md-6 col-sm-12': order.lat && order.lng}">
+                    <div class="d-flex flex-row justify-content-center">
+                      <label class="custom-control custom-radio d-flex ">
+                        <input id="radio1" [(ngModel)]="order.type" value="ENVASADO" name="type" type="radio" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">ENVASADO</span>
+                      </label>
+                      <label class="custom-control custom-radio">
+                        <input id="radio2" [(ngModel)]="order.type" value="GRANEL" name="type" type="radio" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">GRANEL</span>
+                      </label>
+                    </div>
                     <div class="form-group" [ngClass]="{'has-success': !address.errors, 'has-danger': address.errors && (address.dirty || address.touched) }">
                       <label class="form-control-label" for="">Dirección (*)</label>
-                      <input required type="text" #address="ngModel" name="address" [(ngModel)]="order.address" class="form-control" placeholder="Dirección" (blur)="onBlur()">
+                      <ng2-completer #address="ngModel" name="address" matchClass="match" inputClass="form-control" 
+                        [(ngModel)]="order.address" 
+                        [datasource]="addresses" 
+                        [minSearchLength]="3"
+                        inputName="address"
+                        textNoResults="Sin coincidencias. Se creará nuevo registro"
+                        textSearching="Buscando..."
+                        placeholder="Busque una dirección ya existente o ingrese una nueva"
+                        autoMatch="true"
+                        (blur)="onBlur()"
+                        required
+                      >
+                      </ng2-completer>
                       <div class="form-control-feedback">
                         <div *ngIf="address.errors && (address.dirty || address.touched)" class="danger">
                           <div [hidden]="!address.errors.required">
@@ -40,7 +68,7 @@
                         <div class="form-control-feedback">
                           <div *ngIf="region.errors && (region.dirty || region.touched)" class="danger">
                             <div [hidden]="!region.errors.required">
-                              Ingrese la región para el pedido
+                              Ingrese {{ regionName }} para el pedido
                             </div>
                           </div>
                         </div>
@@ -64,24 +92,40 @@
                         <div class="form-control-feedback">
                           <div *ngIf="city.errors && (city.dirty || city.touched)" class="danger">
                             <div [hidden]="!city.errors.required">
-                              Ingrese la ciudad para el pedido
+                              Ingrese {{ cityName }} para el pedido
                             </div>
                           </div>
                       </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" >Vehículo asignado</label>
+                        <ng-select #vehicle="ngModel" name="vehicle"
+                            filterPlaceholder="Buscar vehículo..."
+                            notFoundMsg="No se encontró ningún vehículo"
+                            highlightColor="#37424A"
+                            highlightTextColor="#fff"
+                            placeholder="Seleccione..."
+                            [options]="vehicles"
+                            [allowClear]="true"
+                            [noFilter]="5"
+                            (selected)="onSelectVehicle($event)"
+                            (deselected)="onDeselectVehicle($event)"
+                            [(ngModel)]="order.originWarehouse">
+                        </ng-select>
                     </div> 
                   </div>
-                  <div class="col" *ngIf="lat && lng">
-                  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+                  <div class="col" *ngIf="order.lat && order.lng">
+                  <agm-map [latitude]="order.lat" [longitude]="order.lng" [zoom]="zoom" [minZoom]="minZoom">
                     <agm-marker 
-                      [latitude]="lat" 
-                      [longitude]="lng" 
+                      [latitude]="order.lat" 
+                      [longitude]="order.lng" 
                       [markerDraggable]="true"
                       (dragEnd)="markerDragEnd($event)"></agm-marker>
                   </agm-map>
                 </div>  
               </div>
             </form>
-            <hr>
+            <h5>Detalle</h5>
             <form novalidate #formDetail="ngForm" (ngSubmit)="onSubmitDetail()">
               <div class="row d-flex flex-row justify-content-center align-items-center">
                 <div class="col">
@@ -97,12 +141,14 @@
                             [allowClear]="true"
                             [noFilter]="5"
                             required
+                            (selected)="onSelectProductType($event)"
+                            (deselected)="onDeselectProductType($event)"
                             [(ngModel)]="item.productType">
                     </ng-select>
                   </div>
               </div>
               <div class="col">
-                <label class="form-control-label">Cantidad</label>
+                <label class="form-control-label">Cantidad {{ order.type == 'GRANEL' ? 'Litros' : '' }}</label>
                 <div class="form-group" [ngClass]="{'has-success': !quantity.errors, 'has-danger': quantity.errors && (quantity.dirty || quantity.touched) }">
                   <input type="number" #quantity="ngModel" name="quantity" class="form-control" min="1" [(ngModel)]="item.quantity" >
                 </div>
@@ -122,13 +168,13 @@
                   <thead>
                     <tr>
                       <th>Producto</th>
-                      <th>Cantidad</th>
+                      <th>Cantidad {{ order.type == 'GRANEL' ? 'Litros' : '' }}</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let i of items">
-                      <td>{{ i.productType }}</td>
+                      <td>{{ i.productTypeName }}</td>
                       <td>{{ i.quantity }}</td>
                       <td class="text-center">
                         <button class="btn btn-outline-danger" (click)="deleteItem(i.id)">
@@ -141,6 +187,10 @@
               </div>
             </div>
           </form>
+          <p>
+            {{ order | json }}
+            {{ items | json }}
+          </p>
           <hr>
           <div class="card-footer">
             <button class="btn btn-primary btn-block" [disabled]="!form.form.valid" (click)="onSubmit()"> <fa name="save"></fa> GUARDAR </button>

@@ -15,7 +15,12 @@ export class AppComponent implements OnInit {
     confirmText: 'Sí',
     declineText: 'No'
   }
-
+  public notificationsOptions = {
+    position: ["bottom", "right"],
+    timeOut: 5000,
+    lastOnBottom: true,
+    showProgressBar: true
+  }
   constructor(
     private _userService: UserService,
     private _router: Router,

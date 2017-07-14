@@ -40,5 +40,10 @@ export class OrderService {
       return this._http.get(this.url + 'productType', { headers: this.headers })
                       .map(res => res.json())
   }
-
+  postOrder (order: any) {
+    var url = this.url + 'order/';
+        var body = order;
+        return this._http.post(url, body, { headers: this.headers })
+                        .map(res => res.json());
+  }
 }

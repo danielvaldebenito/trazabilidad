@@ -16,5 +16,10 @@ export class GoogleMapService {
         return this._http.get('https://maps.google.com/maps/api/geocode/json', { params: params })
             .map(res => res.json())
     }
-
+    getAddressFromCoordinates(lat: number, lng: number) {
+        var latlng = { lat: lat, lng: lng }
+        var params = { latlng: lat + "," + lng, key: this.apiKey }
+        return this._http.get('https://maps.google.com/maps/api/geocode/json', { params: params })
+            .map(res => res.json())
+    }
 }

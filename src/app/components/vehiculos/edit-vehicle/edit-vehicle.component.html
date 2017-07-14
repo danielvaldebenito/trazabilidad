@@ -30,20 +30,17 @@
             <label class="form-control-label" for="">Marca</label>
             <input type="text" #trademark="ngModel" name="trademark" [(ngModel)]="vehicle.trademark" class="form-control" placeholder="Marca">
           </div>
-          <div class="form-group" [ngClass]="{'has-success': !type.errors, 'has-danger': type.errors && (type.dirty || type.touched)}">
-            <label class="form-control-label" for="">Tipo (*) </label>
-            <select required #type="ngModel" name="type" [(ngModel)]="vehicle.type" class="form-control" placeholder="Tipo">
-              <option *ngFor="let t of vehicleTypes" value="{{ t }}">
-                {{ t }}
-              </option>
-            </select>
-            <div class="form-control-feedback">
-              <div *ngIf="type.errors && (type.dirty || type.touched)" class="danger">
-                <div [hidden]="!type.errors.required">
-                  Ingrese el tipo de vehículo
-                </div>
-              </div>
-            </div>
+          <div class="d-flex flex-row justify-content-between">
+            <label class="custom-control custom-radio d-flex ">
+              <input id="radio1" #type="ngModel" [(ngModel)]="vehicle.type" value="ENVASADO" name="type" type="radio" class="custom-control-input">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">ENVASADO</span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input id="radio2" #type="ngModel" [(ngModel)]="vehicle.type" value="GRANEL" name="type" type="radio" class="custom-control-input">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">GRANEL</span>
+            </label>
           </div>
           <div class="form-group" [ngClass]="{'has-success': !capacity.errors, 'has-danger': capacity.errors && (capacity.dirty || capacity.touched)}">
             <label class="form-control-label" for="">Capacidad (*)</label>
@@ -59,7 +56,21 @@
               </div>
             </div>
           </div>
-          
+          <div class="form-group" [ngClass]="{'has-success': !dependence.errors, 'has-danger': dependence.errors && (dependence.dirty || dependence.touched)}">
+            <label class="form-control-label" for="">Dependencia (*)</label>
+            <select required  #dependence="ngModel" name="dependence" [(ngModel)]="vehicle.dependence" class="form-control">
+              <option *ngFor="let d of dependences" [value]="d._id">
+                {{ d.name }}
+              </option>
+            </select>
+            <div class="form-control-feedback">
+              <div *ngIf="dependence.errors && (dependence.dirty || dependence.touched)" class="danger">
+                <div [hidden]="!dependence.errors.required">
+                  Ingrese la dependencia a la que corresponde el vehículo
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="card-footer">
           <button class="btn btn-primary btn-block" [disabled]="!form.form.valid"> <fa name="save"></fa> GUARDAR </button>
