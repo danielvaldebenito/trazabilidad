@@ -6,12 +6,14 @@ import { OrderService } from '../../../services/order.service';
 import { VehicleService } from '../../../services/vehicles.service';
 import { AddressService } from '../../../services/addresses.service';
 import { GoogleMapService } from '../../../services/googlemap.service';
-import { ConfirmationComponent, ConfirmationService } from '@jaspero/ng2-confirmations'
+import { SweetAlertService } from 'ng-sweetalert2-slc';
 import { NotificationsService } from 'angular2-notifications';
 import { ResolveEmit } from "@jaspero/ng2-confirmations/src/interfaces/resolve-emit";
 import { IOption } from 'ng-select'
 import { GLOBAL } from '../../../global';
 import * as Enumerable from 'linq';
+
+
 @Component({
   selector: 'app-order-create',
   templateUrl: './order-create.component.html',
@@ -25,17 +27,21 @@ export class OrderCreateComponent implements OnInit {
   order: any = { type: 'ENVASADO', commitmentDate: '04-07-2017' }
   // selects
   allRegions: any[]
+  allPriceLists: any[]
   regions: Array<IOption> = []
   cities: Array<IOption> = []
   productTypes: Array<IOption> = []
   vehicles: Array<IOption> = []
+  priceLists: Array<IOption> = []
   selectedRegion: any = {}
   selectedCity: any = {}
   selectedProductType: any = {}
-  
+  selectedPriceList: any = {}
+  selectedPrices: any[] = []
   // items
   items: any[] = [];
   item: any = { quantity: 1 };
+  totalToPay: number = 0;
   // MAPA
   placeId: any;
   zoom: number = 14;
@@ -52,7 +58,8 @@ export class OrderCreateComponent implements OnInit {
     private _addressService: AddressService,
     private _userService: UserService,
     private _vehicleService: VehicleService,
-    private _location: Location
+    private _location: Location,
+    private _swal2: SweetAlertService
   ) { }
 
   ngOnInit() {
@@ -60,7 +67,9 @@ export class OrderCreateComponent implements OnInit {
     this.getProductTypes();
     this.getAddresses();
     this.getVehicles();
+    this.getPriceLists();
     this.getDefaultData();
+    
   }
   onCancel () {
     this._location.back();
@@ -137,28 +146,36 @@ export class OrderCreateComponent implements OnInit {
     this.selectedCity = null;
     this.onBlur()
   }
-  getProductTypes() {
-    this._orderService.getProductTypes()
+  getPriceLists() {
+    this._orderService.getPriceLists()
       .subscribe(
       res => {
         var data = res.data;
+        this.allPriceLists = res.data;
         var array = [];
         data.forEach(d => {
           var option = { label: d.name, value: d._id }
           array.push(option)
         })
-        this.productTypes = array;
+        this.priceLists = array;
       },
       error => {
         console.log(error)
       }
       )
   }
-  onSelectProductType (pt) {
-    this.selectedProductType = pt.label;
+  onSelectPriceList (pl) {
+    this.selectedPriceList = pl.value;
+    var priceList = Enumerable.from(this.allPriceLists)
+                      .where(w => { return w._id == this.selectedPriceList })
+                      .firstOrDefault();
+    var prices = priceList.items;
+    this.selectedPrices = prices;
+    this.updatePrices ();
   }
-  onDeselectProductType (pt) {
-    this.selectedProductType = null;
+  onDeselectPriceList (pl) {
+    this.selectedPriceList = null;
+    this.updatePrices();
   }
   getVehicles() {
     this._selectsService.getVehicleToAsign(this.order.type)
@@ -187,6 +204,29 @@ export class OrderCreateComponent implements OnInit {
   }
   onDeselectVehicle (v) {
     //this.selectedVehicle = null;
+  }
+  getProductTypes() {
+    this._orderService.getProductTypes()
+      .subscribe(
+      res => {
+        var data = res.data;
+        var array = [];
+        data.forEach(d => {
+          var option = { label: d.name, value: d._id }
+          array.push(option)
+        })
+        this.productTypes = array;
+      },
+      error => {
+        console.log(error)
+      }
+      )
+  }
+  onSelectProductType (pt) {
+    this.selectedProductType = pt.label;
+  }
+  onDeselectProductType (pt) {
+    this.selectedProductType = null;
   }
   getAddresses() {
     this._addressService.getAddresses()
@@ -281,6 +321,7 @@ export class OrderCreateComponent implements OnInit {
       .firstOrDefault();
     if (exists) {
       exists.quantity = exists.quantity + this.item.quantity;
+      
     } else {
       this.item.id = Math.random().toString(36).slice(2);
       this.item.productTypeName = this.selectedProductType;
@@ -288,11 +329,48 @@ export class OrderCreateComponent implements OnInit {
       var pt = this.item.productType;
       this.item = { quantity: 1, productType: pt, productTypeName: this.selectedProductType }
     }
-
+    this.updatePrices();
+  }
+  updatePrices () {
+    if(!this.items) return;
+    this.totalToPay = 0;
+    this.items.forEach(element => {
+      element.price = this.getPrice (element)
+      this.totalToPay = this.totalToPay + (element.price * element.quantity);
+    });
+  }
+  getPrice(item: any) {
+    if(!item) return 0;
+    if(!this.selectedPriceList) return 0;
+    var pt = item.productType;
+    var pl = Enumerable.from(this.allPriceLists)
+              .where(w => { return w._id == this.selectedPriceList })
+              .firstOrDefault();
+    if(!pl) return 0;
+    var prices = []
+    prices = pl.items;
+    if(!prices) return 0;
+    var price = Enumerable.from(prices)
+                  .where(w => { return w.productType == pt})
+                  .firstOrDefault ()
+    if(!price) return 0;
+    return price.price;
   }
   deleteItem(id: any) {
     this.items = this.items.filter((i) => { return i.id != id });
+    this.updatePrices();
   }
+
+  seeList(list) { 
+    this._swal2.confirm({ title: 'Titulo', text: 'Message' })
+          .then(
+            res => console.log(res),
+            cancel => { console.log(cancel) }
+          )
+  }
+
+
+
   // ORDER
   onSubmit() {
     console.log(this.items)
@@ -305,7 +383,16 @@ export class OrderCreateComponent implements OnInit {
     this.order.items = strItems;
 
     this._orderService.postOrder(this.order)
-      .subscribe(res => {console.log(res); this.setDefaultData();}, error => console.log(error))
+      .subscribe(res => {
+        console.log(res);
+        if(res.done){
+          this.setDefaultData();
+          
+        } else {
+          
+        }
+        
+      }, error => console.log(error))
 
     
   }

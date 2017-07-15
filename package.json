@@ -34,7 +34,9 @@
     "linq": "^3.0.8",
     "ng-pick-datetime": "^4.2.2",
     "ng-select": "^1.0.0-beta.6",
+    "ng-sweetalert2-slc": "^0.1.7",
     "ng2-completer": "^1.5.2",
+    "ng2-sweetalert2": "0.0.8",
     "rxjs": "^5.1.0",
     "underscore": "^1.8.3",
     "zone.js": "^0.8.4"

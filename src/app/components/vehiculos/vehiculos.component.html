@@ -23,7 +23,7 @@
             <span>Marca: </span><span>{{ item.trademark }}</span>
           </li>
           <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
-            <span>Capacidad: </span><span>{{ item.capacity }}</span>
+            <span>Capacidad: </span><span>{{ item.capacity }} {{ item.type == 'GRANEL' ? 'LITROS' : 'UNIDADES' }}</span>
           </li>
         </ul>
         

@@ -13,7 +13,7 @@
             <div class="container">
               <form novalidate #form="ngForm" (ngSubmit)="onSubmit()">
                 <div class="row">
-                  <div class="col" [ngClass]="{'col-12 col-md-6 col-sm-12': order.lat && order.lng}">
+                  <div class="col">
                     <div class="d-flex flex-row justify-content-center">
                       <label class="custom-control custom-radio d-flex ">
                         <input id="radio1" [(ngModel)]="order.type" value="ENVASADO" name="type" type="radio" class="custom-control-input">
@@ -26,12 +26,16 @@
                         <span class="custom-control-description">GRANEL</span>
                       </label>
                     </div>
+                  </div>
+                </div>
+                <div class="row d-flex align-items-center">
+                  <div class="col" [ngClass]="{'col-12 col-md-6 col-sm-12': order.lat && order.lng}">
                     <div class="form-group" [ngClass]="{'has-success': !address.errors, 'has-danger': address.errors && (address.dirty || address.touched) }">
                       <label class="form-control-label" for="">Dirección (*)</label>
                       <ng2-completer #address="ngModel" name="address" matchClass="match" inputClass="form-control" 
                         [(ngModel)]="order.address" 
                         [datasource]="addresses" 
-                        [minSearchLength]="3"
+                        [minSearchLength]="2"
                         inputName="address"
                         textNoResults="Sin coincidencias. Se creará nuevo registro"
                         textSearching="Buscando..."
@@ -98,20 +102,49 @@
                       </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label" >Vehículo asignado</label>
+                        <label class="form-control-label"><h5>Vehículo asignado</h5> </label>
+                        <label id="lbl-chk" class="custom-control custom-checkbox">
+                          <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input">
+                          <span class="custom-control-indicator"></span>
+                          <span class="custom-control-description"> Lo asignaré más tarde</span>
+                        </label>
                         <ng-select #vehicle="ngModel" name="vehicle"
                             filterPlaceholder="Buscar vehículo..."
                             notFoundMsg="No se encontró ningún vehículo"
                             highlightColor="#37424A"
                             highlightTextColor="#fff"
-                            placeholder="Seleccione..."
+                            placeholder="{{ order.after ? 'Lo asignaré más tarde': 'Seleccione vehículo'}}"
                             [options]="vehicles"
                             [allowClear]="true"
                             [noFilter]="5"
+                            [disabled]="order.after"
                             (selected)="onSelectVehicle($event)"
                             (deselected)="onDeselectVehicle($event)"
                             [(ngModel)]="order.originWarehouse">
+                          </ng-select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-control-label">Lista de Precios a utilizar</label>
+                      <div class="input-group">
+                        <ng-select #priceList="ngModel" name="priceList"
+                          filterPlaceholder="Buscar lista de precio..."
+                          notFoundMsg="No se encontró ninguna lista de precios"
+                          highlightColor="#37424A"
+                          highlightTextColor="#fff"
+                          placeholder="Seleccione lista de precios"
+                          [options]="priceLists"
+                          [allowClear]="true"
+                          [noFilter]="5"
+                          (selected)="onSelectPriceList($event)"
+                          (deselected)="onDeselectPriceList($event)"
+                          [(ngModel)]="order.priceList"
+                          >
                         </ng-select>
+                        <span *ngIf="order.priceList" class="input-group-addon" (click)="seeList()">
+                          <fa name="eye"></fa>
+                        </span>
+                      </div>
+                      
                     </div> 
                   </div>
                   <div class="col" *ngIf="order.lat && order.lng">
@@ -169,6 +202,8 @@
                     <tr>
                       <th>Producto</th>
                       <th>Cantidad {{ order.type == 'GRANEL' ? 'Litros' : '' }}</th>
+                      <th>Valor Unit.</th>
+                      <th>Valor Total.</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -176,6 +211,8 @@
                     <tr *ngFor="let i of items">
                       <td>{{ i.productTypeName }}</td>
                       <td>{{ i.quantity }}</td>
+                      <td>{{ i.price }}</td>
+                      <td>{{ i.price * i.quantity }}</td>
                       <td class="text-center">
                         <button class="btn btn-outline-danger" (click)="deleteItem(i.id)">
                           <fa name="trash"></fa>
@@ -183,6 +220,15 @@
                       </td>
                     </tr>
                   </tbody>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th>TOTAL: </th>
+                      <th>{{ totalToPay }}</th>
+                      <th></th>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </div>

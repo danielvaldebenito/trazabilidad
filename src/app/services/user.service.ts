@@ -24,6 +24,11 @@ export class UserService {
     getToken () {
         return localStorage.getItem('token');
     }
+    validateToken (token) {
+        var headers = new Headers ({ 'Content-Type': 'application/json', 'Authorization': token });
+        return this._http.get(this.url + 'test', { headers: headers })
+            .map(res => res.json());
+    }
     setUserIdentity (user: any) {
         localStorage.setItem('identity', JSON.stringify(user));
     }

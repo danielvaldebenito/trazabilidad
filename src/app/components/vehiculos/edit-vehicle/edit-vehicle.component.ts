@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VehicleService } from '../../../services/vehicles.service';
 import { SelectsService } from '../../../services/selects.service';
-import { NotificationsService } from 'angular2-notifications';
+import { SweetAlertService } from 'ng-sweetalert2-slc';
 import { Location } from '@angular/common';
 @Component({
   selector: 'app-edit-vehicle',
@@ -21,14 +21,14 @@ export class EditVehicleComponent implements OnInit {
     private _vehicleService: VehicleService,
     private _selectService: SelectsService,
     private _location: Location,
-    private _notificationsService: NotificationsService
+    private _swal2: SweetAlertService
   ) { }
 
   ngOnInit() {
     this.getVehicleTypes();
-    var id = this._route.snapshot.params['id'];
+    this.id = this._route.snapshot.params['id'];
     this.getDependences();
-    this.getVehicle(id);
+    this.getVehicle(this.id);
   }
 
   onCancel () {
@@ -65,10 +65,20 @@ export class EditVehicleComponent implements OnInit {
           err => console.log('error' , err));
   }
   onSubmit(){
+    console.log('guardando ', this.id)
     this._vehicleService.updateVehicle(this.id, this.vehicle)
         .subscribe(res => {
-          console.log(res);
-          this._location.back();
+          if(res.done) {
+              this._swal2.success({ 
+                title: 'Registro editado', 
+                text: res.message,
+                confirmButtonText: 'OK'
+              })
+              .then(
+                res => this._location.back(), 
+                cancel => this._location.back()
+              )
+            }
         }, 
           error => {
             console.log(err);
@@ -78,10 +88,16 @@ export class EditVehicleComponent implements OnInit {
                 var jsonBody = JSON.parse(body);
                 var err = jsonBody.error
                 var codeError = err.code;
-                if(codeError == 11000)
-                  console.log('Ya se encuentra una placa "' + this.vehicle.licensePlate +  '" en el sistema')
-                else
-                  console.log(body.message)
+                var msj =  codeError == 11000 ? 'Ya se encuentra una placa "' + this.vehicle.licensePlate +  '" en el sistema' : 'Ha ocurrido un error'
+                this._swal2.error({ 
+                    title: 'Error', 
+                    text: msj,
+                    confirmButtonText: 'OK'
+                  })
+                  .then(
+                      res => {}, 
+                      cancel => {}
+                    )
               }
             }
           });

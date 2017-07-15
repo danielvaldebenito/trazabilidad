@@ -14,6 +14,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SelectModule } from 'ng-select';
 import { AgmCoreModule } from '@agm/core';
 import { Ng2CompleterModule } from "ng2-completer";
+
 // routes
 import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
@@ -25,6 +26,7 @@ import { PagerService } from './services/pager.service';
 import { SelectsService } from './services/selects.service';
 import { GoogleMapService }  from './services/googlemap.service';
 import { AddressService } from './services/addresses.service';
+import { SweetAlertService } from 'ng-sweetalert2-slc';
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -76,7 +78,8 @@ import { environment } from '../environments/environment'
     SelectsService, 
     OrderService, 
     GoogleMapService,
-    AddressService 
+    AddressService,
+    SweetAlertService
   ],
   bootstrap: [AppComponent]
 })

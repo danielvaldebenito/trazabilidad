@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VehicleService} from '../../services/vehicles.service';
 import { Vehicle } from '../../models/vehicle.model';
 import { PagerService } from '../../services/pager.service';
-import { ConfirmationComponent, ConfirmationService } from '@jaspero/ng2-confirmations'
-import { ResolveEmit } from "@jaspero/ng2-confirmations/src/interfaces/resolve-emit";
+import { SweetAlertService } from 'ng-sweetalert2-slc';
 import * as _ from 'underscore';
 @Component({
   selector: 'app-vehiculos',
@@ -23,8 +22,8 @@ export class VehiculosComponent implements OnInit {
   pagedItems: any[];
   constructor(
     private _vehicleService: VehicleService, 
-    private pagerService: PagerService,
-    private _confirmService: ConfirmationService
+    private _pagerService: PagerService,
+    private _swal2: SweetAlertService
   ) 
   { }
 
@@ -39,7 +38,7 @@ export class VehiculosComponent implements OnInit {
             if(res.done){
               this.allItems = res.data;
               this.total = res.total;
-              this.pager = this.pagerService.getPager(this.total, this.currentPage, limit);
+              this.pager = this._pagerService.getPager(this.total, this.currentPage, limit);
             }
           },
           error => console.log(error))
@@ -53,16 +52,30 @@ export class VehiculosComponent implements OnInit {
     this.refresh();
   }
   tryDelete (id) {
-    this._confirmService.create('Eliminar registro', '¿Está seguro que desea eliminar este vehículo?')
-        .subscribe((ans: ResolveEmit) => {
-          if(ans.resolved)
-            this.deleteRecord(id);
-        })
+    this._swal2.confirm({ 
+      title: 'Eliminar registro', 
+      text: '¿Está seguro que desea eliminar este vehículo?',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true
+     })
+    .then(
+      res => {console.log(res); this.deleteRecord(id);},
+      cancel => { console.log(cancel) }
+    );
   }
   deleteRecord (id) {
     this._vehicleService.deleteVehicle(id)
       .subscribe(res => {
-        this.refresh()
+        if(res.done){
+          this.refresh();
+          this._swal2.success({ 
+            title: 'Registro eliminado', 
+            text: res.message,
+            confirmButtonText: 'OK'
+          })
+        }
+        
       }, e => console.log(e))
   }
   refresh() {

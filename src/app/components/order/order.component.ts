@@ -26,56 +26,84 @@ export class OrderComponent implements OnInit {
   sidx: string = 'destinyWarehouse.name';
   sord: number = 1;
   view: any[] = [800, 200];
+  colors: string[] = ['#d9534f', '#FFEB3B', '#03A9F4', '#5cb85c', '#37424A'];
   colorScheme = {
-    domain: ['#F44336', '#FFEB3B', '#00C853', '#0091EA', '#000000']
+    domain: []
   };
-  single = [
-  {
-    "name": 'RECIBIDO',
-    "value": 1
-  },
-  {
-    "name": 'ASIGNADO',
-    "value": 2
-  },
-  {
-    "name": 'EN RUTA',
-    "value": 4
-  },
-  {
-    "name": 'ENTREGADO',
-    "value": 8
-  },
-  {
-    "name": 'CANCELADO',
-    "value": 3
-  }
-];
+  single = [];
+  /*single = [
+    {
+      "name": 'RECIBIDO',
+      "value": 1
+    },
+    {
+      "name": 'ASIGNADO',
+      "value": 2
+    },
+    {
+      "name": 'EN RUTA',
+      "value": 4
+    },
+    {
+      "name": 'ENTREGADO',
+      "value": 8
+    },
+    {
+      "name": 'CANCELADO',
+      "value": 3
+    }
+  ];*/
   constructor(
     private _orderService : OrderService,
     private _pagerService: PagerService,
     private _cdr: ChangeDetectorRef
   ) {
-
-    let getWindow = () => { return window.innerWidth }
     window.onresize = () => {
-      
       this._cdr.detectChanges();
       this.OnResize();
     }
-    
     this.OnResize();
   }
-  
+  getResume () {
+    this._orderService.getResume (this.momentValue)
+        .subscribe(
+          res => {
+            if (res.done) {
+              var data = res.data;
+              data.forEach((element, i) => {
+                this.single.push({ name: element._id, value: element.count })
+                this.colorScheme.domain.push(this.colors[i])
+              });
+              console.log(this.single)
+            }
+           },
+          error => { console.log(error) }
+        )
+  }
   OnResize() {
     this.innerWidth = window.innerWidth;
-      if(this.innerWidth < 700)
-        this.view = [this.innerWidth - 50, this.innerWidth / 2]
-      else
-        this.view = [700,200]
+    var standarW = 700;
+    var standarH = 200;
+    var proportion = 700 / 200;
+    var max = 1366;
+    console.log('width', this.innerWidth);
+    if(this.innerWidth < max && this.innerWidth > 992)
+    {
+      var w = (this.innerWidth * standarW / max) - 30;
+      var h = (w * standarH / standarW) + 30;
+      this.view = [w, h]
+    }
+    else if (this.innerWidth < standarW){
+      var w = (this.innerWidth) - 50;
+      var h = standarH;
+      this.view = [w, h]
+    }
+    else
+      this.view = [700,200]
   }
   ngOnInit() {
     this.refresh();
+    
   }
   setPage(page: number) {
       this.currentPage = page;
@@ -83,6 +111,7 @@ export class OrderComponent implements OnInit {
   }
   
   onSelect(event) {
+    console.log(event)
     this.selectedState = event.name;
     this.refresh();
   }
@@ -101,6 +130,7 @@ export class OrderComponent implements OnInit {
   }
   
   refresh() {
+    this.getResume();
     this.getOrders(this.selectedState, this.filter, this.momentValue, this.limit, this.currentPage, this.sidx, this.sord);
   }
 

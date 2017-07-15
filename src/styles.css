@@ -5,6 +5,8 @@
     --color-danger: #d9534f;
     --color-success: #5cb85c;
     --color-inverse: #9E9E9E;
+    --color-inter: #FFEB3B;
+    --color-info: #03A9F4;
 }
 *:not(i){
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
@@ -24,7 +26,8 @@
     margin-left: -30px;
 }
 
-.table thead th {
+.table thead th,
+.table tfoot th {
     color: #FFF;
     border-bottom-color: #ccc;
 }
@@ -164,4 +167,43 @@ ng-select > div > div.single > div.placeholder {
 
 .granel-color > fa i {
     color: var(--color-inverse)
+}
+
+/* Alert */
+.swal2-modal.show-swal2.visible{
+    border-radius: 4px !important;
+    padding: 5px !important;
+}
+.swal2-confirm {
+    background: var(--color-primary) !important;
+    outline: none !important;
+    border: none !important;
+    border-radius: 1px !important;
+    padding: 10px 20px !important;
+    text-transform: uppercase !important; 
+}
+.swal2-confirm:hover {
+    opacity: 0.8;
+}
+.swal2-cancel {
+    background: var(--color-secondary) !important;
+    outline: none !important;
+    border: none !important;
+    border-radius: 1px !important;
+    padding: 10px 20px !important;
+    text-transform: uppercase !important; 
+}
+.swal2-cancel:hover {
+    opacity: 0.8;
+}
+
+/* CHARTS*/
+.advanced-pie-legend .legend-items-container .legend-items .legend-item {
+    padding: 5px !important;
+    margin: 5px !important;
+}
+.advanced-pie-legend .legend-items-container .legend-items .legend-item:hover {
+    color: #FFF !important;
+    background: rgba(0,0,0,0.1) !important;
+    
 }

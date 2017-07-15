@@ -8,7 +8,9 @@ import { NotificationComponent, NotificationsService } from 'angular2-notificati
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit {
+
   identity: any;
   token: string;
   public confirmOptions = {
@@ -28,14 +30,23 @@ export class AppComponent implements OnInit {
   )
   { }
 
-
   ngOnInit() {
     this.refresh();
-    this._notificationService.success('Title', 'content');
   }
   refresh() {
     this.identity = this._userService.getUserIdentity();
     this.token = this._userService.getToken();
+    if(this.identity && this.token) {
+      this._userService.validateToken(this.token)
+          .subscribe(
+            res => { console.log('validation ok', res) },
+            err => { 
+              if(err.status == 404)
+                this.logout();
+            }
+          )
+        
+    }
   }
   logout() {
     this._userService.clear();
