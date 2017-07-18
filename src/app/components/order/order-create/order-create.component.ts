@@ -37,6 +37,7 @@ export class OrderCreateComponent implements OnInit {
   selectedCity: any = {}
   selectedProductType: any = {}
   selectedPriceList: any = {}
+  selectedVehicle: any = {}
   selectedPrices: any[] = []
   // items
   items: any[] = [];
@@ -187,7 +188,7 @@ export class OrderCreateComponent implements OnInit {
               var data = res.data;
               var array = [];
               data.forEach(d => {
-                var option = { label: d.licensePlate, value: d.warehouse._id }
+                var option = { label: d.licensePlate, value: d._id }
                 array.push(option)
               })
               this.vehicles = array;
@@ -200,10 +201,10 @@ export class OrderCreateComponent implements OnInit {
       )
   }
   onSelectVehicle (v) {
-    //this.selectedVehicle = pt.label;
+    this.selectedVehicle = v.value;
   }
   onDeselectVehicle (v) {
-    //this.selectedVehicle = null;
+    this.selectedVehicle = null;
   }
   getProductTypes() {
     this._orderService.getProductTypes()
@@ -369,7 +370,95 @@ export class OrderCreateComponent implements OnInit {
           )
   }
 
+  searchClosest () {
+    if(this.order.lat && this.order.lng) {
+      //var requestId = Math.random().toString(36).slice(2);
+      var requestId = '5hdx2znvohx'
+      this._orderService
+          .requestClosest(requestId, this.order.lat, this.order.lng)
+          .subscribe(
+            res => {
+              if(res.done) {
+                this._swal2.swal({
+                  title: 'Buscando',
+                  text: 'Buscando vehículos cercanos a ' + this.order.address + '... Espere por favor',
+                  timer: 10000,
+                  showCancelButton: true,
+                  showConfirmButton: false,
+                  cancelButtonText: 'Cancelar',
+                  allowOutsideClick: false
+                })
+                .then(
+                  res => console.log(res),
+                  cancel => {
+                    if (cancel == 'timer') { // Se agotó el tiempo de espera, es decir hay que buscar geo
+                      this._orderService
+                        .responseClosest(requestId)
+                        .subscribe(
+                          res => {
+                            if(res.done) {
+                              if(res.data) {
+                                if(res.data.veh) {
+                                  var licensePlate = res.data.veh.licensePlate;
+                                  this._swal2.success({
+                                      title: 'Vehículo encontrado',
+                                      text: 'Se encontró el vehículo ' + licensePlate + ', como más cercano al destino señalado',
+                                      confirmButtonText: 'Asignar'
+                                    })
+                                    .then(
+                                      response => {
+                                        console.log('res vehiculo encontrado', response)
+                                        this.order.vehicle = res.data.veh._id;
+                                      },
+                                      cancel => {
 
+                                      }
+                                    )
+                                }
+                              } else {
+                                this._swal2.confirm({
+                                      title: 'Sin resultados',
+                                      text: 'No se encontraron dispositivos. ¿Desea volver a intentarlo?',
+                                      confirmButtonText: 'Reintentar',
+                                      cancelButtonText: 'Cancelar'
+                                    })
+                                    .then(
+                                      res => {
+                                        this.searchClosest();
+                                      },
+                                      cancel => {
+
+                                      }
+                                    )
+                              }
+                            }
+                          },
+                          err => {
+                            console.log(err)
+                          }
+                        )
+                    }
+                  }
+                  )
+              }
+            },
+            error => {
+
+            })
+      
+    } else {
+      this._swal2.warning ({
+        title: 'Ingrese dirección',
+        text: 'Para buscar vehículos cercanos, ingrese primeramente la dirección para el pedido'
+      })
+      .then(
+        res => console.log(res),
+        cancel => console.log(cancel)
+      )
+    }
+    
+    
+  }
 
   // ORDER
   onSubmit() {

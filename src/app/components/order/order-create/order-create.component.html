@@ -104,11 +104,12 @@
                     <div class="form-group">
                         <label class="form-control-label"><h5>Vehículo asignado</h5> </label>
                         <label id="lbl-chk" class="custom-control custom-checkbox">
-                          <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input">
+                          <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input" (change)="vehicle.clear()">
                           <span class="custom-control-indicator"></span>
                           <span class="custom-control-description"> Lo asignaré más tarde</span>
                         </label>
-                        <ng-select #vehicle="ngModel" name="vehicle"
+                        <div class="input-group">
+                          <ng-select #vehicle name="vehicle"
                             filterPlaceholder="Buscar vehículo..."
                             notFoundMsg="No se encontró ningún vehículo"
                             highlightColor="#37424A"
@@ -120,8 +121,16 @@
                             [disabled]="order.after"
                             (selected)="onSelectVehicle($event)"
                             (deselected)="onDeselectVehicle($event)"
-                            [(ngModel)]="order.originWarehouse">
+                            [(ngModel)]="order.vehicle">
                           </ng-select>
+                          <div class="btn-group" role="group">
+                            <button id="btnGroupDrop1" [disabled]="order.after || !order.lat || !order.lng" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <fa name="truck"></fa> </button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                              <a class="dropdown-item" (click)="searchClosest() "> <fa name="search"></fa> Buscar al más cercano</a>
+                            </div>
+                          </div>
+                        </div>
+                        
                     </div>
                     <div class="form-group">
                       <label class="form-control-label">Lista de Precios a utilizar</label>
@@ -153,7 +162,8 @@
                       [latitude]="order.lat" 
                       [longitude]="order.lng" 
                       [markerDraggable]="true"
-                      (dragEnd)="markerDragEnd($event)"></agm-marker>
+                      (dragEnd)="markerDragEnd($event)">
+                    </agm-marker>
                   </agm-map>
                 </div>  
               </div>

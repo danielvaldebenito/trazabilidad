@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 @Injectable()
 export class OrderService {
   url: string  = GLOBAL.apiUrl;
+  user: any;
   private headers;
   constructor(
     private _userService: UserService,
@@ -17,6 +18,7 @@ export class OrderService {
             'Authorization': this._userService.getToken(),
             'Content-Type': 'application/json'
         })
+    this.user = this._userService.getUserIdentity();
   }
 
   getOrders (state: string, filter: string, date: Date, limit: number = 200, page: number = 1, sidx? : string, sord?: number) {
@@ -58,5 +60,22 @@ export class OrderService {
     var body = order;
     return this._http.post(url, body, { headers: this.headers })
                     .map(res => res.json());
+  }
+
+  requestClosest (requestId: string, lat: number, lng: number) {
+    var url = this.url + 'georeference-request/';
+    var myDistributor = this._userService.getUserIdentity().distributor;
+    var body = { lat: lat, lng: lng, distributor: myDistributor, requestId: requestId, user: this.user.distributor };
+    return this._http.post(url, body, { headers: this.headers })
+                    .map(res => res.json());
+  }
+  
+  responseClosest (requestId: string) {
+    var url = this.url + 'georeference/';
+    return this
+            ._http
+            .get (url + requestId, { headers: this.headers })
+            .map(res => res.json())
+
   }
 }
