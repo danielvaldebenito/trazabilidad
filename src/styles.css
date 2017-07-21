@@ -71,6 +71,10 @@
     margin-top: 5px;
     border-color: #aaa;
 }
+.card.card-principal {
+    margin-bottom: 100px;
+}
+
 .danger {
     color: var(--color-danger);
 }
@@ -137,6 +141,13 @@ ng-select > div > div.single > div.value,
 
 ng-select > div > div.single > div.placeholder {
     color: #888 !important
+}
+ng-select > div > div.multiple > div.placeholder {
+    color: #888 !important
+}
+ng-select > div > div.multiple > div.option {
+    color: var(--color-primary) !important;
+    background: var(--color-secondary) !important;
 }
 .form-group.has-danger ng-select.ng-invalid{
     border: 1px solid var(--color-danger);

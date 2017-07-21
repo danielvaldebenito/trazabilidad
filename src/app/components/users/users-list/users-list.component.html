@@ -1,0 +1,35 @@
+<div>
+  <div class="card-colums">
+    <div class="card" *ngFor="let user of users">
+      <div class="card-header">
+        <h3>{{ user.name }} {{ user.surname }}</h3>
+      </div>
+      <div class="card-block">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4">
+              <div>
+                <img src="{{ apiUrl + 'get-image-user/' + user.image }}" alt="" class="img-fluid rounded-circle">
+              </div>
+            </div>
+            <div class="col-xl-8 col-lg-8 col-sm-8 col-md-8">
+              <dl class="row">
+                <dt class="col-sm-6">Nombre de usuario</dt>
+                <dd class="col-sm-6">{{ user.username }}</dd>
+                <dt class="col-sm-6">Fecha de ingreso</dt>
+                <dd class="col-sm-6">{{ user.createdAt | date:'dd-MM-yyyy'}}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="card-footer">
+        <button *ngIf="iAm(user)" class="btn btn-outline-primary">
+          <fa name="pencil"></fa>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

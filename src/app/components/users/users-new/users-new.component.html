@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+      <div class="card-header d-flex flex-row justify-content-between align-items-center">
+        <button class="btn btn-secondary" *ngIf="!fromModal" (click)="onCancel()" title="Volver">
+        <fa name="arrow-left"></fa>
+      </button>
+        <h2>Nuevo Usuario</h2>
+        <fa name="user" size="3x"></fa>
+      </div>
+      <div class="card-block">
+        <form novalidate [formGroup]="form">
+          <div class="form-group" [ngClass]="{'has-success': form.get('name').valid, 'has-danger':!form.get('name').valid && form.get('name').touched }">
+              <label for="" class="form-control-label">Nombre</label>
+              <input type="text" class="form-control" [ngClass]="{'form-control-success': form.get('name').valid, 'form-control-danger':!form.get('name').valid && form.get('name').touched }"
+                formControlName="name" placeholder="Ej. Juan">
+              <div class="form-control-feedback">
+                <div *ngIf="!form.get('name').valid && form.get('name').touched">
+                  Ingrese el nombre para el usuario
+                </div>
+              </div>
+            </div>
+            <div class="form-group" [ngClass]="{'has-success': form.get('surname').valid, 'has-danger':!form.get('surname').valid && form.get('surname').touched }">
+              <label for="" class="form-control-label">Apellidos</label>
+              <input type="text" class="form-control" [ngClass]="{'form-control-success': form.get('surname').valid, 'form-control-danger':!form.get('surname').valid && form.get('surname').touched }"
+                formControlName="surname" placeholder="Ej. Pérez">
+              <div class="form-control-feedback">
+                <div *ngIf="!form.get('surname').valid && form.get('surname').touched">
+                  Ingrese los apellidos del usuario
+                </div>
+              </div>
+            </div>
+            <div class="form-group" [ngClass]="{'has-success': form.get('username').valid, 'has-danger':!form.get('username').valid && form.get('username').touched }">
+              <label for="" class="form-control-label">Usuario</label>
+              <input type="text" class="form-control" [ngClass]="{'form-control-success': form.get('username').valid, 'form-control-danger':!form.get('username').valid && form.get('username').touched }"
+                formControlName="username" placeholder="Ej. jperez">
+              <div class="form-control-feedback">
+                <div *ngIf="!form.get('username').valid && form.get('username').touched">
+                  Ingrese el nombre de usuario
+                </div>
+              </div>
+            </div>
+            <div class="form-group" [ngClass]="{'has-success': form.get('roles').valid, 'has-danger':!form.get('roles').valid && form.get('roles').touched }">
+              <label for="" class="form-control-label">Roles</label>
+              <div formArrayName="roles">
+                <div *ngFor="let control of form.controls['roles'].controls; let i=index">
+                  <div [formGroupName]="i" class="row">
+                    <div class="col">
+                      <label class="custom-control custom-checkbox">
+                        <input type="checkbox" formControlName="selected" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">{{ allRoles[i] }}</span>
+                      </label>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+              <div class="form-control-feedback">
+                <div *ngIf="!form.get('roles').valid && form.get('roles').touched">
+                  Ingrese el nombre de usuario
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="form-control-label">Vehículo</label>
+              <ng-select formControlName="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo" 
+                
+                placeholder="Seleccione vehículo"
+                [options]="vehicles" [allowClear]="true" [noFilter]="5" (selected)="onSelectVehicle($event)"
+                (deselected)="onDeselectVehicle($event)">
+              </ng-select>
+              
+            </div>
+            <pre>
+              {{form.value | json}}
+            </pre>
+        </form>
+      </div>
+    </div>
+</div>
+    
+  </div>
+</div>

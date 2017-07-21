@@ -20,6 +20,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
 // services (providers)
 import { UserService } from './services/user.service';
+import { UsersService } from './services/users.service';
 import { VehicleService } from './services/vehicles.service';
 import { OrderService } from './services/order.service';
 import { PriceListService } from './services/price-list.service';
@@ -46,6 +47,11 @@ import { PriceListComponent } from './components/price-list/price-list.component
 import { environment } from '../environments/environment';
 import { PriceListNewComponent } from './components/price-list/price-list-new/price-list-new.component';
 import { PriceListEditComponent } from './components/price-list/price-list-edit/price-list-edit.component';
+import { UsersComponent } from './components/users/users.component';
+import { UsersListComponent } from './components/users/users-list/users-list.component';
+import { UsersNewComponent } from './components/users/users-new/users-new.component';
+import { UsersEditComponent } from './components/users/users-edit/users-edit.component';
+import { UsersDetailsComponent } from './components/users/users-details/users-details.component';
 
 
 @NgModule({
@@ -63,7 +69,12 @@ import { PriceListEditComponent } from './components/price-list/price-list-edit/
     PriceListListComponent,
     PriceListDetailComponent,
     PriceListNewComponent,
-    PriceListEditComponent
+    PriceListEditComponent,
+    UsersComponent,
+    UsersListComponent,
+    UsersNewComponent,
+    UsersEditComponent,
+    UsersDetailsComponent
   ],
   imports: [
     FormsModule,
@@ -86,7 +97,8 @@ import { PriceListEditComponent } from './components/price-list/price-list-edit/
     )
   ],
   providers: [ 
-    UserService, 
+    UserService,
+    UsersService,
     VehicleService,
     PriceListService,
     PagerService, 

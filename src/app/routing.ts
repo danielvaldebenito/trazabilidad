@@ -9,6 +9,9 @@ import { PriceListComponent } from './components/price-list/price-list.component
     import { PriceListDetailComponent } from './components/price-list/price-list-detail/price-list-detail.component'
     import { PriceListNewComponent } from './components/price-list/price-list-new/price-list-new.component'
     import { PriceListEditComponent } from './components/price-list/price-list-edit/price-list-edit.component'
+import { UsersComponent } from './components/users/users.component'
+    import { UsersNewComponent } from './components/users/users-new/users-new.component'
+    import { UsersEditComponent } from './components/users/users-edit/users-edit.component'
 import { AppComponent} from './app.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 export const appRoutes: Routes = [
@@ -43,6 +46,15 @@ export const appRoutes: Routes = [
   {
     path: 'price-list/edit/:id',
     component: PriceListEditComponent
+  },
+  {
+    path: 'users',
+    component: UsersComponent
+  },
+  {
+    path: 'users/new',
+    component: UsersNewComponent
   }
+
 
 ];
