@@ -1,0 +1,13 @@
+
+<table class="table table-hover table-sm">
+  <thead>
+    <th>Producto</th>
+    <th>Precio</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let i of items">
+      <td>{{ i.productType.name }}</td>
+      <td>{{ i.price }}</td>
+    </tr>
+  </tbody>
+</table>

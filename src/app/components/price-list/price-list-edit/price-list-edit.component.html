@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header d-flex flex-row justify-content-between align-items-center">
+          <button class="btn btn-secondary" (click)="onCancel()" title="Volver">
+            <fa name="arrow-left"></fa>
+          </button>
+          <h1>Editar Lista de Precios</h1>
+          <fa name="usd" size="3x"></fa>
+        </div>
+        <form novalidate [formGroup]="plForm" (ngSubmit)="onSubmit()">
+          <div class="card-block">
+            <div class="form-group" [ngClass]="{'has-success': plForm.get('name').valid, 'has-danger':!plForm.get('name').valid && plForm.get('name').touched }">
+              <label for="" class="form-control-label">Nombre:</label>
+              <input type="text" class="form-control" [ngClass]="{'form-control-success': plForm.get('name').valid, 'form-control-danger':!plForm.get('name').valid && plForm.get('name').touched }"
+                formControlName="name" placeholder="Ingrese un nombre para identificar la lista">
+              <div class="form-control-feedback">
+                <div *ngIf="!plForm.get('name').valid && plForm.get('name').touched">
+                  Ingrese el nombre para la lista de precios
+                </div>
+              </div>
+            </div>
+            <hr>
+            <h5>Detalle</h5>
+            <div formArrayName="items">
+              <div *ngFor="let p of items.controls; let i=index">
+                <div [formGroupName]="i" class="row">
+                  <div class="form-group col">
+                    <input formControlName="pt" class="form-control" placeholder="Producto">
+                  </div>
+                  <div class="form-group col"
+                    [ngClass]="{
+                      'has-success': p.valid && p.touched,
+                      'has-danger': !p.valid && p.touched
+                    }">
+                    <div class="input-group">
+                      <span class="input-group-addon"><fa name="usd"></fa></span>
+                      <input type="number" min="0" formControlName="price" class="form-control" placeholder="Precio"
+                      [ngClass]="{
+                      'form-control-success': p.valid && p.touched,
+                      'form-control-danger': !p.valid && p.touched
+                    }"
+                      >
+                    </div>
+                    <div class="form-control-feedback" *ngIf="!p.valid && p.touched">
+                      Ingrese una cantidad. (Si no trabaja con el producto indique "0")
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-primary btn-block" type="submit" [disabled]="!plForm.valid">
+              <fa name="save"></fa> Guardar
+            </button>
+          </div>
+        </form>
+        <p>{{ plForm.value | json }}</p>
+      </div>
+    </div>
+  </div>
+</div>

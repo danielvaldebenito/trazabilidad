@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SelectsService } from '../../../services/selects.service';
 import { UserService } from '../../../services/user.service';
@@ -12,6 +13,7 @@ import { ResolveEmit } from "@jaspero/ng2-confirmations/src/interfaces/resolve-e
 import { IOption } from 'ng-select'
 import { GLOBAL } from '../../../global';
 import * as Enumerable from 'linq';
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
@@ -37,6 +39,7 @@ export class OrderCreateComponent implements OnInit {
   selectedCity: any = {}
   selectedProductType: any = {}
   selectedPriceList: any = {}
+  selectedPriceListName: string
   selectedVehicle: any = {}
   selectedPrices: any[] = []
   // items
@@ -60,7 +63,9 @@ export class OrderCreateComponent implements OnInit {
     private _userService: UserService,
     private _vehicleService: VehicleService,
     private _location: Location,
-    private _swal2: SweetAlertService
+    private _router: Router,
+    private _swal2: SweetAlertService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -77,7 +82,7 @@ export class OrderCreateComponent implements OnInit {
   }
   getDefaultData() {
     var self = this;
-    setTimeout(function() {
+    setTimeout(() => {
       var regionUser = self._userService.getRegionLocalUser();
       if (regionUser) {
         self.order.region = regionUser.value;
@@ -87,9 +92,10 @@ export class OrderCreateComponent implements OnInit {
         if (cityUser) {
           self.getCities();
           self.order.city = cityUser.value;
+          self.selectedCity = cityUser;
         }
       }
-    }, 500); 
+    }, 1000); 
   }
   // COMBOS
   getRegions() {
@@ -124,7 +130,7 @@ export class OrderCreateComponent implements OnInit {
       var element = Enumerable.from(this.allRegions)
         .where((w) => { return w.departamento === region.value })
         .firstOrDefault();
-      console.log({ allRegions: this.allRegions, regionvalue: region.value, element })
+
       if (element) {
         var cities = element.ciudades;
         var array = []
@@ -167,16 +173,31 @@ export class OrderCreateComponent implements OnInit {
   }
   onSelectPriceList (pl) {
     this.selectedPriceList = pl.value;
-    var priceList = Enumerable.from(this.allPriceLists)
-                      .where(w => { return w._id == this.selectedPriceList })
-                      .firstOrDefault();
-    var prices = priceList.items;
-    this.selectedPrices = prices;
+    this.selectedPriceListName = pl.label;
+    this.order.priceList = pl.value;
+    var selected = Enumerable.from(this.allPriceLists)
+                    .where(w => { return w._id == pl.value })
+                    .firstOrDefault ();
+    this.selectedPrices = selected.items;
     this.updatePrices ();
   }
   onDeselectPriceList (pl) {
     this.selectedPriceList = null;
     this.updatePrices();
+  }
+  onCreatePriceList(pl) {
+    console.log('recibiendo stored', pl)
+    this.getPriceLists();
+    var self = this;
+    setTimeout(function() {
+      self.selectedPriceList = pl._id;
+      self.selectedPriceListName = pl.name;
+      self.order.priceList = pl._id;
+      self.selectedPrices = pl.items;
+      self.updatePrices ();
+    }, 500);
+    
+
   }
   getVehicles() {
     this._selectsService.getVehicleToAsign(this.order.type)
@@ -347,13 +368,16 @@ export class OrderCreateComponent implements OnInit {
     var pl = Enumerable.from(this.allPriceLists)
               .where(w => { return w._id == this.selectedPriceList })
               .firstOrDefault();
+    
     if(!pl) return 0;
     var prices = []
     prices = pl.items;
+
     if(!prices) return 0;
     var price = Enumerable.from(prices)
-                  .where(w => { return w.productType == pt})
+                  .where(w => { return w.productType._id == pt})
                   .firstOrDefault ()
+
     if(!price) return 0;
     return price.price;
   }
@@ -372,8 +396,8 @@ export class OrderCreateComponent implements OnInit {
 
   searchClosest () {
     if(this.order.lat && this.order.lng) {
-      //var requestId = Math.random().toString(36).slice(2);
-      var requestId = '5hdx2znvohx'
+      var requestId = Math.random().toString(36).slice(2);
+      //var requestId = '5hdx2znvohx'
       this._orderService
           .requestClosest(requestId, this.order.lat, this.order.lng)
           .subscribe(
@@ -493,4 +517,27 @@ export class OrderCreateComponent implements OnInit {
     }
 
   }
+
+  /*test modal*/
+  open(content) {
+    this.modalService.open(content, { size: 'lg' })
+        .result.then((result) => {
+          //this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+  }
+ 
+
+  // closeResult: string;
+  // private getDismissReason(reason: any): string {
+  //   if (reason === ModalDismissReasons.ESC) {
+  //     return 'by pressing ESC';
+  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+  //     return 'by clicking on a backdrop';
+  //   } else {
+  //     return  `with: ${reason}`;
+  //   }
+  // }
 }
+

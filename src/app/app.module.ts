@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 // external modules
@@ -14,7 +14,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SelectModule } from 'ng-select';
 import { AgmCoreModule } from '@agm/core';
 import { Ng2CompleterModule } from "ng2-completer";
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 // routes
 import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
@@ -22,6 +22,7 @@ import { appRoutes } from './routing';
 import { UserService } from './services/user.service';
 import { VehicleService } from './services/vehicles.service';
 import { OrderService } from './services/order.service';
+import { PriceListService } from './services/price-list.service';
 import { PagerService } from './services/pager.service';
 import { SelectsService } from './services/selects.service';
 import { GoogleMapService }  from './services/googlemap.service';
@@ -37,9 +38,15 @@ import { CreateVehicleComponent } from './components/vehiculos/create/create.com
 import { EditVehicleComponent } from './components/vehiculos/edit-vehicle/edit-vehicle.component';
 import { OrderComponent } from './components/order/order.component';
 import { OrderCreateComponent } from './components/order/order-create/order-create.component';
+import { PriceListComponent } from './components/price-list/price-list.component';
+  import { PriceListListComponent } from './components/price-list/price-list-list/price-list-list.component';
+  import { PriceListDetailComponent } from './components/price-list/price-list-detail/price-list-detail.component';
 
 // entorno
-import { environment } from '../environments/environment'
+import { environment } from '../environments/environment';
+import { PriceListNewComponent } from './components/price-list/price-list-new/price-list-new.component';
+import { PriceListEditComponent } from './components/price-list/price-list-edit/price-list-edit.component';
+
 
 @NgModule({
   declarations: [
@@ -51,10 +58,16 @@ import { environment } from '../environments/environment'
     CreateVehicleComponent,
     EditVehicleComponent,
     OrderComponent,
-    OrderCreateComponent
+    OrderCreateComponent,
+    PriceListComponent,
+    PriceListListComponent,
+    PriceListDetailComponent,
+    PriceListNewComponent,
+    PriceListEditComponent
   ],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -65,6 +78,7 @@ import { environment } from '../environments/environment'
     NgxChartsModule,
     SelectModule,
     Ng2CompleterModule,
+    NgbModule.forRoot(),
     AgmCoreModule.forRoot({ apiKey: environment.GOOGLE_MAPS_API_KEY }),
     RouterModule.forRoot(
       appRoutes,
@@ -73,7 +87,8 @@ import { environment } from '../environments/environment'
   ],
   providers: [ 
     UserService, 
-    VehicleService, 
+    VehicleService,
+    PriceListService,
     PagerService, 
     SelectsService, 
     OrderService, 

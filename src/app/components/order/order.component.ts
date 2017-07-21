@@ -31,28 +31,7 @@ export class OrderComponent implements OnInit {
     domain: []
   };
   single = [];
-  /*single = [
-    {
-      "name": 'RECIBIDO',
-      "value": 1
-    },
-    {
-      "name": 'ASIGNADO',
-      "value": 2
-    },
-    {
-      "name": 'EN RUTA',
-      "value": 4
-    },
-    {
-      "name": 'ENTREGADO',
-      "value": 8
-    },
-    {
-      "name": 'CANCELADO',
-      "value": 3
-    }
-  ];*/
+
   constructor(
     private _orderService : OrderService,
     private _pagerService: PagerService,

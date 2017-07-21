@@ -6,166 +6,121 @@
           <button class="btn btn-secondary" (click)="onCancel()" title="Volver">
           <fa name="arrow-left"></fa>
         </button>
-         <h1>Nuevo Pedido</h1>  
-         <fa name="truck" size="3x"></fa>
+          <h1>Nuevo Pedido</h1>
+          <fa name="truck" size="3x"></fa>
         </div>
-          <div class="card-block">
-            <div class="container">
-              <form novalidate #form="ngForm" (ngSubmit)="onSubmit()">
-                <div class="row">
-                  <div class="col">
-                    <div class="d-flex flex-row justify-content-center">
-                      <label class="custom-control custom-radio d-flex ">
+        <div class="card-block">
+          <div class="container">
+            <form novalidate #form="ngForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col">
+                  <div class="d-flex flex-row justify-content-center">
+                    <label class="custom-control custom-radio d-flex ">
                         <input id="radio1" [(ngModel)]="order.type" value="ENVASADO" name="type" type="radio" class="custom-control-input">
                         <span class="custom-control-indicator"></span>
                         <span class="custom-control-description">ENVASADO</span>
                       </label>
-                      <label class="custom-control custom-radio">
+                    <label class="custom-control custom-radio">
                         <input id="radio2" [(ngModel)]="order.type" value="GRANEL" name="type" type="radio" class="custom-control-input">
                         <span class="custom-control-indicator"></span>
                         <span class="custom-control-description">GRANEL</span>
                       </label>
-                    </div>
                   </div>
                 </div>
-                <div class="row d-flex align-items-center">
-                  <div class="col" [ngClass]="{'col-12 col-md-6 col-sm-12': order.lat && order.lng}">
-                    <div class="form-group" [ngClass]="{'has-success': !address.errors, 'has-danger': address.errors && (address.dirty || address.touched) }">
-                      <label class="form-control-label" for="">Dirección (*)</label>
-                      <ng2-completer #address="ngModel" name="address" matchClass="match" inputClass="form-control" 
-                        [(ngModel)]="order.address" 
-                        [datasource]="addresses" 
-                        [minSearchLength]="2"
-                        inputName="address"
-                        textNoResults="Sin coincidencias. Se creará nuevo registro"
-                        textSearching="Buscando..."
-                        placeholder="Busque una dirección ya existente o ingrese una nueva"
-                        autoMatch="true"
-                        (blur)="onBlur()"
-                        required
-                      >
-                      </ng2-completer>
-                      <div class="form-control-feedback">
-                        <div *ngIf="address.errors && (address.dirty || address.touched)" class="danger">
-                          <div [hidden]="!address.errors.required">
-                            Ingrese la dirección para el pedido
-                          </div>
-                        </div>       
-                      </div>
-                    </div>
-                    <div class="form-group" [ngClass]="{'has-success': !region.errors, 'has-danger': region.errors && (region.dirty || region.touched) }">
-                        <label class="form-control-label" >{{ regionName }}</label>
-                        <ng-select #region="ngModel" name="region"
-                            filterPlaceholder="Buscar {{ regionName }}..."
-                            notFoundMsg="No se encontró ningún {{ regionName }}"
-                            highlightColor="#37424A"
-                            highlightTextColor="#fff"
-                            placeholder="Seleccione..."
-                            [options]="regions"
-                            [allowClear]="true"
-                            [noFilter]="5"
-                            required
-                            (selected)="onSelectRegion($event)"
-                            (deselected)="onDeselectRegion($event)"
-                            [(ngModel)]="order.region">
-                        </ng-select>
-                        <div class="form-control-feedback">
-                          <div *ngIf="region.errors && (region.dirty || region.touched)" class="danger">
-                            <div [hidden]="!region.errors.required">
-                              Ingrese {{ regionName }} para el pedido
-                            </div>
-                          </div>
+              </div>
+              <div class="row d-flex align-items-center">
+                <div class="col" [ngClass]="{'col-12 col-md-6 col-sm-12': order.lat && order.lng}">
+                  <div class="form-group" [ngClass]="{'has-success': !address.errors, 'has-danger': address.errors && (address.dirty || address.touched) }">
+                    <label class="form-control-label" for="">Dirección (*)</label>
+                    <ng2-completer #address="ngModel" name="address" matchClass="match" inputClass="form-control" [(ngModel)]="order.address"
+                      [datasource]="addresses" [minSearchLength]="2" inputName="address" textNoResults="Sin coincidencias. Se creará nuevo registro"
+                      textSearching="Buscando..." placeholder="Busque una dirección ya existente o ingrese una nueva" autoMatch="true"
+                      (blur)="onBlur()" required>
+                    </ng2-completer>
+                    <div class="form-control-feedback">
+                      <div *ngIf="address.errors && (address.dirty || address.touched)" class="danger">
+                        <div [hidden]="!address.errors.required">
+                          Ingrese la dirección para el pedido
                         </div>
-                    </div>
-                    <div class="form-group" [ngClass]="{'has-success': !city.errors, 'has-danger': city.errors && (city.dirty || city.touched) }">
-                      <label class="form-control-label" >{{ cityName }}</label>
-                        <ng-select #city="ngModel" name="city"
-                            filterPlaceholder="Buscar {{ cityName }}..."
-                            notFoundMsg="No se encontró ningún {{ cityName }}"
-                            highlightColor="#37424A"
-                            highlightTextColor="#fff"
-                            placeholder="Seleccione..."
-                            [options]="cities"
-                            [allowClear]="true"
-                            [noFilter]="5"
-                            required
-                            (selected)="onSelectCity($event)"
-                            (deselected)="onDeselectCity($event)"
-                            [(ngModel)]="order.city">
-                        </ng-select>
-                        <div class="form-control-feedback">
-                          <div *ngIf="city.errors && (city.dirty || city.touched)" class="danger">
-                            <div [hidden]="!city.errors.required">
-                              Ingrese {{ cityName }} para el pedido
-                            </div>
-                          </div>
                       </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-control-label"><h5>Vehículo asignado</h5> </label>
-                        <label id="lbl-chk" class="custom-control custom-checkbox">
+                  </div>
+                  <div class="form-group" [ngClass]="{'has-success': !region.errors, 'has-danger': region.errors && (region.dirty || region.touched) }">
+                    <label class="form-control-label">{{ regionName }}</label>
+                    <ng-select #region="ngModel" name="region" filterPlaceholder="Buscar {{ regionName }}..." notFoundMsg="No se encontró ningún {{ regionName }}"
+                      highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione..." [options]="regions" [allowClear]="true"
+                      [noFilter]="5" required (selected)="onSelectRegion($event)" (deselected)="onDeselectRegion($event)" [(ngModel)]="order.region">
+                    </ng-select>
+                    <div class="form-control-feedback">
+                      <div *ngIf="region.errors && (region.dirty || region.touched)" class="danger">
+                        <div [hidden]="!region.errors.required">
+                          Ingrese {{ regionName }} para el pedido
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" [ngClass]="{'has-success': !city.errors, 'has-danger': city.errors && (city.dirty || city.touched) }">
+                    <label class="form-control-label">{{ cityName }}</label>
+                    <ng-select #city="ngModel" name="city" filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró ningún {{ cityName }}"
+                      highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione..." [options]="cities" [allowClear]="true"
+                      [noFilter]="5" required (selected)="onSelectCity($event)" (deselected)="onDeselectCity($event)" [(ngModel)]="order.city">
+                    </ng-select>
+                    <div class="form-control-feedback">
+                      <div *ngIf="city.errors && (city.dirty || city.touched)" class="danger">
+                        <div [hidden]="!city.errors.required">
+                          Ingrese {{ cityName }} para el pedido
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label"><h5>Vehículo asignado</h5> </label>
+                    <label id="lbl-chk" class="custom-control custom-checkbox">
                           <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input" (change)="vehicle.clear()">
                           <span class="custom-control-indicator"></span>
                           <span class="custom-control-description"> Lo asignaré más tarde</span>
                         </label>
-                        <div class="input-group">
-                          <ng-select #vehicle name="vehicle"
-                            filterPlaceholder="Buscar vehículo..."
-                            notFoundMsg="No se encontró ningún vehículo"
-                            highlightColor="#37424A"
-                            highlightTextColor="#fff"
-                            placeholder="{{ order.after ? 'Lo asignaré más tarde': 'Seleccione vehículo'}}"
-                            [options]="vehicles"
-                            [allowClear]="true"
-                            [noFilter]="5"
-                            [disabled]="order.after"
-                            (selected)="onSelectVehicle($event)"
-                            (deselected)="onDeselectVehicle($event)"
-                            [(ngModel)]="order.vehicle">
-                          </ng-select>
-                          <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" [disabled]="order.after || !order.lat || !order.lng" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <fa name="truck"></fa> </button>
-                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                              <a class="dropdown-item" (click)="searchClosest() "> <fa name="search"></fa> Buscar al más cercano</a>
-                            </div>
-                          </div>
+                    <div class="input-group">
+                      <ng-select #vehicle name="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo" highlightColor="#37424A"
+                        highlightTextColor="#fff" placeholder="{{ order.after ? 'Lo asignaré más tarde': 'Seleccione vehículo'}}"
+                        [options]="vehicles" [allowClear]="true" [noFilter]="5" [disabled]="order.after" (selected)="onSelectVehicle($event)"
+                        (deselected)="onDeselectVehicle($event)" [(ngModel)]="order.vehicle">
+                      </ng-select>
+                      <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" [disabled]="order.after || !order.lat || !order.lng" type="button" class="btn btn-primary dropdown-toggle"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <fa name="truck"></fa> </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                          <a class="dropdown-item" (click)="searchClosest() ">
+                            <fa name="search"></fa> Buscar al más cercano</a>
                         </div>
-                        
+                      </div>
                     </div>
-                    <div class="form-group">
-                      <label class="form-control-label">Lista de Precios a utilizar</label>
-                      <div class="input-group">
-                        <ng-select #priceList="ngModel" name="priceList"
-                          filterPlaceholder="Buscar lista de precio..."
-                          notFoundMsg="No se encontró ninguna lista de precios"
-                          highlightColor="#37424A"
-                          highlightTextColor="#fff"
-                          placeholder="Seleccione lista de precios"
-                          [options]="priceLists"
-                          [allowClear]="true"
-                          [noFilter]="5"
-                          (selected)="onSelectPriceList($event)"
-                          (deselected)="onDeselectPriceList($event)"
-                          [(ngModel)]="order.priceList"
-                          >
-                        </ng-select>
-                        <span *ngIf="order.priceList" class="input-group-addon" (click)="seeList()">
+
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Lista de Precios a utilizar</label>
+                    <div class="input-group">
+                      <ng-select #priceList="ngModel" name="priceList" filterPlaceholder="Buscar lista de precio..." notFoundMsg="No se encontró ninguna lista de precios"
+                        highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione lista de precios" [options]="priceLists"
+                        [allowClear]="true" [noFilter]="5" (selected)="onSelectPriceList($event)" (deselected)="onDeselectPriceList($event)"
+                        [(ngModel)]="order.priceList">
+                      </ng-select>
+                      <span class="input-group-addon" (click)="open(newpl)">
+                          <fa name="plus"></fa>
+                        </span>
+                      <span *ngIf="order.priceList" class="input-group-addon" (click)="open(content)">
                           <fa name="eye"></fa>
                         </span>
-                      </div>
-                      
-                    </div> 
+                    </div>
+
                   </div>
-                  <div class="col" *ngIf="order.lat && order.lng">
+                </div>
+                <div class="col" *ngIf="order.lat && order.lng">
                   <agm-map [latitude]="order.lat" [longitude]="order.lng" [zoom]="zoom" [minZoom]="minZoom">
-                    <agm-marker 
-                      [latitude]="order.lat" 
-                      [longitude]="order.lng" 
-                      [markerDraggable]="true"
-                      (dragEnd)="markerDragEnd($event)">
+                    <agm-marker [latitude]="order.lat" [longitude]="order.lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)">
                     </agm-marker>
                   </agm-map>
-                </div>  
+                </div>
               </div>
             </form>
             <h5>Detalle</h5>
@@ -174,84 +129,103 @@
                 <div class="col">
                   <div class="form-group" [ngClass]="{'has-success': !productType.errors, 'has-danger': productType.errors && (productType.dirty || productType.touched) }">
                     <label class="form-control-label" for="">Producto (*)</label>
-                    <ng-select #productType="ngModel" name="productType"
-                            filterPlaceholder="Buscar producto..."
-                            notFoundMsg="No se encontró ningún producto"
-                            highlightColor="#37424A"
-                            highlightTextColor="#fff"
-                            placeholder="Seleccione..."
-                            [options]="productTypes"
-                            [allowClear]="true"
-                            [noFilter]="5"
-                            required
-                            (selected)="onSelectProductType($event)"
-                            (deselected)="onDeselectProductType($event)"
-                            [(ngModel)]="item.productType">
+                    <ng-select #productType="ngModel" name="productType" filterPlaceholder="Buscar producto..." notFoundMsg="No se encontró ningún producto"
+                      highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione..." [options]="productTypes"
+                      [allowClear]="true" [noFilter]="5" required (selected)="onSelectProductType($event)" (deselected)="onDeselectProductType($event)"
+                      [(ngModel)]="item.productType">
                     </ng-select>
                   </div>
-              </div>
-              <div class="col">
-                <label class="form-control-label">Cantidad {{ order.type == 'GRANEL' ? 'Litros' : '' }}</label>
-                <div class="form-group" [ngClass]="{'has-success': !quantity.errors, 'has-danger': quantity.errors && (quantity.dirty || quantity.touched) }">
-                  <input type="number" #quantity="ngModel" name="quantity" class="form-control" min="1" [(ngModel)]="item.quantity" >
                 </div>
-              </div>
-              <div class="col">
-                <button id="add" class="btn btn-outline-primary btn-block align-self-end" type="submit" [disabled]="!formDetail.form.valid">
+                <div class="col">
+                  <label class="form-control-label">Cantidad {{ order.type == 'GRANEL' ? 'Litros' : '' }}</label>
+                  <div class="form-group" [ngClass]="{'has-success': !quantity.errors, 'has-danger': quantity.errors && (quantity.dirty || quantity.touched) }">
+                    <input type="number" #quantity="ngModel" name="quantity" class="form-control" min="1" [(ngModel)]="item.quantity">
+                  </div>
+                </div>
+                <div class="col">
+                  <button id="add" class="btn btn-outline-primary btn-block align-self-end" type="submit" [disabled]="!formDetail.form.valid">
                   <fa name="plus"></fa>
                   Agregar
                 </button>
-              </div>
+                </div>
 
-            </div>
-            <span class="text-danger" *ngIf="errorMessageItems">{{ errorMessageItems }}</span>
-            <div class="row" *ngIf="items && items.length">
-              <div class="col">
-                <table class="table table-resposive thead-inverse table-striped table-bordered table-hover table-sm">
-                  <thead>
-                    <tr>
-                      <th>Producto</th>
-                      <th>Cantidad {{ order.type == 'GRANEL' ? 'Litros' : '' }}</th>
-                      <th>Valor Unit.</th>
-                      <th>Valor Total.</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let i of items">
-                      <td>{{ i.productTypeName }}</td>
-                      <td>{{ i.quantity }}</td>
-                      <td>{{ i.price }}</td>
-                      <td>{{ i.price * i.quantity }}</td>
-                      <td class="text-center">
-                        <button class="btn btn-outline-danger" (click)="deleteItem(i.id)">
+              </div>
+              <span class="text-danger" *ngIf="errorMessageItems">{{ errorMessageItems }}</span>
+              <div class="row" *ngIf="items && items.length">
+                <div class="col">
+                  <table class="table table-resposive thead-inverse table-striped table-bordered table-hover table-sm">
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th>Cantidad {{ order.type == 'GRANEL' ? 'Litros' : '' }}</th>
+                        <th>Valor Unit.</th>
+                        <th>Valor Total.</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let i of items">
+                        <td>{{ i.productTypeName }}</td>
+                        <td>{{ i.quantity }}</td>
+                        <td>{{ i.price }}</td>
+                        <td>{{ i.price * i.quantity }}</td>
+                        <td class="text-center">
+                          <button class="btn btn-outline-danger" (click)="deleteItem(i.id)">
                           <fa name="trash"></fa>
                         </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <th>TOTAL: </th>
-                      <th>{{ totalToPay }}</th>
-                      <th></th>
-                    </tr>
-                  </tfoot>
-                </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th></th>
+                        <th></th>
+                        <th>TOTAL: </th>
+                        <th>{{ totalToPay }}</th>
+                        <th></th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
               </div>
-            </div>
-          </form>
-          <p>
-            {{ order | json }}
-            {{ items | json }}
-          </p>
-          <hr>
-          <div class="card-footer">
-            <button class="btn btn-primary btn-block" [disabled]="!form.form.valid" (click)="onSubmit()"> <fa name="save"></fa> GUARDAR </button>
+            </form>
+            
           </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary btn-block" [disabled]="!form.form.valid" (click)="onSubmit()"> <fa name="save"></fa> GUARDAR </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ selectedPriceListName }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-price-list-detail *ngIf="selectedPrices" [items]="selectedPrices"></app-price-list-detail>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+<ng-template #newpl let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Complete los datos</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-price-list-new [fromModal]="true" (onSubmitForm)="c('Close on submit'); onCreatePriceList($event)"></app-price-list-new>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+

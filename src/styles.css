@@ -9,7 +9,7 @@
     --color-info: #03A9F4;
 }
 *:not(i){
-    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-family: 'Roboto', sans-serif !important;
 }
 .navbar-inverse .navbar-nav .nav-link {
     text-transform: uppercase;
@@ -61,6 +61,9 @@
 }
 .form-control-filter:focus {
     border-bottom-color: var(--color-primary);
+}
+.form-control:disabled {
+    color: var(--color-inverse);
 }
 .card {
     margin: 0;

@@ -24,6 +24,7 @@
     "@angular/router": "^4.0.0",
     "@jaspero/ng2-alerts": "0.0.7",
     "@jaspero/ng2-confirmations": "^0.2.9",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.28",
     "@swimlane/ngx-charts": "^6.0.0",
     "angular-font-awesome": "^2.0.2",
     "angular2-notifications": "^0.7.4",
