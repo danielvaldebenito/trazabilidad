@@ -5,31 +5,76 @@
         <h3>{{ user.name }} {{ user.surname }}</h3>
       </div>
       <div class="card-block">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4">
-              <div>
-                <img src="{{ apiUrl + 'get-image-user/' + user.image }}" alt="" class="img-fluid rounded-circle">
-              </div>
+        <div class="row">
+          <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4 d-flex flex-column justify-content-center align-items-center">
+            <div>
+              <img [src]=" user.image ? apiUrl + 'get-image-user/' + user.image : '../../assets/images/user_default.png'" alt="" class="img-fluid rounded mx-auto d-block img-user">
             </div>
-            <div class="col-xl-8 col-lg-8 col-sm-8 col-md-8">
-              <dl class="row">
+          </div>
+          <div class="col-xl-8 col-lg-8 col-sm-8 col-md-8 d-flex flex-column justify-content-center align-items-center">
+            <div class="w-100">
+              <table class="table table-striped table-details">
+                <tbody>
+                  <tr>
+                    <th scope="row">Nombre de usuario</th>
+                    <td>{{ user.username }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Fecha de ingreso</th>
+                    <td>{{ user.createdAt | date:'dd-MM-yyyy'}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">E-mail</th>
+                    <td>{{ user.email }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Roles</th>
+                    <td>{{ user.roles.join(', ') || '-' }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" *ngIf="user.vehicle">Vehículo</th>
+                    <td *ngIf="user.vehicle">{{ user.vehicle?.licensePlate }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" *ngIf="user.internalProcessTypes && user.internalProcessTypes.length">Procesos Internos</th>
+                    <td *ngIf="user.internalProcessTypes && user.internalProcessTypes.length">
+                      <div *ngFor="let ip of user.internalProcessTypes">
+                        {{ ip.name }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- <dl class="row">
                 <dt class="col-sm-6">Nombre de usuario</dt>
                 <dd class="col-sm-6">{{ user.username }}</dd>
                 <dt class="col-sm-6">Fecha de ingreso</dt>
                 <dd class="col-sm-6">{{ user.createdAt | date:'dd-MM-yyyy'}}</dd>
-              </dl>
-            </div>
+                <dt class="col-sm-6">E-mail</dt>
+                <dd class="col-sm-6">{{ user.email }}</dd>
+                <dt class="col-sm-6">Roles</dt>
+                <dd class="col-sm-6">{{ user.roles.join(', ') || '-' }}</dd>
+                <dt class="col-sm-6" *ngIf="user.vehicle">Vehículo</dt>
+                <dd class="col-sm-6" *ngIf="user.vehicle">{{ user.vehicle?.licensePlate }}</dd>
+                <dt class="col-sm-6" *ngIf="user.internalProcessTypes && user.internalProcessTypes.length">Procesos Internos</dt>
+                <dd class="col-sm-6" *ngIf="user.internalProcessTypes && user.internalProcessTypes.length">
+                  <div *ngFor="let ip of user.internalProcessTypes">
+                    {{ ip.name }}
+                  </div>
+                </dd>
+              </dl> -->
           </div>
+
         </div>
-
-
       </div>
-      <div class="card-footer">
-        <button *ngIf="iAm(user)" class="btn btn-outline-primary">
+      <div class="card-footer" *ngIf="iAm(user) || iAmAdmin">
+        <button class="btn btn-outline-primary" [routerLink]="['edit', user._id]">
           <fa name="pencil"></fa>
         </button>
       </div>
     </div>
   </div>
+
 </div>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { AppComponent } from '../../app.component';
+import { NotificationsService } from 'angular2-notifications';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,16 +10,18 @@ import { AppComponent } from '../../app.component';
 })
 export class LoginComponent implements OnInit {
   private user: User;
-  private errorMessage: string;
-  private successMessage: string;
   private title: string;
   private loading: boolean;
   private identity: any;
   private token: string;
-  constructor(private _userService: UserService, private _app: AppComponent) {
+  @Output() loginResetPass = new EventEmitter<any> ();
+  @Output() login = new EventEmitter ();
+  constructor(
+    private _userService: UserService, 
+    private _app: AppComponent,
+    private _notify: NotificationsService
+  ) {
     this.user = new User('', '');
-    this.errorMessage = null;
-    this.successMessage = null;
     this.title = 'BIENVENIDO';
     this.loading = false;
    }
@@ -27,8 +30,6 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
   onSubmit() {
-    this.errorMessage = null;
-    this.successMessage = null;
     this._userService.login(this.user)
           .subscribe(
             res => {
@@ -38,23 +39,27 @@ export class LoginComponent implements OnInit {
               var data = res.data
               if(done)
               {
-                var token = data.token
-                
-                var realPass = this.user.password
-                this.user = data.user
-                this.user.password = realPass
-                this.successMessage = message
-                this._userService.setToken(token);
-                this._userService.setUserIdentity(this.user);
-                this._app.refresh();
+                if(res.code == 0) {
+                  var token = data.token
+                  var realPass = this.user.password
+                  this.user = data.user
+                  this.user.password = realPass
+                  this._notify.success('Ingreso Correcto', 'Bienvenido')
+                  this._userService.setToken(token);
+                  this._userService.setUserIdentity(this.user);
+                  this._app.refresh();
+                }
+                else {
+                  this.loginResetPass.emit(this.user);
+                }
               } else {
-                this.errorMessage = message
+                this._notify.error('Error', message)
               }
               this.loading = false;
             },
             err => {
                 var body = JSON.parse(err._body)
-                this.errorMessage = body.message
+                this._notify.error('Error',body.message)
                 this.loading = false;
             }
           )

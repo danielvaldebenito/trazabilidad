@@ -56,6 +56,10 @@ export class UserService {
         else return null
     }
 
-
+    resetPass (body: any) {
+        var url = this.url + '/update-pass-user'
+        return this._http.put(url, body)
+                    .map(res => res.json())
+    }
     
 }

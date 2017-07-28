@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+        <div class="card">
+          <div class="card-header">
+            <h3>Nueva Contraseña</h3>
+          </div>
+          <div class="card-block">
+            <div class="form-group" 
+              [ngClass]="{'has-success': !form.get('username').errors && (form.get('username').dirty || form.get('username').touched), 
+            'has-danger': form.get('username').errors && (form.get('username').dirty || form.get('username').touched) }">
+              <label for="" class="form-control-label">Nombre de usuario</label>
+              <input type="text" formControlName="username" class="form-control"
+                [ngClass]="{'form-control-success': !form.get('username').errors && (form.get('username').dirty || form.get('username').touched), 
+                'form-control-danger': form.get('username').errors && (form.get('username').dirty || form.get('username').touched) }"
+              >
+              <div class="form-control-feedback">
+                <div [hidden]="!form.get('username').errors && (form.get('username').touched || form.get('username').dirty)">
+                  Ingrese el nombre de usuario
+                </div>
+              </div>
+            </div>
+            <div class="form-group"
+              [ngClass]="{'has-success': !form.get('temporalPassword').errors && (form.get('temporalPassword').dirty || form.get('temporalPassword').touched), 
+            'has-danger': form.get('temporalPassword').errors && (form.get('temporalPassword').dirty || form.get('temporalPassword').touched) }">
+              <label for="" class="form-control-label">Contraseña Actual</label>
+              <input type="password" formControlName="temporalPassword" class="form-control"
+                [ngClass]="{'form-control-success': !form.get('temporalPassword').errors && (form.get('temporalPassword').dirty || form.get('temporalPassword').touched), 
+            'form-control-danger': form.get('temporalPassword').errors && (form.get('temporalPassword').dirty || form.get('temporalPassword').touched) }"
+              >
+              <div class="form-control-feedback">
+                <div *ngIf="form.get('temporalPassword').errors && (form.get('temporalPassword').dirty || form.get('temporalPassword').touched)">
+                  Ingrese la contraseña actual
+                </div>
+              </div>
+            </div>
+            <div class="form-group" 
+            [ngClass]="{'has-success': !form.get('newPassword').errors && (form.get('newPassword').dirty || form.get('newPassword').touched), 
+            'has-danger': (form.get('newPassword').errors || form.hasError('nomatch')) && (form.get('newPassword').dirty || form.get('newPassword').touched) }">
+              <label for="" class="form-control-label">Nueva Contraseña</label>
+              <input type="password" formControlName="newPassword" class="form-control" [ngClass]="{'form-control-success': !form.get('newPassword').errors && (form.get('newPassword').dirty || form.get('newPassword').touched), 
+            'form-control-danger': (form.get('newPassword').errors || form.hasError('nomatch')) && (form.get('newPassword').dirty || form.get('newPassword').touched) }">
+              <div class="form-control-feedback">
+                <div *ngIf="form.get('newPassword').errors && (form.get('newPassword').dirty || form.get('newPassword').touched)">
+                  Ingrese la nueva contraseña
+                </div>
+              </div>
+            </div>
+            <div class="form-group" [ngClass]="{'has-success': !form.get('confirm').errors && (form.get('confirm').dirty || form.get('confirm').touched), 
+            'has-danger': (form.get('confirm').errors || form.hasError('nomatch')) && (form.get('confirm').dirty || form.get('confirm').touched) }">
+              <label for="" class="form-control-label">Repita Nueva Contraseña</label>
+              <input type="password" formControlName="confirm" class="form-control" [ngClass]="{'form-control-success': !form.get('confirm').errors && (form.get('confirm').dirty || form.get('confirm').touched), 
+            'form-control-danger': (form.get('confirm').errors || form.hasError('nomatch')) && (form.get('confirm').dirty || form.get('confirm').touched) }">
+            <div class="form-control-feedback">
+                <div *ngIf="form.get('confirm').errors && (form.get('confirm').touched || form.get('confirm').dirty)">
+                    <div [hidden]="!form.get('confirm').errors.required">
+                      Ingrese nuevamente la contraseña
+                    </div>
+                    <div [hidden]="!form.hasError('nomatch')">
+                      Las contraseñas deben ser iguales
+                    </div>
+                  </div>
+                  
+              </div> 
+          </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" [disabled]="!form.valid" class="btn btn-primary btn-block">
+              GUARDAR
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<pre>
+  {{ form.value | json}}
+</pre>

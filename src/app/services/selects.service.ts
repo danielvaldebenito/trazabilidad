@@ -24,7 +24,7 @@ export class SelectsService {
         return this._http.get(this.url + 'country', { headers: this.headers })
                         .map(res => res.json())
     }
-    getVehicleToAsign (type: string) {
+    getVehicleToAsign (type?: string) {
         var params = { type: type }
         var myDistributor = this._userService.getUserIdentity().distributor;
         return this._http.get(this.url + 'vehicles/' + myDistributor, { headers: this.headers, params: params })
@@ -39,6 +39,10 @@ export class SelectsService {
     getRoles () {
         return this._http.get(this.url + 'roles', { headers: this.headers })
                         .map(res => res.json ())
+    }
+    getProcesses () {
+        return this._http.get(this.url + 'internal-process-types', { headers: this.headers})
+                    .map(res => res.json())
     }
     
 }

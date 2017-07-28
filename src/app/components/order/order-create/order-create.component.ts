@@ -9,7 +9,6 @@ import { AddressService } from '../../../services/addresses.service';
 import { GoogleMapService } from '../../../services/googlemap.service';
 import { SweetAlertService } from 'ng-sweetalert2-slc';
 import { NotificationsService } from 'angular2-notifications';
-import { ResolveEmit } from "@jaspero/ng2-confirmations/src/interfaces/resolve-emit";
 import { IOption } from 'ng-select'
 import { GLOBAL } from '../../../global';
 import * as Enumerable from 'linq';
@@ -518,7 +517,7 @@ export class OrderCreateComponent implements OnInit {
 
   }
 
-  /*test modal*/
+
   open(content) {
     this.modalService.open(content, { size: 'lg' })
         .result.then((result) => {

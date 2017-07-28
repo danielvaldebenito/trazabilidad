@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from './services/user.service';
 import { Router } from '@angular/router';
 import { NotificationComponent, NotificationsService } from 'angular2-notifications';
-
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
 
   identity: any;
   token: string;
+  userToReset: any = {}
   public confirmOptions = {
     confirmText: 'Sí',
     declineText: 'No'
@@ -26,9 +27,10 @@ export class AppComponent implements OnInit {
   constructor(
     private _userService: UserService,
     private _router: Router,
-    private _notificationService: NotificationsService
+    private _notificationService: NotificationsService,
+    private _modalService: NgbModal
   )
-  { }
+  {   }
 
   ngOnInit() {
     this.refresh();
@@ -52,5 +54,25 @@ export class AppComponent implements OnInit {
     this._userService.clear();
     this._router.navigate(['']);
     this.refresh();
+  }
+  resetPass: boolean = false;
+  
+  onLoginResetPass (event) {
+    this.resetPass = true;
+    this.userToReset = event
+    console.log('userToReset', this.userToReset)
+  }
+  
+  onResetPass(){
+    this.resetPass = false;
+    this.logout()
+  }
+  open(content) {
+    this._modalService.open(content, { size: 'lg' })
+        .result.then((result) => {
+          //this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
   }
 }

@@ -12,49 +12,22 @@ import { PriceListComponent } from './components/price-list/price-list.component
 import { UsersComponent } from './components/users/users.component'
     import { UsersNewComponent } from './components/users/users-new/users-new.component'
     import { UsersEditComponent } from './components/users/users-edit/users-edit.component'
+import { NewPassComponent } from './components/new-pass/new-pass.component'
 import { AppComponent} from './app.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 export const appRoutes: Routes = [
-  {
-    path: 'vehicles',
-    component: VehiculosComponent
-  },
-  { 
-    path: 'vehicles/create',
-    component: CreateVehicleComponent
-  },
-  { 
-    path: 'vehicles/edit/:id',
-    component: EditVehicleComponent
-  },
-  { 
-    path: 'order',
-    component: OrderComponent
-  },
-  { 
-    path: 'order/create',
-    component: OrderCreateComponent
-  },
-  {
-    path: 'price-list',
-    component: PriceListComponent
-  },
-  {
-    path: 'price-list/new',
-    component: PriceListNewComponent
-  },
-  {
-    path: 'price-list/edit/:id',
-    component: PriceListEditComponent
-  },
-  {
-    path: 'users',
-    component: UsersComponent
-  },
-  {
-    path: 'users/new',
-    component: UsersNewComponent
-  }
+  { path: 'vehicles', component: VehiculosComponent },
+  { path: 'vehicles/create', component: CreateVehicleComponent },
+  { path: 'vehicles/edit/:id', component: EditVehicleComponent },
+  { path: 'order', component: OrderComponent },
+  { path: 'order/create', component: OrderCreateComponent },
+  { path: 'price-list', component: PriceListComponent },
+  { path: 'price-list/new', component: PriceListNewComponent },
+  { path: 'price-list/edit/:id', component: PriceListEditComponent },
+  { path: 'users', component: UsersComponent },
+  { path: 'users/new', component: UsersNewComponent },
+  { path: 'users/edit/:id', component: UsersEditComponent }
+  
 
 
 ];

@@ -1,0 +1,15 @@
+.inputFile {
+    display: none;
+}
+.labelFile {
+    text-align: center;
+    font-size: 16pt;
+    cursor: pointer;
+    width: 100%
+}
+.labelFile:hover {
+    color: #DF691A
+}
+.img-user {
+    max-height: 200px;
+}

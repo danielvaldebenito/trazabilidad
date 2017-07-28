@@ -17,27 +17,36 @@
     <div class="card">
       <div class="card-block">
         <form novalidate #loginForm="ngForm" (submit)="onSubmit()">
-          <div class="form-group">
+          <div class="form-group" 
+            [ngClass]="{'has-success': !username.errors && (username.dirty || username.touched), 
+            'has-danger': username.errors && (username.dirty || username.touched) }">
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="fa fa-user"></i>
               </span>
-              <input class="form-control" required #username="ngModel" placeholder="Usuario" name="username" [(ngModel)]="user.username"  />
+              <input class="form-control" required #username="ngModel" placeholder="Usuario"
+               [ngClass]="{'form-control-success': !username.errors && (username.dirty || username.touched), 
+            'form-control-danger': username.errors && (username.dirty || username.touched) }"
+              name="username" [(ngModel)]="user.username"  />
             </div>
-            <div *ngIf="username.errors && (username.dirty || username.touched)" class="alert alert-danger">
+            <div *ngIf="username.errors && (username.dirty || username.touched)" class="form-control-feedback">
               <div [hidden]="!username.errors.required">
                 Ingrese el nombre de usuario
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="{'has-success': !password.errors && (password.dirty || password.touched), 
+            'has-danger': password.errors && (password.dirty || password.touched) }">
             <div class="input-group">
               <span class="input-group-addon">
                 <fa name="lock"></fa>
               </span>
-              <input class="form-control" required #password="ngModel" name type="password" name="password" placeholder="Contraseña" [(ngModel)]="user.password" />
+              <input class="form-control" required #password="ngModel" name type="password" name="password" 
+              placeholder="Contraseña" [(ngModel)]="user.password" 
+              [ngClass]="{'form-control-success': !password.errors && (password.dirty || password.touched), 
+            'form-control-danger': password.errors && (password.dirty || password.touched) }"/>
             </div>
-            <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger">
+            <div *ngIf="password.errors && (password.dirty || password.touched)" class="form-control-feedback">
               <div [hidden]="!password.errors.required">
                 Ingrese una contraseña
               </div>

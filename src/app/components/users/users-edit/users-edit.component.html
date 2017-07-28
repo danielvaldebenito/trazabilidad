@@ -1,3 +1,158 @@
-<p>
-  users-edit works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col" *ngIf="form">
+      <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="card">
+        <div class="card-header d-flex flex-row justify-content-between align-items-center">
+          <button class="btn btn-secondary" type="button" *ngIf="!fromModal" (click)="onCancel()" title="Volver">
+        <fa name="arrow-left"></fa>
+      </button>
+          <h2>Editar Usuario</h2>
+          <fa name="user" size="3x"></fa>
+        </div>
+        <div class="card-block">
+            <div class="row">
+              <div class="col-md-3 d-flex flex-row justify-content-center align-items-center">
+                <div class="picture align-self-center">
+                  <img [src]="imageSelected || (user.image ? apiUrl + 'get-image-user/' + user.image : '../../../assets/images/user_default.png')" alt="" class="img-fluid rounded-circle img-user">
+                  <input type="file" id="file" class="inputFile" accept="image/*" (change)="fileChangeEvent($event)">
+                  <label for="file" class="labelFile">
+                    <fa name="camera"></fa>
+                  </label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group" [ngClass]="{'has-success': form.get('name').valid, 'has-danger':!form.get('name').valid && form.get('name').touched }">
+                  <label for="" class="form-control-label">Nombre</label>
+                  <input type="text" class="form-control" [ngClass]="{'form-control-success': form.get('name').valid, 'form-control-danger':!form.get('name').valid && form.get('name').touched }"
+                    formControlName="name" placeholder="Ej. Juan">
+                  <div class="form-control-feedback">
+                    <div *ngIf="!form.get('name').valid && form.get('name').touched">
+                      Ingrese el nombre para el usuario
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" [ngClass]="{'has-success': form.get('surname').valid, 'has-danger':!form.get('surname').valid && form.get('surname').touched }">
+                  <label for="" class="form-control-label">Apellidos</label>
+                  <input type="text" class="form-control" [ngClass]="{'form-control-success': form.get('surname').valid, 'form-control-danger':!form.get('surname').valid && form.get('surname').touched }"
+                    formControlName="surname" placeholder="Ej. Pérez">
+                  <div class="form-control-feedback">
+                    <div *ngIf="!form.get('surname').valid && form.get('surname').touched">
+                      Ingrese los apellidos del usuario
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" [ngClass]="{'has-success': form.get('username').valid && !userExistsError, 'has-danger':(!form.get('username').valid || userExistsError) && (form.get('username').touched || form.get('username').dirty) }">
+                  <label for="" class="form-control-label">Usuario</label>
+                  <input type="text" (keyup)="onKeyUsername($event)" class="form-control" [ngClass]="{'form-control-success': form.get('username').valid && !userExistsError, 'form-control-danger':(!form.get('username').valid || userExistsError) && (form.get('username').touched || form.get('username').dirty) }"
+                    formControlName="username" placeholder="Ej. jperez">
+                  <div class="form-control-feedback">
+                    <div *ngIf="(!form.get('username').valid) && (form.get('username').touched || form.get('username').dirty)">
+                      Ingrese el nombre de usuario
+                    </div>
+                    <div *ngIf="userExistsError">
+                       El nombre de usuario ingresado ya existe en el sistema
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" [ngClass]="{'has-success': form.get('email').valid, 'has-danger':!form.get('email').valid && form.get('email').touched }">
+                  <label for="" class="form-control-label">E-mail</label>
+                  <input type="email" class="form-control" [ngClass]="{'form-control-success': form.get('email').valid, 'form-control-danger':!form.get('email').valid && form.get('email').touched }"
+                    formControlName="email" placeholder="Ej. jperez@123.com">
+                  <div class="form-control-feedback">
+                    <div *ngIf="!form.get('email').valid && form.get('email').touched">
+                      <div [hidden]="!form.get('email').errors.email">
+                        Ingrese un e-mail válido
+                      </div>
+                      <div [hidden]="!form.get('email').errors.required">
+                        Ingrese un e-mail para el usuario
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div formGroupName="roles">
+              <label for="">Roles</label>
+              <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" formControlName="isAdmin" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">ADMIN</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" formControlName="isVehicle" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">VEHÍCULO</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" formControlName="isOperator" class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">OPERADOR EN PLANTA</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div [hidden]="!form.get('roles').hasError('minOne')" class="danger">
+                Debe seleccionar al menos un rol para el usuario
+              </div>
+              
+            </div>
+            <div>
+              <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                  <div class="form-group" *ngIf="form.value.roles.isVehicle"
+                    [ngClass]="{'has-success': !form.hasError('vehicleValidator'), 'has-danger': form.hasError('vehicleValidator')}">
+                    <label class="form-control-label">Vehículo asignado</label>
+                    <ng-select formControlName="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo"
+                      highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione vehículo..." [options]="vehicles"
+                      [allowClear]="true" [noFilter]="5">
+                    </ng-select>
+                    <div [hidden]="!form.hasError('vehicleValidator')" class="form-control-feedback">
+                      Debe ingresar el vehículo asignado al usuario
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="col" formArrayName="process">
+                  <div class="form-group" *ngIf="form.value.roles.isOperator">
+                    <label class="form-control-label">Procesos</label>
+                    <div *ngFor="let control of form.controls['process'].controls; let i = index">
+                      <div formGroupName="{{i}}">
+                        <label class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" formControlName="selected" >
+                          <span class="custom-control-indicator"></span>
+                          <span class="custom-control-description">{{ allProcess[i].name }}</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+        </div>
+        <div class="card-footer">
+          <button type="submit" [disabled]="!form.valid || userExistsError" class="btn btn-primary btn-block">
+            <fa name="save"></fa> GUARDAR
+          </button>
+        </div>
+      </div>
+      </form>
+    </div>
+
+  </div>
+</div>

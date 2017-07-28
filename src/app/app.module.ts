@@ -52,6 +52,8 @@ import { UsersListComponent } from './components/users/users-list/users-list.com
 import { UsersNewComponent } from './components/users/users-new/users-new.component';
 import { UsersEditComponent } from './components/users/users-edit/users-edit.component';
 import { UsersDetailsComponent } from './components/users/users-details/users-details.component';
+import { NewPassComponent } from './components/new-pass/new-pass.component';
+import { PagerComponent } from './components/pager/pager.component';
 
 
 @NgModule({
@@ -74,7 +76,9 @@ import { UsersDetailsComponent } from './components/users/users-details/users-de
     UsersListComponent,
     UsersNewComponent,
     UsersEditComponent,
-    UsersDetailsComponent
+    UsersDetailsComponent,
+    NewPassComponent,
+    PagerComponent
   ],
   imports: [
     FormsModule,
@@ -100,6 +104,7 @@ import { UsersDetailsComponent } from './components/users/users-details/users-de
     UserService,
     UsersService,
     VehicleService,
+    NewPassComponent,
     PriceListService,
     PagerService, 
     SelectsService, 

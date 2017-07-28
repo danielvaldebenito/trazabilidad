@@ -45,7 +45,7 @@ export class PriceListNewComponent implements OnInit {
             if(res.done)
               this.productTypes = res.data
               this.productTypes.forEach(f => { this.addProduct(f) })
-              console.log('pt',this.productTypes)
+              
           },
           error => {
             console.log(error)
@@ -58,7 +58,6 @@ export class PriceListNewComponent implements OnInit {
   onSubmit() {
     var json = this.plForm.value;
     json.items = JSON.stringify(json.items)
-    console.log('tosave', json)
     this._plService.postPriceList(json)
         .subscribe(
           res => {
@@ -80,5 +79,8 @@ export class PriceListNewComponent implements OnInit {
           },
           err => console.log(err)
         )
+  }
+  onCancel() {
+    this._location.back()
   }
 }

@@ -31,7 +31,30 @@
     color: #FFF;
     border-bottom-color: #ccc;
 }
-
+.page-header {
+    border-bottom: 1px solid var(--color-inverse);
+    padding: 20px;
+    margin: 10px;
+    text-transform: uppercase;
+}
+    .page-header h1 {
+        font-size: 20pt;
+        color: var(--color-primary)
+    }
+    .page-header fa {
+        color: var(--color-primary)
+    }
+.card-header h1 {
+    font-size: 20pt;
+    color: var(--color-primary);
+    text-transform: uppercase;
+}
+.card-header fa {
+    color: var(--color-primary)
+}
+.container {
+    margin-bottom: 50px;
+}
 .form-control::-webkit-input-placeholder { color: #CCC; }  /* WebKit, Blink, Edge */
 .form-control:-moz-placeholder { color: #CCC; }  /* Mozilla Firefox 4 to 18 */
 .form-control::-moz-placeholder { color: #CCC; }  /* Mozilla Firefox 19+ */
@@ -80,6 +103,10 @@
 }
 .btn {
     cursor: pointer;
+    text-transform: uppercase;
+}
+.btn > fa {
+    
 }
 .footer {
     position: fixed;
@@ -90,6 +117,7 @@
     background: rgba(0, 0, 0, 0.7);
     padding: 2px;
     z-index: 5000;
+    
 }
     .footer img {
         height: 18px;
@@ -129,6 +157,7 @@
 ng-select > div {
     background: #FFF !important;
     height: 38px;
+    outline: none;
 }
 select-dropdown > div .options ul li {
     color: var(--color-secondary);
@@ -222,4 +251,12 @@ ng-select > div > div.multiple > div.option {
     color: #FFF !important;
     background: rgba(0,0,0,0.1) !important;
     
+}
+
+.table-details td {
+    border-bottom: 1px solid var(--color-inverse)
+}
+.table-details th {
+    color: var(--color-primary);
+    border-bottom: 1px solid var(--color-inverse)
 }

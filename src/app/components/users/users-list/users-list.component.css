@@ -48,3 +48,8 @@
     margin-right: 10px;
     flex: 0 0 30%;
 }
+.img-user {
+    border: 2px solid #FFF;
+    margin-bottom: 10px;
+    max-height: 250px;
+}

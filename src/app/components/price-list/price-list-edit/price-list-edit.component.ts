@@ -85,4 +85,8 @@ export class PriceListEditComponent implements OnInit {
         )
   }
 
+  onCancel() {
+    this._location.back();
+    
+  }
 }
