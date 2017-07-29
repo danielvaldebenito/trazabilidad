@@ -10,16 +10,18 @@ import { UserService } from './user.service';
 export class VehicleService {
     public url: string = GLOBAL.apiUrl;
     private headers;
+    private user;
     constructor(private _http: Http, private _us: UserService){
         this.headers = new Headers({
             'Authorization': this._us.getToken(),
             'Content-Type': 'application/json'
         })
+        this.user = this._us.getUserIdentity();
     }
 
     getVehicles (filter: string, limit: number, page: number) {
         
-        var myDistributor = this._us.getUserIdentity().distributor;
+        var myDistributor = this.user.distributor._id;
         var url = this.url + 'vehicles/' + myDistributor;
         var params = { filter: filter, limit: limit, page: page }
         return this._http.get(url, { headers: this.headers, params: params })

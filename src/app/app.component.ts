@@ -3,6 +3,7 @@ import { UserService } from './services/user.service';
 import { Router } from '@angular/router';
 import { NotificationComponent, NotificationsService } from 'angular2-notifications';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { GLOBAL } from './global'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit {
   identity: any;
   token: string;
   userToReset: any = {}
+  apiUrl: any = GLOBAL.apiUrl
   public confirmOptions = {
     confirmText: 'Sí',
     declineText: 'No'

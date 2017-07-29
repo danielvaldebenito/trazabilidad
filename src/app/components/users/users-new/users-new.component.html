@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container principal">
   <div class="row">
     <div class="col">
       <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -15,7 +15,7 @@
             <div class="row">
               <div class="col-md-3 d-flex flex-row justify-content-center align-items-center">
                 <div class="picture align-self-center">
-                  <img [src]="imageSelected || '../../../assets/images/user_default.png'" alt="" class="img-fluid img-circle img-user">
+                  <img [src]="imageSelected || '../../../assets/images/user_default.png'" alt="" class="img-fluid rounded mx-auto d-block img-user">
                   <input type="file" id="file" class="inputFile" accept="image/*" (change)="fileChangeEvent($event)">
                   <label for="file" class="labelFile">
                     <fa name="camera"></fa>
@@ -74,9 +74,9 @@
                 </div>
               </div>
             </div>
-
-            <div formGroupName="roles">
+            <div formGroupName="roles" [hidden]="fromVehiclesModule">
               <label for="">Roles</label>
+              
               <div class="row">
                 <div class="col">
                   <div class="form-group">
@@ -111,7 +111,7 @@
               </div>
               
             </div>
-            <div>
+            <div [hidden]="fromVehiclesModule">
               <div class="row">
                 <div class="col"></div>
                 <div class="col">
@@ -154,6 +154,5 @@
       </div>
       </form>
     </div>
-
   </div>
 </div>

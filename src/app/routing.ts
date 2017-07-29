@@ -12,6 +12,9 @@ import { PriceListComponent } from './components/price-list/price-list.component
 import { UsersComponent } from './components/users/users.component'
     import { UsersNewComponent } from './components/users/users-new/users-new.component'
     import { UsersEditComponent } from './components/users/users-edit/users-edit.component'
+import { DependencesComponent } from './components/dependences/dependences.component'
+    import { DependencesNewComponent } from './components/dependences/dependences-new/dependences-new.component'
+    import { DependencesEditComponent } from './components/dependences/dependences-edit/dependences-edit.component'
 import { NewPassComponent } from './components/new-pass/new-pass.component'
 import { AppComponent} from './app.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
@@ -26,8 +29,9 @@ export const appRoutes: Routes = [
   { path: 'price-list/edit/:id', component: PriceListEditComponent },
   { path: 'users', component: UsersComponent },
   { path: 'users/new', component: UsersNewComponent },
-  { path: 'users/edit/:id', component: UsersEditComponent }
-  
-
+  { path: 'users/edit/:id', component: UsersEditComponent },
+  { path: 'dependences', component: DependencesComponent },
+  { path: 'dependences/new', component: DependencesNewComponent },
+  { path: 'dependences/edit/:id', component: DependencesEditComponent }
 
 ];

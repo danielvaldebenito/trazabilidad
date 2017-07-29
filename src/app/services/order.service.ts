@@ -43,19 +43,19 @@ export class OrderService {
                       .map(res => res.json())
   }
   getPriceLists () {
-    var myDistributor = this._userService.getUserIdentity().distributor;
+    var myDistributor = this.user.distributor._id;
     return this._http.get(this.url + 'pricelist/' + myDistributor, { headers: this.headers })
                     .map(res => res.json())
   }
   getResume (date) {
     var params = { date: date }
-    var myDistributor = this._userService.getUserIdentity().distributor;
+    var myDistributor = this.user.distributor._id;
     return this._http.get(this.url + '/order-resume/' + myDistributor, { headers: this.headers, params: params })
                         .map(res => res.json());
   }
   postOrder (order: any) {
     var url = this.url + 'order/';
-    var myDistributor = this._userService.getUserIdentity().distributor;
+    var myDistributor = this.user.distributor._id;
     order.distributor = myDistributor;
     var body = order;
     return this._http.post(url, body, { headers: this.headers })
@@ -64,7 +64,7 @@ export class OrderService {
 
   requestClosest (requestId: string, lat: number, lng: number) {
     var url = this.url + 'georeference-request/';
-    var myDistributor = this._userService.getUserIdentity().distributor;
+    var myDistributor = this.user.distributor._id;
     var body = { lat: lat, lng: lng, distributor: myDistributor, requestId: requestId, user: this.user.distributor };
     return this._http.post(url, body, { headers: this.headers })
                     .map(res => res.json());

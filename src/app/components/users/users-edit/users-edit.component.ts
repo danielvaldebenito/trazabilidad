@@ -83,7 +83,7 @@ export class UsersEditComponent implements OnInit {
       ]),
       roles: this._fb.group({
         isAdmin: new FormControl(user.isAdmin),
-        isVehicle: new FormControl(user.vehicle != null),
+        isVehicle: new FormControl(user.roles.indexOf('VEHÍCULO') > -1),
         isOperator: new FormControl(this.user.internalProcessTypes != null && this.user.internalProcessTypes.length > 0)
       }, { validator: minOne })
     }, { validator: vehicleValidator })
@@ -151,7 +151,7 @@ export class UsersEditComponent implements OnInit {
         }, err => console.log(err))
   }
    onSubmit (){
-     console.log('onsubmit')
+
     this._usersService
         .updateUser(this.form.value, this.id)
         .subscribe(

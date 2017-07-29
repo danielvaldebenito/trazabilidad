@@ -19,6 +19,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
 // services (providers)
+import { DependencesService } from './services/dependences.service';
 import { UserService } from './services/user.service';
 import { UsersService } from './services/users.service';
 import { VehicleService } from './services/vehicles.service';
@@ -40,11 +41,6 @@ import { EditVehicleComponent } from './components/vehiculos/edit-vehicle/edit-v
 import { OrderComponent } from './components/order/order.component';
 import { OrderCreateComponent } from './components/order/order-create/order-create.component';
 import { PriceListComponent } from './components/price-list/price-list.component';
-  import { PriceListListComponent } from './components/price-list/price-list-list/price-list-list.component';
-  import { PriceListDetailComponent } from './components/price-list/price-list-detail/price-list-detail.component';
-
-// entorno
-import { environment } from '../environments/environment';
 import { PriceListNewComponent } from './components/price-list/price-list-new/price-list-new.component';
 import { PriceListEditComponent } from './components/price-list/price-list-edit/price-list-edit.component';
 import { UsersComponent } from './components/users/users.component';
@@ -54,6 +50,17 @@ import { UsersEditComponent } from './components/users/users-edit/users-edit.com
 import { UsersDetailsComponent } from './components/users/users-details/users-details.component';
 import { NewPassComponent } from './components/new-pass/new-pass.component';
 import { PagerComponent } from './components/pager/pager.component';
+import { DependencesComponent } from './components/dependences/dependences.component';
+import { DependencesNewComponent } from './components/dependences/dependences-new/dependences-new.component';
+import { DependencesEditComponent } from './components/dependences/dependences-edit/dependences-edit.component';
+import { DependencesListComponent } from './components/dependences/dependences-list/dependences-list.component';
+  import { PriceListListComponent } from './components/price-list/price-list-list/price-list-list.component';
+  import { PriceListDetailComponent } from './components/price-list/price-list-detail/price-list-detail.component';
+
+// entorno
+import { environment } from '../environments/environment';
+import { DependencesDetailComponent } from './components/dependences/dependences-detail/dependences-detail.component';
+
 
 
 @NgModule({
@@ -78,7 +85,12 @@ import { PagerComponent } from './components/pager/pager.component';
     UsersEditComponent,
     UsersDetailsComponent,
     NewPassComponent,
-    PagerComponent
+    PagerComponent,
+    DependencesComponent,
+    DependencesNewComponent,
+    DependencesEditComponent,
+    DependencesListComponent,
+    DependencesDetailComponent
   ],
   imports: [
     FormsModule,
@@ -100,7 +112,8 @@ import { PagerComponent } from './components/pager/pager.component';
       { enableTracing: true } 
     )
   ],
-  providers: [ 
+  providers: [
+    DependencesService, 
     UserService,
     UsersService,
     VehicleService,

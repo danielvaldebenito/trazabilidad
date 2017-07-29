@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { VehicleService } from '../../../services/vehicles.service';
-import { SelectsService } from '../../../services/selects.service';
-import { SweetAlertService } from 'ng-sweetalert2-slc';
-import { Location } from '@angular/common';
-
+import { Component, OnInit } from '@angular/core'
+import { VehicleService } from '../../../services/vehicles.service'
+import { SelectsService } from '../../../services/selects.service'
+import { SweetAlertService } from 'ng-sweetalert2-slc'
+import { Location } from '@angular/common'
+import { IOption } from "ng-select"
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
@@ -12,20 +13,26 @@ import { Location } from '@angular/common';
 export class CreateVehicleComponent implements OnInit {
 
   vehicle: any = { type: 'ENVASADO' }
-  vehicleTypes: any[];
+  vehicleTypes: any[]
   dependences: any[] = []
+  allUsers: any[] = []
+  users: Array<IOption>
+  user: any
   constructor(
       private _selectService: SelectsService, 
       private _location: Location,
       private _vehicleService: VehicleService,
-      private _swal2: SweetAlertService
+      private _swal2: SweetAlertService,
+      private _selectsService: SelectsService,
+      private _modalService: NgbModal
     ) {
     
    }
 
   ngOnInit() {
-    this.getVehicleTypes();
-    this.getDependences();
+    this.getVehicleTypes()
+    this.getDependences()
+    this.getUsers()
   }
 
   getVehicleTypes () {
@@ -40,7 +47,7 @@ export class CreateVehicleComponent implements OnInit {
         .subscribe(
           res => {
             if(res.done) {
-              this.dependences = res.data;
+              this.dependences = res.data
             }
             
           },
@@ -48,7 +55,7 @@ export class CreateVehicleComponent implements OnInit {
         )
   }
   onCancel () {
-    this._location.back();
+    this._location.back()
   }
   onChange() {
 
@@ -71,11 +78,11 @@ export class CreateVehicleComponent implements OnInit {
           error => {
             console.log(error)
             if(error.status == 500) {
-              var body = error._body;
+              var body = error._body
               if(body) {
-                var jsonBody = JSON.parse(body);
+                var jsonBody = JSON.parse(body)
                 var err = jsonBody.error
-                var codeError = err.code;
+                var codeError = err.code
                 var msj =  codeError == 11000 ? 'Ya se encuentra una placa "' + this.vehicle.licensePlate +  '" en el sistema' : 'Ha ocurrido un error'
                 this._swal2.error({ 
                     title: 'Error', 
@@ -85,5 +92,33 @@ export class CreateVehicleComponent implements OnInit {
               }
             }
           })
+  }
+  getUsers () {
+    var rol = 'VEHÍCULO'
+    this._selectsService.getUserFromRol(rol)
+        .subscribe(res => {
+          if(res.done) {
+            var data = res.data
+            this.allUsers = data
+            var array = []
+            data.forEach(element => {
+              array.push({ label: element.name + ' ' + element.surname, value: element._id })
+            })
+            this.users = array
+          }
+        }, 
+        error => console.log(error))
+  }
+  open (content) {
+    this._modalService.open(content, { size: 'lg' })
+        .result.then((result) => {
+          //this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+  }
+  refreshUser (userId) {
+    this.getUsers ();
+    this.vehicle.user = userId
   }
 }

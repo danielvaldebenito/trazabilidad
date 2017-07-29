@@ -52,7 +52,9 @@
 .card-header fa {
     color: var(--color-primary)
 }
-.container {
+.container.principal,
+.container-fluid.principal,
+.container.pager {
     margin-bottom: 50px;
 }
 .form-control::-webkit-input-placeholder { color: #CCC; }  /* WebKit, Blink, Edge */

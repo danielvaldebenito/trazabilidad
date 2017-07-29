@@ -1,0 +1,65 @@
+<div class="container principal">
+  <div class="row">
+    <div class="col">
+      <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="card principal">
+
+          <div class="card-header d-flex flex-row justify-content-between align-items-center">
+            <button class="btn btn-secondary" type="button" (click)="onCancel()" title="Volver">
+          <fa name="arrow-left"></fa>
+        </button>
+            <h1>Nueva Dependencia</h1>
+            <fa name="building" size="2x"></fa>
+          </div>
+          <div class="card-block">
+
+            <div class="form-group" [ngClass]="{'has-success': form.get('name').valid, 'has-danger':!form.get('name').valid && form.get('name').touched }">
+              <label for="" class="form-control-label">Nombre</label>
+              <input type="text" class="form-control" [ngClass]="{'form-control-success': form.get('name').valid, 'form-control-danger':!form.get('name').valid && form.get('name').touched }"
+                formControlName="name" placeholder="Ingrese un nombre para identificar la dependencia">
+              <div class="form-control-feedback">
+                <div *ngIf="!form.get('name').valid && form.get('name').touched">
+                  Ingrese el nombre para la dependencia
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="form-control-label">Dirección</label>
+              <input type="text" class="form-control" formControlName="address" placeholder="Ingrese la dirección de la dependencia">
+            </div>
+            <div class="form-group" [ngClass]="{'has-success': form.get('email').valid, 'has-danger':!form.get('email').valid && form.get('email').touched }">
+              <label for="" class="form-control-label">E-mail</label>
+              <input type="email" class="form-control" formControlName="email" placeholder="Ingrese e-mail de contacto">
+              <div class="form-control-feedback">
+                <div *ngIf="!form.get('email').valid && form.get('email').touched">
+                  Ingrese un e-mail correcto
+                </div>
+              </div>
+            </div>
+            <div class="form-group" [ngClass]="{'has-success': form.get('phone').valid && form.get('phone').touched, 'has-danger':!form.get('phone').valid && form.get('phone').touched }">
+              <label for="" class="form-control-label">Teléfono</label>
+              <input type="phone" class="form-control" formControlName="phone" placeholder="Ingrese teléfono de contacto">
+              <div class="form-control-feedback">
+                <div *ngIf="!form.get('phone').valid && form.get('phone').touched">
+                  Ingrese un teléfono correcto
+                </div>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="iHavePlants()">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" formControlName="isPlant" class="custom-control-input">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">ES UNA PLANTA</span>
+              </label>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="!form.valid">
+              <fa name="save"></fa> GUARDAR
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -23,7 +23,7 @@ export class UsersService {
 
   getUsers (filter, limit, page) {
     
-    var url = this.url + 'users/' + this.user.distributor;
+    var url = this.url + 'users/' + this.user.distributor._id;
     var params = { filter: filter, limit: limit, page: page }
     return this._http.get(url, { headers: this.headers, params: params })
             .map(res => res.json());
@@ -37,7 +37,7 @@ export class UsersService {
   saveUser (user: any) {
     var url = this.url + 'register/';
     var body = user;
-    body.distributor = this.user.distributor
+    body.distributor = this.user.distributor._id
     
     return this._http.post(url, body, { headers: this.headers })
                       .map(res => res.json())

@@ -12,7 +12,8 @@ function minOne (c: AbstractControl) {
     ? null : { minOne: true }
 }
 function vehicleValidator (c: AbstractControl) {
-  return c.get('roles').get('isVehicle').value === true && !c.get('vehicle').value ?
+  return c.get('roles').get('isVehicle').value === true && !c.get('vehicle').value && c.get('fvm').value === false
+    ? 
     { vehicleValidator: true } : null
 }
 
@@ -22,10 +23,13 @@ function vehicleValidator (c: AbstractControl) {
   styleUrls: ['./users-new.component.css']
 })
 export class UsersNewComponent implements OnInit {
+
   form: FormGroup
   vehicles: Array<IOption>;
   allProcess: any[]
   userExistsError: boolean = false
+  @Input() fromModal: boolean = false
+  @Input() fromVehiclesModule: boolean = false
   @Output() onSubmitForm = new EventEmitter ()
   get proccesses () { return this.form.get('process') as FormArray; }
   constructor(
@@ -37,6 +41,10 @@ export class UsersNewComponent implements OnInit {
     private _router: Router,
     private _location: Location
   ) {
+    
+    
+  }
+  initForm() {
     this.form = this._fb.group({
       name: [null, Validators.required],
       surname: [null, Validators.required],
@@ -46,13 +54,13 @@ export class UsersNewComponent implements OnInit {
       process: new FormArray([
 
       ]),
+      fvm: this.fromVehiclesModule,
       roles: this._fb.group({
-        isAdmin: new FormControl(true),
-        isVehicle: new FormControl(),
-        isOperator: new FormControl()
+        isAdmin: [!this.fromVehiclesModule],
+        isVehicle: [this.fromVehiclesModule],
+        isOperator: [false]
       }, { validator: minOne })
     }, { validator: vehicleValidator })
-    
   }
   initProcess (process?) {
     return this._fb.group({
@@ -101,6 +109,7 @@ export class UsersNewComponent implements OnInit {
   ngOnInit() {
     this.getVehicles();
     this.getProcesses();
+    this.initForm();
   }
 
   filesToUpload: Array<File>
@@ -132,12 +141,15 @@ export class UsersNewComponent implements OnInit {
               this._swal2.success({
                 title: 'Nuevo Usuario',
                 text: res.message,
-                confirmButtonText: 'Volver',
+                confirmButtonText: 'Listo',
                 cancelButtonText: 'Nuevo',
                 showCancelButton: true
               })
               .then(ok => {
-                this._router.navigate(['/users'])
+                if(this.fromModal)
+                  this.onSubmitForm.emit(res.stored._id);
+                else
+                  this._router.navigate(['/users'])
               }, nook => {
                 this.form.reset()
               })

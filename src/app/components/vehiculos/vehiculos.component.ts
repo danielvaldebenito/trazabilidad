@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { VehicleService} from '../../services/vehicles.service';
+import { VehicleService } from '../../services/vehicles.service';
+import { SelectsService } from '../../services/selects.service';
 import { Vehicle } from '../../models/vehicle.model';
 import { PagerService } from '../../services/pager.service';
 import { SweetAlertService } from 'ng-sweetalert2-slc';
@@ -29,6 +30,7 @@ export class VehiculosComponent implements OnInit {
 
   ngOnInit() {
     this.refresh();
+    
   }
   getVehicles(filter: string, limit: number){
     this._vehicleService
@@ -78,6 +80,7 @@ export class VehiculosComponent implements OnInit {
         
       }, e => console.log(e))
   }
+  
   refresh() {
     this.getVehicles(this.filter, this.limit);
   }

@@ -8,11 +8,13 @@ import { UserService } from './user.service';
 export class SelectsService {
     public url: string = GLOBAL.apiUrl + 'selects/';
     public headers: any;
+    myUser: any
     constructor(private _http: Http, private _userService: UserService){
         this.headers = new Headers ({
             'Content-Type': 'application/json',
             'Authorization': this._userService.getToken()
         })
+        this.myUser = this._userService.getUserIdentity()
     }
 
     // Vehicles
@@ -26,12 +28,12 @@ export class SelectsService {
     }
     getVehicleToAsign (type?: string) {
         var params = { type: type }
-        var myDistributor = this._userService.getUserIdentity().distributor;
+        var myDistributor = this.myUser.distributor._id;
         return this._http.get(this.url + 'vehicles/' + myDistributor, { headers: this.headers, params: params })
                         .map(res => res.json())
     }
     getDependences () {
-        var myDistributor = this._userService.getUserIdentity().distributor;
+        var myDistributor = this.myUser.distributor._id;
         var params = { distributor: myDistributor };
         return this._http.get(this.url + 'dependences', { headers: this.headers, params: params })
                         .map(res => res.json())
@@ -42,6 +44,11 @@ export class SelectsService {
     }
     getProcesses () {
         return this._http.get(this.url + 'internal-process-types', { headers: this.headers})
+                    .map(res => res.json())
+    }
+    getUserFromRol (rol) {
+        var url = this.url + 'user-rol/' + this.myUser.distributor._id + '/' + rol
+        return this._http.get(url, { headers: this.headers})
                     .map(res => res.json())
     }
     

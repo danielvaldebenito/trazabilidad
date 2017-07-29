@@ -7,47 +7,47 @@ import { UserService } from './user.service';
 
 
 @Injectable()
-export class PriceListService {
+export class DependencesService {
     public url: string = GLOBAL.apiUrl;
     private headers;
-    private user;
+    user: any
     constructor(private _http: Http, private _us: UserService){
         this.headers = new Headers({
             'Authorization': this._us.getToken(),
             'Content-Type': 'application/json'
         })
-        this.user = this._us.getUserIdentity();
+        this.user = this._us.getUserIdentity()
     }
 
-    getPriceLists () {
+    getDependences (filter: string, limit: number, page: number) {
         var myDistributor = this.user.distributor._id;
-        var url = this.url + 'priceList/' + myDistributor;
-        return this._http.get(url, { headers: this.headers })
+        var url = this.url + 'dependences/' + myDistributor;
+        var params = { filter: filter, limit: limit, page: page }
+        return this._http.get(url, { headers: this.headers, params: params })
                 .map(res => res.json());
     }
 
-    postPriceList (priceList: any) {
-        var url = this.url + 'priceList/';
-        var body = priceList;
-        body.distributor = this.user.distributor._id;
-        return this._http.post(url, body, { headers: this.headers })
+    postDependence (dependence: any) {
+        var url = this.url + 'dependence/';
+        var params = dependence;
+        return this._http.post(url, params, { headers: this.headers })
                         .map(res => res.json());
     }
 
-    getOnePriceList(id: string) {
-        var url = this.url + 'priceList/pl/' + id;
+    getOneDependence(id: string) {
+        var url = this.url + 'dependence/' + id;
         return this._http.get(url, { headers: this.headers })
                         .map(res => res.json());
     }
 
-    updatePriceList (id: string, priceList: any) {
-        var url = this.url + 'priceList/' + id;
-        return this._http.put(url, priceList, { headers: this.headers })
+    updateDependence (id: string, dependence: any) {
+        var url = this.url + 'dependence/' + id;
+        return this._http.put(url, dependence, { headers: this.headers })
                         .map(res => res.json());
     }
 
-    deletePriceList (id: string) {
-        var url = this.url + 'priceList/' + id;
+    deleteDependence (id: string) {
+        var url = this.url + 'dependence/' + id;
         return this._http.delete(url, { headers: this.headers })
                         .map(res => res.json());
     }
