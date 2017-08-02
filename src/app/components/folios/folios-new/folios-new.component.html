@@ -1,0 +1,41 @@
+<div class="card">
+  <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+      <button class="btn btn-secondary" (click)="onCancel()" title="Volver">
+        <fa name="arrow-left"></fa>
+      </button>
+      <h1>Nuevo Rango de Folios</h1>
+      <fa name="sort-numeric-asc" size="2x"></fa>
+    </div>
+    <div class="card-block">
+      <div class="form-group" [ngClass]="{'has-success': form.get('start').valid, 'has-danger':!form.get('start').valid && form.get('start').touched }">
+        <label for="">Inicio</label>
+        <input type="number" class="form-control" placeholder="Inicio del rango" formControlName="start" [ngClass]="{'form-control-success': form.get('start').valid, 'form-control-danger':!form.get('start').valid && form.get('start').touched }">
+        <div class="form-control-feedback">
+          <div *ngIf="!form.get('start').valid && form.get('start').touched">
+            Ingrese inicio del rango
+          </div>
+        </div>
+      </div>
+      <div class="form-group" [ngClass]="{'has-success': form.get('end').valid, 'has-danger':!form.get('end').valid && form.get('end').touched }">
+        <label for="">Fin</label>
+        <input type="number" class="form-control" placeholder="Inicio del rango" formControlName="end" [ngClass]="{'form-control-success': form.get('end').valid, 'form-control-danger':!form.get('end').valid && form.get('end').touched }">
+        <div class="form-control-feedback">
+          <div *ngIf="!form.get('end').valid && form.get('end').touched">
+            Ingrese final del rango
+          </div>
+        </div>
+      </div>
+      <div [hidden]="!form.hasError('startMinorEnd') || !form.get('end').touched" class="danger">
+        El inicio debe ser menor al final
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-primary btn-block" [disabled]="!form.valid || loading" type="submit">
+        <fa name="save" *ngIf="!loading"></fa>
+        <fa name="spinner" animation="spin" *ngIf="loading"></fa>
+        GUARDAR
+      </button>
+    </div>
+  </form>
+</div>

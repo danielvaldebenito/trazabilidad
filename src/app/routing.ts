@@ -5,8 +5,6 @@ import { VehiculosComponent} from './components/vehiculos/vehiculos.component';
 import { OrderComponent } from './components/order/order.component'
     import { OrderCreateComponent } from './components/order/order-create/order-create.component'
 import { PriceListComponent } from './components/price-list/price-list.component'
-    import { PriceListListComponent } from './components/price-list/price-list-list/price-list-list.component'
-    import { PriceListDetailComponent } from './components/price-list/price-list-detail/price-list-detail.component'
     import { PriceListNewComponent } from './components/price-list/price-list-new/price-list-new.component'
     import { PriceListEditComponent } from './components/price-list/price-list-edit/price-list-edit.component'
 import { UsersComponent } from './components/users/users.component'
@@ -15,9 +13,10 @@ import { UsersComponent } from './components/users/users.component'
 import { DependencesComponent } from './components/dependences/dependences.component'
     import { DependencesNewComponent } from './components/dependences/dependences-new/dependences-new.component'
     import { DependencesEditComponent } from './components/dependences/dependences-edit/dependences-edit.component'
-import { NewPassComponent } from './components/new-pass/new-pass.component'
-import { AppComponent} from './app.component';
-import { NotfoundComponent } from './components/notfound/notfound.component';
+import { FoliosComponent } from './components/folios/folios.component'
+    import { FoliosNewComponent } from './components/folios/folios-new/folios-new.component'
+
+
 export const appRoutes: Routes = [
   { path: 'vehicles', component: VehiculosComponent },
   { path: 'vehicles/create', component: CreateVehicleComponent },
@@ -32,6 +31,7 @@ export const appRoutes: Routes = [
   { path: 'users/edit/:id', component: UsersEditComponent },
   { path: 'dependences', component: DependencesComponent },
   { path: 'dependences/new', component: DependencesNewComponent },
-  { path: 'dependences/edit/:id', component: DependencesEditComponent }
-
+  { path: 'dependences/edit/:id', component: DependencesEditComponent },
+  { path: 'folios', component: FoliosComponent },
+  { path: 'folios/new', component: FoliosNewComponent }
 ];

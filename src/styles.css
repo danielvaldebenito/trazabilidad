@@ -52,6 +52,7 @@
 .card-header fa {
     color: var(--color-primary)
 }
+.row.principal,
 .container.principal,
 .container-fluid.principal,
 .container.pager {
@@ -107,8 +108,13 @@
     cursor: pointer;
     text-transform: uppercase;
 }
-.btn > fa {
-    
+.btn-outline-secondary {
+    border-color: var(--color-inverse);
+    color: var(--color-inverse);
+}
+.btn-outline-secondary:hover {
+    border-color: #FFF;
+    color: #FFF;
 }
 .footer {
     position: fixed;
@@ -261,4 +267,10 @@ ng-select > div > div.multiple > div.option {
 .table-details th {
     color: var(--color-primary);
     border-bottom: 1px solid var(--color-inverse)
+}
+.progress {
+    background: var(--color-inverse)
+}
+.progress-bar {
+    color: #FFF
 }

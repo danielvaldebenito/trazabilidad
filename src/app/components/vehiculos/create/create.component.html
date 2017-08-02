@@ -64,12 +64,17 @@
           <div class="form-group" [ngClass]="{'has-success': !dependence.errors, 'has-danger': dependence.errors && (dependence.dirty || dependence.touched)}">
             <label class="form-control-label" for="">Dependencia (*)</label>
             <div class="input-group">
-              <select required  #dependence="ngModel" name="dependence" [(ngModel)]="vehicle.dependence" class="form-control">
-                <option *ngFor="let d of dependences" [value]="d._id">
-                  {{ d.name }}
-                </option>
-              </select>
-              <button type="button" class="btn btn-outline-primary">
+              <ng-select #dependence="ngModel" filterPlaceholder="Buscar dependencia..." notFoundMsg="No se encontró ninguna dependencia"
+                placeholder="Seleccione dependencia..." [options]="dependences"
+                highlightColor="#37424A" highlightTextColor="#fff"
+                [allowClear]="true" [noFilter]="3" [(ngModel)]="vehicle.dependence" name="dependence" 
+                (selected)="onSelectDependence($event)" (deselected)="onDeselectDependence($event)"
+                >
+              </ng-select>
+              <button type="button" class="btn btn-outline-secondary" *ngIf="vehicle.dependence" (click)="open(viewdependence)">
+                <fa name="eye"></fa>
+              </button>
+              <button type="button" class="btn btn-outline-primary" (click)="open(newdependence)" >
                 <fa name="plus"></fa>
               </button>
             </div>
@@ -122,6 +127,36 @@
   </div>
   <div class="modal-body">
     <app-users-new [fromModal]="true" (onSubmitForm)="c('submit form'); refreshUser($event)" [fromVehiclesModule]="true"></app-users-new>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #newdependence let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title">Complete los datos</h5>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-dependences-new [fromModal]="true" (submitForm)="c('submit form'); refreshDependence($event)" [fromVehiclesModule]="true"></app-dependences-new>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #viewdependence let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ selectedDependence.name }}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-dependences-detail [dependence]="selectedDependence"></app-dependences-detail>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>

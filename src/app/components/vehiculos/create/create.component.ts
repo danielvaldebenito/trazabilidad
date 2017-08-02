@@ -5,6 +5,7 @@ import { SweetAlertService } from 'ng-sweetalert2-slc'
 import { Location } from '@angular/common'
 import { IOption } from "ng-select"
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import * as Enumerable from 'linq'
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
@@ -14,7 +15,9 @@ export class CreateVehicleComponent implements OnInit {
 
   vehicle: any = { type: 'ENVASADO' }
   vehicleTypes: any[]
-  dependences: any[] = []
+  allDependences: any[]
+  selectedDependence: any = {}
+  dependences: Array<IOption>
   allUsers: any[] = []
   users: Array<IOption>
   user: any
@@ -47,12 +50,28 @@ export class CreateVehicleComponent implements OnInit {
         .subscribe(
           res => {
             if(res.done) {
-              this.dependences = res.data
+              var array = []
+              this.allDependences = res.data
+              res.data.forEach(element => {
+                array.push({ label: element.name, value: element._id })
+              });
+              this.dependences = array
             }
             
           },
           error => console.log(error)
         )
+  }
+  onSelectDependence(dep) {
+    console.log('dep', dep)
+    this.selectedDependence = Enumerable.from(this.allDependences)
+                              .where(w => { return w._id == dep.value })
+                              .firstOrDefault();
+    console.log('selectedDependence', this.selectedDependence)
+    
+  }
+  onDeselectDependence (dep) {
+    this.selectedDependence = null
   }
   onCancel () {
     this._location.back()
@@ -120,5 +139,9 @@ export class CreateVehicleComponent implements OnInit {
   refreshUser (userId) {
     this.getUsers ();
     this.vehicle.user = userId
+  }
+  refreshDependence (dependenceId) {
+    this.getDependences();
+    this.vehicle.dependence = dependenceId;
   }
 }

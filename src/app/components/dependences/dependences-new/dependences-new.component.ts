@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { DependencesService } from '../../../services/dependences.service'
 import { UserService } from '../../../services/user.service'
@@ -11,6 +11,9 @@ import { SweetAlertService } from 'ng-sweetalert2-slc';
 })
 export class DependencesNewComponent implements OnInit {
   form: FormGroup
+  @Input() fromModal: boolean = false
+  @Input() fromVehiclesModule: boolean = false
+  @Output() submitForm = new EventEmitter <string>()
   constructor(
     private _fb: FormBuilder,
     private _dependencesService: DependencesService,
@@ -45,15 +48,36 @@ export class DependencesNewComponent implements OnInit {
             this._swal2.success({
               title: 'Dependencia creada',
               text: res.message,
-              showCancelButton: true,
+              showCancelButton: !this.fromModal,
               cancelButtonText: 'NUEVA',
               confirmButtonText: 'LISTO'
             })
             .then(ok => {
-              this.onCancel()
+              if(this.fromModal)
+                this.submitForm.emit(res.stored._id)
+              else
+                this.onCancel()
             }, nook => {
-              this.form.reset()
+              if(this.fromModal) {
+                this.submitForm.emit(res.stored._id)
+                
+              } else {
+                this.form.reset()
+              }
+              
             })
+          } else {
+            this._swal2.error({
+              title: 'Dependencia no creada',
+              text: 'Ha ocurrido un error',
+              confirmButtonText: 'REINTENTAR'
+            })
+            .then(res => {
+              this.form.reset()
+            }, no => {
+              this.onCancel()
+            })
+            
           }
         }, error => console.log(error))
   }

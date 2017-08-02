@@ -52,7 +52,8 @@ export class OrderCreateComponent implements OnInit {
   //maxZoom: number = 14;
   addresses: any[] = [];
   errorMessageItems: string
-
+  // config 
+  delaySearch: number = 10000 // 10 segundos
   constructor(
     private _selectsService: SelectsService,
     private _orderService: OrderService,
@@ -76,208 +77,50 @@ export class OrderCreateComponent implements OnInit {
     this.getDefaultData();
     
   }
-  onCancel () {
-    this._location.back();
-  }
-  getDefaultData() {
-    var self = this;
-    setTimeout(() => {
-      var regionUser = self._userService.getRegionLocalUser();
-      if (regionUser) {
-        self.order.region = regionUser.value;
-        self.selectedRegion = regionUser;
-        var cityUser = self._userService.getCityLocalUser();
-        console.log('city user', cityUser)
-        if (cityUser) {
-          self.getCities();
-          self.order.city = cityUser.value;
-          self.selectedCity = cityUser;
-        }
-      }
-    }, 1000); 
-  }
-  // COMBOS
-  getRegions() {
-    this._selectsService.getCountryData()
-      .subscribe(
-      res => {
-        var data = res.data;
-        this.allRegions = data;
-        var array = [];
-        data.forEach(d => {
-          var option = { label: d.departamento, value: d.departamento }
-          array.push(option)
-        })
-        this.regions = array;
-      },
-      error => {
-
-      }
-      )
-  }
-  onSelectRegion(region) {
-    this.selectedRegion = region;
-    this.getCities()
-  }
-  onDeselectRegion(region) {
-    this.selectedRegion = null;
-    this.getCities()
-  }
-  getCities() {
-    var region = this.selectedRegion;
-    if (region) {
-      var element = Enumerable.from(this.allRegions)
-        .where((w) => { return w.departamento === region.value })
-        .firstOrDefault();
-
-      if (element) {
-        var cities = element.ciudades;
-        var array = []
-        cities.forEach(c => {
-          array.push({ label: c, value: c });
-        })
-        this.cities = array;
-      }
-
+  addItem() {
+    if (this.item.quantity <= 0) {
+      this.errorMessageItems = 'Ingrese una cantidad válida';
+      return;
     }
-    else {
-      this.cities = []
+    this.errorMessageItems = null;
+    var exists = Enumerable.from(this.items)
+      .where(w => { return w.productType === this.item.productType })
+      .firstOrDefault();
+    if (exists) {
+      exists.quantity = exists.quantity + this.item.quantity;
+      
+    } else {
+      this.item.id = Math.random().toString(36).slice(2);
+      this.item.productTypeName = this.selectedProductType;
+      this.items.push(this.item);
+      var pt = this.item.productType;
+      this.item = { quantity: 1, productType: pt, productTypeName: this.selectedProductType }
     }
-  }
-  onSelectCity(city) {
-    this.selectedCity = city;
-    this.onBlur()
-  }
-  onDeselectCity(city) {
-    this.selectedCity = null;
-    this.onBlur()
-  }
-  getPriceLists() {
-    this._orderService.getPriceLists()
-      .subscribe(
-      res => {
-        var data = res.data;
-        this.allPriceLists = res.data;
-        var array = [];
-        data.forEach(d => {
-          var option = { label: d.name, value: d._id }
-          array.push(option)
-        })
-        this.priceLists = array;
-      },
-      error => {
-        console.log(error)
-      }
-      )
-  }
-  onSelectPriceList (pl) {
-    this.selectedPriceList = pl.value;
-    this.selectedPriceListName = pl.label;
-    this.order.priceList = pl.value;
-    var selected = Enumerable.from(this.allPriceLists)
-                    .where(w => { return w._id == pl.value })
-                    .firstOrDefault ();
-    this.selectedPrices = selected.items;
-    this.updatePrices ();
-  }
-  onDeselectPriceList (pl) {
-    this.selectedPriceList = null;
     this.updatePrices();
   }
-  onCreatePriceList(pl) {
-    console.log('recibiendo stored', pl)
-    this.getPriceLists();
-    var self = this;
-    setTimeout(function() {
-      self.selectedPriceList = pl._id;
-      self.selectedPriceListName = pl.name;
-      self.order.priceList = pl._id;
-      self.selectedPrices = pl.items;
-      self.updatePrices ();
-    }, 500);
-    
-
+  deleteItem(id: any) {
+    this.items = this.items.filter((i) => { return i.id != id });
+    this.updatePrices();
   }
-  getVehicles() {
-    this._selectsService.getVehicleToAsign(this.order.type)
-      .subscribe(
-        res => {
-          if(res.done) {
-            var data = res.data;
-            data.forEach(d => { 
-              var data = res.data;
-              var array = [];
-              data.forEach(d => {
-                var option = { label: d.licensePlate, value: d._id }
-                array.push(option)
-              })
-              this.vehicles = array;
-            })
-          }
-        },
-        error => {
-          console.log(error)
-        }
-      )
-  }
-  onSelectVehicle (v) {
-    this.selectedVehicle = v.value;
-  }
-  onDeselectVehicle (v) {
-    this.selectedVehicle = null;
-  }
-  getProductTypes() {
-    this._orderService.getProductTypes()
+  findAddress() {
+    this._mapService
+      .getAddressFromCoordinates(this.order.lat, this.order.lng)
       .subscribe(
       res => {
-        var data = res.data;
-        var array = [];
-        data.forEach(d => {
-          var option = { label: d.name, value: d._id }
-          array.push(option)
-        })
-        this.productTypes = array;
-      },
-      error => {
-        console.log(error)
-      }
-      )
-  }
-  onSelectProductType (pt) {
-    this.selectedProductType = pt.label;
-  }
-  onDeselectProductType (pt) {
-    this.selectedProductType = null;
-  }
-  getAddresses() {
-    this._addressService.getAddresses()
-      .subscribe(
-      res => {
-        if (res.done) {
-          var data = res.data.records;
-          data.forEach(d => { this.addresses.push(d.location); })
+        console.log(res)
+        if (res.status == 'OK') {
+          var results = res.results;
+          var first =  results[0];
+          this.order.placeId = first.place_id;
+          var formatted_address = first.formatted_address;
+          var split_formatted_addres = formatted_address.split(', ')
+          this.order.address = split_formatted_addres[0];
+          this.order.city = split_formatted_addres[1];
+          
         }
-        console.log('direcciones', this.addresses)
       },
-      error => {
-        console.log(error)
-      })
-  }
-  onBlur() {
-    var order = this.order;
-    if (order.address && order.region && order.city)
-      this.findCoords();
-    else {
-      this.order.lat = null; this.order.lng = null;
-    }
-  }
-  // MAPA
-  markerDragEnd(event) {
-    console.log('markerDragEnd', { event })
-    var coords = event.coords;
-    this.order.lat = coords.lat;
-    this.order.lng = coords.lng;
-    this.findAddress();
+      error => console.log(error)
+      )
   }
   findCoords() {
     var address = this.order.address;
@@ -307,58 +150,57 @@ export class OrderCreateComponent implements OnInit {
       error => console.log(error)
       )
   }
-  findAddress() {
-    this._mapService
-      .getAddressFromCoordinates(this.order.lat, this.order.lng)
+  getAddresses() {
+    this._addressService.getAddresses()
       .subscribe(
       res => {
-        console.log(res)
-        if (res.status == 'OK') {
-          var results = res.results;
-          var first =  results[0];
-          this.order.placeId = first.place_id;
-          var formatted_address = first.formatted_address;
-          var split_formatted_addres = formatted_address.split(', ')
-          this.order.address = split_formatted_addres[0];
-          this.order.city = split_formatted_addres[1];
-          
+        if (res.done) {
+          var data = res.data.records;
+          data.forEach(d => { this.addresses.push(d.location); })
         }
+        console.log('direcciones', this.addresses)
       },
-      error => console.log(error)
-      )
+      error => {
+        console.log(error)
+      })
   }
-  // ITEMS
-  onSubmitDetail() {
-    this.addItem()
-  }
-  addItem() {
-    if (this.item.quantity <= 0) {
-      this.errorMessageItems = 'Ingrese una cantidad válida';
-      return;
+  getCities() {
+    var region = this.selectedRegion;
+    if (region) {
+      var element = Enumerable.from(this.allRegions)
+        .where((w) => { return w.departamento === region.value })
+        .firstOrDefault();
+
+      if (element) {
+        var cities = element.ciudades;
+        var array = []
+        cities.forEach(c => {
+          array.push({ label: c, value: c });
+        })
+        this.cities = array;
+      }
+
     }
-    this.errorMessageItems = null;
-    var exists = Enumerable.from(this.items)
-      .where(w => { return w.productType === this.item.productType })
-      .firstOrDefault();
-    if (exists) {
-      exists.quantity = exists.quantity + this.item.quantity;
-      
-    } else {
-      this.item.id = Math.random().toString(36).slice(2);
-      this.item.productTypeName = this.selectedProductType;
-      this.items.push(this.item);
-      var pt = this.item.productType;
-      this.item = { quantity: 1, productType: pt, productTypeName: this.selectedProductType }
+    else {
+      this.cities = []
     }
-    this.updatePrices();
   }
-  updatePrices () {
-    if(!this.items) return;
-    this.totalToPay = 0;
-    this.items.forEach(element => {
-      element.price = this.getPrice (element)
-      this.totalToPay = this.totalToPay + (element.price * element.quantity);
-    });
+  getDefaultData() {
+    var self = this;
+    setTimeout(() => {
+      var regionUser = self._userService.getRegionLocalUser();
+      if (regionUser) {
+        self.order.region = regionUser.value;
+        self.selectedRegion = regionUser;
+        var cityUser = self._userService.getCityLocalUser();
+        console.log('city user', cityUser)
+        if (cityUser) {
+          self.getCities();
+          self.order.city = cityUser.value;
+          self.selectedCity = cityUser;
+        }
+      }
+    }, 1000); 
   }
   getPrice(item: any) {
     if(!item) return 0;
@@ -380,23 +222,212 @@ export class OrderCreateComponent implements OnInit {
     if(!price) return 0;
     return price.price;
   }
-  deleteItem(id: any) {
-    this.items = this.items.filter((i) => { return i.id != id });
+  getPriceLists() {
+    this._orderService.getPriceLists()
+      .subscribe(
+      res => {
+        var data = res.data;
+        this.allPriceLists = res.data;
+        var array = [];
+        data.forEach(d => {
+          var option = { label: d.name, value: d._id }
+          array.push(option)
+        })
+        this.priceLists = array;
+      },
+      error => {
+        console.log(error)
+      }
+      )
+  }
+  getProductTypes() {
+    this._orderService.getProductTypes()
+      .subscribe(
+      res => {
+        var data = res.data;
+        var array = [];
+        data.forEach(d => {
+          var option = { label: d.name, value: d._id }
+          array.push(option)
+        })
+        this.productTypes = array;
+      },
+      error => {
+        console.log(error)
+      }
+      )
+  }
+  getRegions() {
+    this._selectsService.getCountryData()
+      .subscribe(
+      res => {
+        var data = res.data;
+        this.allRegions = data;
+        var array = [];
+        data.forEach(d => {
+          var option = { label: d.departamento, value: d.departamento }
+          array.push(option)
+        })
+        this.regions = array;
+      },
+      error => {
+
+      }
+      )
+  }
+  getVehicles() {
+    this._selectsService.getVehicleToAsign(this.order.type)
+      .subscribe(
+        res => {
+          if(res.done) {
+            var data = res.data;
+            data.forEach(d => { 
+              var data = res.data;
+              var array = [];
+              data.forEach(d => {
+                var option = { label: d.licensePlate, value: d._id }
+                array.push(option)
+              })
+              this.vehicles = array;
+            })
+          }
+        },
+        error => {
+          console.log(error)
+        }
+      )
+  }
+  markerDragEnd(event) {
+    console.log('markerDragEnd', { event })
+    var coords = event.coords;
+    this.order.lat = coords.lat;
+    this.order.lng = coords.lng;
+    this.findAddress();
+  }
+  onBlur() {
+    var order = this.order;
+    if (order.address && order.region && order.city)
+      this.findCoords();
+    else {
+      this.order.lat = null; this.order.lng = null;
+    }
+  }
+  onCancel () {
+    this._location.back();
+  }
+  onCreatePriceList(pl) {
+    console.log('recibiendo stored', pl)
+    this.getPriceLists();
+    var self = this;
+    setTimeout(function() {
+      self.selectedPriceList = pl._id;
+      self.selectedPriceListName = pl.name;
+      self.order.priceList = pl._id;
+      self.selectedPrices = pl.items;
+      self.updatePrices ();
+    }, 500);
+    
+
+  }
+  onDeselectCity(city) {
+    this.selectedCity = null;
+    this.onBlur()
+  }
+  onDeselectPriceList (pl) {
+    this.selectedPriceList = null;
     this.updatePrices();
   }
-
-  seeList(list) { 
-    this._swal2.confirm({ title: 'Titulo', text: 'Message' })
-          .then(
-            res => console.log(res),
-            cancel => { console.log(cancel) }
-          )
+  onDeselectProductType (pt) {
+    this.selectedProductType = null;
   }
+  onDeselectRegion(region) {
+    this.selectedRegion = null;
+    this.getCities()
+  }
+  onDeselectVehicle (v) {
+    this.selectedVehicle = null;
+  }
+  onSelectCity(city) {
+    this.selectedCity = city;
+    this.onBlur()
+  }
+  onSelectPriceList (pl) {
+    this.selectedPriceList = pl.value;
+    this.selectedPriceListName = pl.label;
+    this.order.priceList = pl.value;
+    var selected = Enumerable.from(this.allPriceLists)
+                    .where(w => { return w._id == pl.value })
+                    .firstOrDefault ();
+    this.selectedPrices = selected.items;
+    this.updatePrices ();
+  }
+  onSelectProductType (pt) {
+    this.selectedProductType = pt.label;
+  }
+  onSelectRegion(region) {
+    this.selectedRegion = region;
+    this.getCities()
+  }
+  onSelectVehicle (v) {
+    this.selectedVehicle = v.value;
+  }
+  onSubmit() {
+    console.log(this.items)
+    if (this.items.length == 0) {
+      this._notificationService.error('Error', 'Debe ingresar al menos 1 ítem');
+      return;
+    }
 
+    var strItems = JSON.stringify(this.items);
+    this.order.items = strItems;
+
+    this._orderService.postOrder(this.order)
+      .subscribe(res => {
+        console.log(res);
+        if(res.done){
+          this._swal2.success({
+            title: 'Ingresado',
+            text: res.message
+          })
+          .then(
+            ok => this.onCancel(),
+            no => this.onCancel()
+          )
+          this.setDefaultData();
+          
+        } else {
+          this._swal2.error({
+            title: 'Error',
+            text: res.message
+          }).then(ok => this.onCancel(), no => this.onCancel())
+        }
+        
+      }, error => {
+        console.log(error)
+        this._swal2.error({
+            title: 'Error',
+            text: 'Ha ocurrido un error'
+          }).then(ok => this.onCancel(), no => this.onCancel())
+      })
+
+    
+  }
+  onSubmitDetail() {
+    this.addItem()
+  }
+  open(content) {
+    this.modalService.open(content, { size: 'lg' })
+        .result.then((result) => {
+          //this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+  }
   searchClosest () {
     if(this.order.lat && this.order.lng) {
-      var requestId = Math.random().toString(36).slice(2);
-      //var requestId = '5hdx2znvohx'
+      //var requestId = Math.random().toString(36).slice(2);
+      var requestId = '5hdx2znvohx'
+
       this._orderService
           .requestClosest(requestId, this.order.lat, this.order.lng)
           .subscribe(
@@ -404,7 +435,7 @@ export class OrderCreateComponent implements OnInit {
               if(res.done) {
                 this._swal2.swal({
                   title: 'Buscando',
-                  text: 'Buscando vehículos cercanos a ' + this.order.address + '... Espere por favor',
+                  text: 'Buscando vehículos cercanos a ' + this.order.address + '... Espere ' + this.delaySearch / 1000 + ' segundos por favor',
                   timer: 10000,
                   showCancelButton: true,
                   showConfirmButton: false,
@@ -466,7 +497,7 @@ export class OrderCreateComponent implements OnInit {
               }
             },
             error => {
-
+              console.log('error', error)
             })
       
     } else {
@@ -482,33 +513,13 @@ export class OrderCreateComponent implements OnInit {
     
     
   }
-
-  // ORDER
-  onSubmit() {
-    console.log(this.items)
-    if (this.items.length == 0) {
-      this._notificationService.error('Error', 'Debe ingresar al menos 1 ítem');
-      return;
-    }
-
-    var strItems = JSON.stringify(this.items);
-    this.order.items = strItems;
-
-    this._orderService.postOrder(this.order)
-      .subscribe(res => {
-        console.log(res);
-        if(res.done){
-          this.setDefaultData();
-          
-        } else {
-          
-        }
-        
-      }, error => console.log(error))
-
-    
+  seeList(list) { 
+    this._swal2.confirm({ title: 'Titulo', text: 'Message' })
+          .then(
+            res => console.log(res),
+            cancel => { console.log(cancel) }
+          )
   }
-
   setDefaultData() {
     if (this.selectedRegion && this.selectedCity) {
       this._userService.setRegionLocalUser(this.selectedRegion);
@@ -516,27 +527,13 @@ export class OrderCreateComponent implements OnInit {
     }
 
   }
-
-
-  open(content) {
-    this.modalService.open(content, { size: 'lg' })
-        .result.then((result) => {
-          //this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
+  updatePrices () {
+    if(!this.items) return;
+    this.totalToPay = 0;
+    this.items.forEach(element => {
+      element.price = this.getPrice (element)
+      this.totalToPay = this.totalToPay + (element.price * element.quantity);
+    });
   }
- 
-
-  // closeResult: string;
-  // private getDismissReason(reason: any): string {
-  //   if (reason === ModalDismissReasons.ESC) {
-  //     return 'by pressing ESC';
-  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-  //     return 'by clicking on a backdrop';
-  //   } else {
-  //     return  `with: ${reason}`;
-  //   }
-  // }
 }
 

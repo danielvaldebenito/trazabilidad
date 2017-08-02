@@ -25,6 +25,7 @@ import { UsersService } from './services/users.service';
 import { VehicleService } from './services/vehicles.service';
 import { OrderService } from './services/order.service';
 import { PriceListService } from './services/price-list.service';
+import { FoliosService } from './services/folios.service';
 import { PagerService } from './services/pager.service';
 import { SelectsService } from './services/selects.service';
 import { GoogleMapService }  from './services/googlemap.service';
@@ -60,6 +61,9 @@ import { DependencesListComponent } from './components/dependences/dependences-l
 // entorno
 import { environment } from '../environments/environment';
 import { DependencesDetailComponent } from './components/dependences/dependences-detail/dependences-detail.component';
+import { FoliosComponent } from './components/folios/folios.component';
+import { FoliosNewComponent } from './components/folios/folios-new/folios-new.component';
+import { FoliosListComponent } from './components/folios/folios-list/folios-list.component';
 
 
 
@@ -90,7 +94,10 @@ import { DependencesDetailComponent } from './components/dependences/dependences
     DependencesNewComponent,
     DependencesEditComponent,
     DependencesListComponent,
-    DependencesDetailComponent
+    DependencesDetailComponent,
+    FoliosComponent,
+    FoliosNewComponent,
+    FoliosListComponent
   ],
   imports: [
     FormsModule,
@@ -119,6 +126,7 @@ import { DependencesDetailComponent } from './components/dependences/dependences
     VehicleService,
     NewPassComponent,
     PriceListService,
+    FoliosService,
     PagerService, 
     SelectsService, 
     OrderService, 

@@ -1,14 +1,12 @@
-<br>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div class="container-fluid">
+    <div class="col">
         <div class="page-header d-flex p-2 flex-row justify-content-between align-items-center">
+          <fa name="phone" size="2x"></fa>
           <h1>Pedidos</h1>
           <a class="btn btn-outline-primary" routerLink="/order/create">
             <fa name="plus"></fa> NUEVO</a>
         </div>
-      </div>
       <div class="card">
         <div class="card-block">
           <input type="text" class="form-control-filter" #filter placeholder="Buscar" (keyup)="onKey(filter.value)">
@@ -19,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row principal">
     <div class="col-12 col-sm-12 col-md-12 col-lg-6" *ngIf="single && single.length">
       <div class="card" style="padding: 10px;">
         <div id="parent-chart" class="card-block d-flex flex-row justify-content-center">

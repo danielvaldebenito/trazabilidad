@@ -23,7 +23,7 @@ export class OrderService {
 
   getOrders (state: string, filter: string, date: Date, limit: number = 200, page: number = 1, sidx? : string, sord?: number) {
     console.log('servicio orders', {state, filter, date, limit, page })
-    var myDistributor = this._userService.getUserIdentity().distributor;
+    var myDistributor = this.user.distributor._id;
         var url = this.url + 'order/' + myDistributor;
         var params = { 
           filter: filter, 

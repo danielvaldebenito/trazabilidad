@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div class="page-header d-flex flex-row justify-content-between align-items-center">
+        <fa name="sort-numeric-asc" size="2x"></fa>
+        <h1>Folios</h1>
+        <a class="btn btn-outline-primary" routerLink="/folios/new">
+          <fa name="plus"></fa> NUEVO</a>
+      </div>
+    </div>
+  </div>
+  <div class="row"  *ngIf="folios && folios.length">
+    <div class="col">
+      <div class="card">
+        <div class="card-block">
+          <input type="number" class="form-control-filter" [(ngModel)]="filter" (keyup)="onKey()" placeholder="Buscar código...">
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-folios-list  *ngIf="folios && folios.length" [folios]="folios" (onDeleteOne)="onDelete()"></app-folios-list>
+  <div class="row principal" *ngIf="!folios || !folios.length">
+    <div class="col">
+      <div class="card">
+        <div class="card-block text-center">
+          No hay folios aún
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

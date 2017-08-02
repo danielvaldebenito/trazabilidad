@@ -1,0 +1,35 @@
+<div class="row principal">
+  <div class="col">
+    <div class="card" *ngFor="let f of folios">
+      <div class="card-block">
+        <div class="row">
+          <div class="col">
+            <table class="table table-sm table-hover table-details">
+              <tbody>
+                <tr>
+                  <th>INICIO</th>
+                  <td>{{ f.start }}</td>
+                </tr>
+                <tr>
+                  <th>FIN</th>
+                  <td>{{ f.end }}</td>
+                </tr>
+                <tr>
+                  <th>PROGRESO</th>
+                  <td>
+                    <ngb-progressbar showValue="true" [value]="f.percent" [max]="100"></ngb-progressbar>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer" *ngIf="f.percent == 0">
+        <button type="button" class="btn btn-outline-danger" (click)="tryDelete(f._id)">
+          <fa name="trash"></fa>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

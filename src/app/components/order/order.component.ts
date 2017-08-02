@@ -48,6 +48,7 @@ export class OrderComponent implements OnInit {
         .subscribe(
           res => {
             if (res.done) {
+              this.single = []
               var data = res.data;
               data.forEach((element, i) => {
                 this.single.push({ name: element._id, value: element.count })

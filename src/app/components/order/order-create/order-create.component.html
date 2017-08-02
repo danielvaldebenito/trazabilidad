@@ -45,41 +45,51 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group" [ngClass]="{'has-success': !region.errors, 'has-danger': region.errors && (region.dirty || region.touched) }">
-                    <label class="form-control-label">{{ regionName }}</label>
-                    <ng-select #region="ngModel" name="region" filterPlaceholder="Buscar {{ regionName }}..." notFoundMsg="No se encontró ningún {{ regionName }}"
-                      highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione..." [options]="regions" [allowClear]="true"
-                      [noFilter]="5" required (selected)="onSelectRegion($event)" (deselected)="onDeselectRegion($event)" [(ngModel)]="order.region">
-                    </ng-select>
-                    <div class="form-control-feedback">
-                      <div *ngIf="region.errors && (region.dirty || region.touched)" class="danger">
-                        <div [hidden]="!region.errors.required">
-                          Ingrese {{ regionName }} para el pedido
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group" [ngClass]="{'has-success': !region.errors, 'has-danger': region.errors && (region.dirty || region.touched) }">
+                        <label class="form-control-label">{{ regionName }}</label>
+                        <ng-select #region="ngModel" name="region" filterPlaceholder="Buscar {{ regionName }}..." notFoundMsg="No se encontró ningún {{ regionName }}"
+                          highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione {{ regionName }}..." [options]="regions"
+                          [allowClear]="true" [noFilter]="5" required (selected)="onSelectRegion($event)" (deselected)="onDeselectRegion($event)"
+                          [(ngModel)]="order.region">
+                        </ng-select>
+                        <div class="form-control-feedback">
+                          <div *ngIf="region.errors && (region.dirty || region.touched)" class="danger">
+                            <div [hidden]="!region.errors.required">
+                              Ingrese {{ regionName }} para el pedido
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group" [ngClass]="{'has-success': !city.errors, 'has-danger': city.errors && (city.dirty || city.touched) }">
+                        <label class="form-control-label">{{ cityName }}</label>
+                        <ng-select #city="ngModel" name="city" filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró ningún {{ cityName }}"
+                          highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione {{ cityName }}..." [options]="cities"
+                          [allowClear]="true" [noFilter]="5" required (selected)="onSelectCity($event)" (deselected)="onDeselectCity($event)"
+                          [(ngModel)]="order.city">
+                        </ng-select>
+                        <div class="form-control-feedback">
+                          <div *ngIf="city.errors && (city.dirty || city.touched)" class="danger">
+                            <div [hidden]="!city.errors.required">
+                              Ingrese {{ cityName }} para el pedido
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group" [ngClass]="{'has-success': !city.errors, 'has-danger': city.errors && (city.dirty || city.touched) }">
-                    <label class="form-control-label">{{ cityName }}</label>
-                    <ng-select #city="ngModel" name="city" filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró ningún {{ cityName }}"
-                      highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione..." [options]="cities" [allowClear]="true"
-                      [noFilter]="5" required (selected)="onSelectCity($event)" (deselected)="onDeselectCity($event)" [(ngModel)]="order.city">
-                    </ng-select>
-                    <div class="form-control-feedback">
-                      <div *ngIf="city.errors && (city.dirty || city.touched)" class="danger">
-                        <div [hidden]="!city.errors.required">
-                          Ingrese {{ cityName }} para el pedido
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
+
                   <div class="form-group">
-                    <label class="form-control-label"><h5>Vehículo asignado</h5> </label>
+                    <label class="form-control-label">Vehículo asignado</label>
                     <label id="lbl-chk" class="custom-control custom-checkbox">
-                          <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input" (change)="vehicle.clear()">
-                          <span class="custom-control-indicator"></span>
-                          <span class="custom-control-description"> Lo asignaré más tarde</span>
-                        </label>
+                      <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input" (change)="vehicle.clear()">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description"> Lo asignaré más tarde</span>
+                    </label>
                     <div class="input-group">
                       <ng-select #vehicle name="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo" highlightColor="#37424A"
                         highlightTextColor="#fff" placeholder="{{ order.after ? 'Lo asignaré más tarde': 'Seleccione vehículo'}}"
@@ -105,12 +115,12 @@
                         [allowClear]="true" [noFilter]="5" (selected)="onSelectPriceList($event)" (deselected)="onDeselectPriceList($event)"
                         [(ngModel)]="order.priceList">
                       </ng-select>
-                      <span class="input-group-addon" (click)="open(newpl)">
-                          <fa name="plus"></fa>
-                        </span>
-                      <span *ngIf="order.priceList" class="input-group-addon" (click)="open(content)">
-                          <fa name="eye"></fa>
-                        </span>
+                      <button type="button" class="btn btn-outline-primary" (click)="open(newpl)">
+                        <fa name="plus"></fa>
+                      </button>
+                      <button type="button" *ngIf="order.priceList" class="btn btn-outline-secondary" (click)="open(content)">
+                        <fa name="eye"></fa>
+                      </button>
                     </div>
 
                   </div>
@@ -190,7 +200,7 @@
                 </div>
               </div>
             </form>
-            
+
           </div>
         </div>
         <div class="card-footer">
@@ -228,5 +238,3 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
   </div>
 </ng-template>
-
-
