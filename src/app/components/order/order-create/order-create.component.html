@@ -28,23 +28,55 @@
                   </div>
                 </div>
               </div>
-              <div class="row d-flex align-items-center">
-                <div class="col" [ngClass]="{'col-12 col-md-6 col-sm-12': order.lat && order.lng}">
-                  <div class="form-group" [ngClass]="{'has-success': !address.errors, 'has-danger': address.errors && (address.dirty || address.touched) }">
-                    <label class="form-control-label" for="">Dirección (*)</label>
-                    <ng2-completer #address="ngModel" name="address" matchClass="match" inputClass="form-control" [(ngModel)]="order.address"
-                      [datasource]="addresses" [minSearchLength]="2" inputName="address" textNoResults="Sin coincidencias. Se creará nuevo registro"
-                      textSearching="Buscando..." placeholder="Busque una dirección ya existente o ingrese una nueva" autoMatch="true"
-                      (blur)="onBlur()" required>
-                    </ng2-completer>
+              <hr>
+              <div class="text-center">
+                <h5> CLIENTE </h5>
+              </div>
+              <div class="row">
+                <div class="col">
+              <div class="form-group" [ngClass]="{'has-success': !search.errors && order.client, 'has-danger': (search.errors || !order.client ) && (search.dirty || search.touched) }">
+                    <label class="form-control-label">Cliente (*)</label>
+                    <ng2-completer required #search="ngModel" [(ngModel)]="searchStr" name="searchStr" (selected)="onSearchClient($event)" matchClass="match"
+                      inputClass="form-control" [datasource]="dataService" [minSearchLength]="1" textNoResults="Sin coincidencias."
+                      textSearching="Buscando Clientes..." placeholder="Busqueda rápida de cliente por nit, nombre, dirección, ciudad, etc"
+                      autoMatch="false"></ng2-completer>
                     <div class="form-control-feedback">
-                      <div *ngIf="address.errors && (address.dirty || address.touched)" class="danger">
-                        <div [hidden]="!address.errors.required">
-                          Ingrese la dirección para el pedido
+                      <div *ngIf="search.errors && (search.dirty || search.touched)" class="danger">
+                        <div [hidden]="!search.errors.required">
+                          Ingrese el cliente que realiza el pedido. Si no lo encuentra, intente crear uno nuevo
                         </div>
+                      </div>
+                      <div [hidden]="order.client || !search.valid">
+                        Para crear un cliente nuevo, presione el botón "NUEVO CLIENTE", o "NUEVO RÁPIDO" para hacerlo con los datos ya ingresados
                       </div>
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group" [ngClass]="{'has-success': !address.errors, 'has-danger': address.errors && (address.dirty || address.touched) }">
+                        <label class="form-control-label" for="">Dirección (*)</label>
+                        <ng2-completer #address="ngModel" name="address" matchClass="match" inputClass="form-control" [(ngModel)]="order.address"
+                          [datasource]="addresses" [minSearchLength]="2" inputName="address" textNoResults="Sin coincidencias. Se creará nuevo registro"
+                          textSearching="Buscando..." placeholder="Busque una dirección ya existente o ingrese una nueva" autoMatch="true"
+                          (blur)="onBlur()" required>
+                        </ng2-completer>
+                        <div class="form-control-feedback">
+                          <div *ngIf="address.errors && (address.dirty || address.touched)" class="danger">
+                            <div [hidden]="!address.errors.required">
+                              Ingrese la dirección para el pedido
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group">
+                        <label class="form-control-label" for="">Teléfono (*)</label>
+                        <input type="text" #phone="ngModel" [(ngModel)]="order.phone" name="phone" class="form-control" placeholder="Teléfono">
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="row">
                     <div class="col">
                       <div class="form-group" [ngClass]="{'has-success': !region.errors, 'has-danger': region.errors && (region.dirty || region.touched) }">
@@ -81,15 +113,51 @@
                       </div>
                     </div>
                   </div>
-
-
+                </div>
+              </div>
+              <div class="row">
+                <div class="col" [hidden]="selectedClient">
+                  <button type="button" ngbTooltip="Buscar cliente" class="btn btn-secondary btn-block" (click)="open(listClient)">
+                    <fa name="search"></fa> BUSCAR 
+                  </button>
+                </div>
+                <div class="col" [hidden]="!selectedClient">
+                  <button type="button" ngbTooltip="Ver datos del cliente seleccionado" class="btn btn-secondary btn-block" (click)="open(viewClient)">
+                    <fa name="eye"></fa> VER 
+                  </button>
+                </div>
+                <div class="col" [hidden]="!selectedClient">
+                  <button type="button" ngbTooltip="Borrar cliente seleccionado" class="btn btn-outline-danger btn-block" (click)="resetClient()">
+                    <fa name="times"></fa> LIMPIAR 
+                  </button>
+                </div>
+                <div class="col">
+                  <button type="button" ngbTooltip="Borrar cliente seleccionado" class="btn btn-primary btn-block" (click)="open(newClient)">
+                    <fa name="user-plus"></fa> NUEVO CLIENTE 
+                  </button>
+                </div>
+                <div class="col" [hidden]="!(order.lat && order.lng && !order.client)">
+                  <button type="button" ngbTooltip="Crear cliente anónimo con dirección" class="btn btn-outline-primary btn-block" (click)="newClientQuick()">
+                    <fa name="bolt"></fa> NUEVO RÁPIDO 
+                  </button>
+                </div>
+                <div class="col" [hidden]="!(order.lat && order.lng)">
+                  <button type="button" ngbTooltip="Ver mapa con ubicación encontrada" class="btn btn-outline-info btn-block" (click)="open(map)">
+                    <fa name="map"></fa> MAPA 
+                  </button>
+                </div>
+              </div>
+              <hr>
+              <div class="text-center">
+                <h5>VEHÍCULO Y PRECIOS</h5>
+              </div>
+              
+              <div class="row d-flex align-items-stretch">
+                
+                <div class="col align-items-start">
                   <div class="form-group">
                     <label class="form-control-label">Vehículo asignado</label>
-                    <label id="lbl-chk" class="custom-control custom-checkbox">
-                      <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input" (change)="vehicle.clear()">
-                      <span class="custom-control-indicator"></span>
-                      <span class="custom-control-description"> Lo asignaré más tarde</span>
-                    </label>
+                    
                     <div class="input-group">
                       <ng-select #vehicle name="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo" highlightColor="#37424A"
                         highlightTextColor="#fff" placeholder="{{ order.after ? 'Lo asignaré más tarde': 'Seleccione vehículo'}}"
@@ -105,8 +173,14 @@
                         </div>
                       </div>
                     </div>
-
+                    <label class="custom-control custom-checkbox">
+                      <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input" (change)="vehicle.clear()">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description"> Lo asignaré más tarde</span>
+                    </label>
                   </div>
+                </div>
+                <div class="col align-items-start">
                   <div class="form-group">
                     <label class="form-control-label">Lista de Precios a utilizar</label>
                     <div class="input-group">
@@ -125,16 +199,29 @@
 
                   </div>
                 </div>
-                <div class="col" *ngIf="order.lat && order.lng">
-                  <agm-map [latitude]="order.lat" [longitude]="order.lng" [zoom]="zoom" [minZoom]="minZoom">
-                    <agm-marker [latitude]="order.lat" [longitude]="order.lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)">
-                    </agm-marker>
-                  </agm-map>
+                <div class="col align-items-start">
+                  <div class="form-group">
+                    <label class="form-control-label">Forma de Pago</label>
+                    <ng-select #payMethod="ngModel" name="payMethod" filterPlaceholder="Buscar forma de pago..." notFoundMsg="No se encontró ninguna forma de pago"
+                      highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione forma de pago" [options]="payMethods"
+                      [allowClear]="true" [noFilter]="5"
+                      [(ngModel)]="order.payMethod">
+                    </ng-select>
+                  </div>
                 </div>
+              </div>
+              <hr>
+              <div class="text-center">
+                <h5>OBSERVACIÓN</h5>
+              </div>
+              <div class="form-group">
+                <textarea #obs [(ngModel)]="order.observation" name="observation" class="form-control" rows="2" placeholder="Ingrese alguna observación (Opcional)"></textarea>
               </div>
             </form>
             <hr>
-            <h5>Detalle</h5>
+            <div class="text-center">
+              <h5>DETALLE</h5>
+            </div>
             <form novalidate #formDetail="ngForm" (ngSubmit)="onSubmitDetail()">
               <div class="row d-flex flex-row justify-content-center align-items-center">
                 <div class="col">
@@ -156,7 +243,7 @@
                 <div class="col">
                   <button id="add" class="btn btn-outline-primary btn-block align-self-end" type="submit" [disabled]="!formDetail.form.valid">
                   <fa name="plus"></fa>
-                  Agregar
+                  AGREGAR
                 </button>
                 </div>
 
@@ -164,24 +251,28 @@
               <span class="text-danger" *ngIf="errorMessageItems">{{ errorMessageItems }}</span>
               <div class="row" *ngIf="items && items.length">
                 <div class="col">
-                  <table class="table table-resposive thead-inverse table-striped table-bordered table-hover table-sm">
+                  <table class="table table-resposive table-striped table-bordered table-hover table-sm">
                     <thead>
                       <tr>
-                        <th>Producto</th>
-                        <th>Cantidad {{ order.type == 'GRANEL' ? 'Litros' : '' }}</th>
-                        <th>Valor Unit.</th>
-                        <th>Valor Total.</th>
-                        <th></th>
+                        <th class="text-center">PRODUCTO</th>
+                        <th class="text-center">{{ order.type == 'GRANEL' ? 'LITROS' : 'CANTIDAD' }}</th>
+                        <th class="text-center"><fa name="usd"></fa> UNIT.</th>
+                        <th class="text-center"><fa name="minus-circle"></fa></th>
+                        <th class="text-center"><fa name="plus-circle"></fa></th>
+                        <th class="text-center"><fa name="usd"></fa> PARCIAL</th>
+                        <th class="text-center"></th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let i of items">
                         <td>{{ i.productTypeName }}</td>
-                        <td>{{ i.quantity }}</td>
-                        <td>{{ i.price }}</td>
-                        <td>{{ i.price * i.quantity }}</td>
+                        <td class="text-center">{{ i.quantity }}</td>
+                        <td class="text-center">{{ i.price }}</td>
+                        <td class="text-center">{{ i.discount }}</td>
+                        <td class="text-center">{{ i.surcharge }}</td>
+                        <td class="text-center">{{ (i.price - i.discount + i.surcharge) * i.quantity }}</td>
                         <td class="text-center">
-                          <button class="btn btn-outline-danger" (click)="deleteItem(i.id)">
+                          <button class="btn btn-outline-danger btn-sm" (click)="deleteItem(i.id)">
                           <fa name="trash"></fa>
                         </button>
                         </td>
@@ -191,8 +282,10 @@
                       <tr>
                         <th></th>
                         <th></th>
+                        <th></th>
+                        <th></th>
                         <th>TOTAL: </th>
-                        <th>{{ totalToPay }}</th>
+                        <th class="text-center">{{ totalToPay }}</th>
                         <th></th>
                       </tr>
                     </tfoot>
@@ -200,11 +293,10 @@
                 </div>
               </div>
             </form>
-
           </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-primary btn-block" [disabled]="!form.form.valid" (click)="onSubmit()"> <fa name="save"></fa> GUARDAR </button>
+          <button class="btn btn-primary btn-block" [disabled]="!form.form.valid || !order.client" (click)="onSubmit()"> <fa name="save"></fa> GUARDAR </button>
         </div>
       </div>
     </div>
@@ -233,6 +325,69 @@
   </div>
   <div class="modal-body">
     <app-price-list-new [fromModal]="true" (onSubmitForm)="c('Close on submit'); onCreatePriceList($event)"></app-price-list-new>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #map let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ order.address }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <agm-map [latitude]="order.lat" [longitude]="order.lng" [zoom]="zoom" [minZoom]="minZoom">
+      <agm-marker [latitude]="order.lat" [longitude]="order.lng" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)">
+      </agm-marker>
+    </agm-map>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #viewClient let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ selectedClient.fullname }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-clients-detail [client]="selectedClient"></app-clients-detail>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #newClient let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Complete los datos</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-clients-new [fromModal]="true" (submitForm)="c(''); onCreateNewClient($event)"></app-clients-new>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #listClient let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Clientes</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-clients [fromModal]="true" (selected)="c(''); onSelectClient($event)"></app-clients>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>

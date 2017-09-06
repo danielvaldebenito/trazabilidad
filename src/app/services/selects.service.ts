@@ -51,5 +51,14 @@ export class SelectsService {
         return this._http.get(url, { headers: this.headers})
                     .map(res => res.json())
     }
-    
+    getOrderStates () {
+        var url = this.url + 'order-states/'
+        return this._http.get(url, { headers: this.headers})
+                    .map(res => res.json())
+    }
+    getPayMethods () {
+        var url = this.url + 'pay-methods/'
+        return this._http.get(url, { headers: this.headers})
+                    .map(res => res.json())
+    }
 }

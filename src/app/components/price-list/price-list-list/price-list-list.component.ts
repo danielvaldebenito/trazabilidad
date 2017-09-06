@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common';
 import { PriceListService } from '../../../services/price-list.service';
 @Component({
   selector: 'app-price-list-list',
   templateUrl: './price-list-list.component.html',
-  styleUrls: ['./price-list-list.component.css']
+  styleUrls: ['./price-list-list.component.css'],
+  providers: [SweetAlertService]
 })
 export class PriceListListComponent implements OnInit {
   @Input() priceLists : any [];

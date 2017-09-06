@@ -1,9 +1,10 @@
-agm-map {
-  height: 400px;
-}
+
 #add {
     margin-top: 10px;
 }
 #lbl-chk {
   float: right;
+}
+.input-group .form-control {
+  width: 100% !important
 }

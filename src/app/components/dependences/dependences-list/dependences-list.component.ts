@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
-import { SweetAlertService } from 'ng-sweetalert2-slc'
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common'
 import { DependencesService } from '../../../services/dependences.service'
 
 @Component({
   selector: 'app-dependences-list',
   templateUrl: './dependences-list.component.html',
-  styleUrls: ['./dependences-list.component.css']
+  styleUrls: ['./dependences-list.component.css'],
+  providers: [SweetAlertService]
 })
 export class DependencesListComponent implements OnInit {
   @Input() dependences: any[]

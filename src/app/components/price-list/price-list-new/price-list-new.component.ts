@@ -1,13 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common';
 import { OrderService } from '../../../services/order.service';
 import { PriceListService } from '../../../services/price-list.service';
 @Component({
   selector: 'app-price-list-new',
   templateUrl: './price-list-new.component.html',
-  styleUrls: ['./price-list-new.component.css']
+  styleUrls: ['./price-list-new.component.css'],
+  providers: [SweetAlertService]
 })
 export class PriceListNewComponent implements OnInit {
   @Input() fromModal: boolean = false;
@@ -57,7 +58,6 @@ export class PriceListNewComponent implements OnInit {
 
   onSubmit() {
     var json = this.plForm.value;
-    json.items = JSON.stringify(json.items)
     this._plService.postPriceList(json)
         .subscribe(
           res => {

@@ -1,0 +1,16 @@
+<div class="card-columns">
+  <div class="card" *ngFor="let client of clients">
+    <div class="card-header" [ngClass]="{'destacado': filter && (client.fullname).toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.fullname }}</div>
+    <div class="card-block">
+      <app-clients-detail [client]="client" [filter]="filter"></app-clients-detail>
+    </div>
+    <div class="card-footer">
+      <button type="button" *ngIf="!fromModal" class="btn btn-outline-primary" [routerLink]="['/clients/edit/', client._id]">
+        <fa name="pencil"></fa> EDITAR
+      </button>
+      <button type="button" *ngIf="fromModal" class="btn btn-outline-primary" (click)="onSelectClient(client)">
+        <fa name="check"></fa> SELECCIONAR
+      </button>
+    </div>
+  </div>
+</div>

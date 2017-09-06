@@ -1,7 +1,9 @@
+import {environment} from '../environments/environment'
 export var GLOBAL = {
-    apiUrl: 'http://localhost:3548/api/',
+    apiUrl: environment.apiUrl,
     country: 'Colombia',
     company: 'Unigas',
     regionName: 'Departamento', // Region
-    cityName: 'Ciudad' // Comuna
+    cityName: 'Ciudad', // Comuna
+    maxItemsOrder: 4
 }

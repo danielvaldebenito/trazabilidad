@@ -3,44 +3,49 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SelectsService } from '../../../services/selects.service';
 import { UserService } from '../../../services/user.service';
+import { ClientsService } from '../../../services/clients.service';
 import { OrderService } from '../../../services/order.service';
 import { VehicleService } from '../../../services/vehicles.service';
 import { AddressService } from '../../../services/addresses.service';
 import { GoogleMapService } from '../../../services/googlemap.service';
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { NotificationsService } from 'angular2-notifications';
-import { IOption } from 'ng-select'
+import { IOption } from 'ng-select';
 import { GLOBAL } from '../../../global';
 import * as Enumerable from 'linq';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-
+import { CompleterService, CompleterData, RemoteData } from 'ng2-completer';
+import { Headers, RequestOptions } from '@angular/http'
 
 @Component({
   selector: 'app-order-create',
   templateUrl: './order-create.component.html',
-  styleUrls: ['./order-create.component.css']
+  styleUrls: ['./order-create.component.css'],
+  providers: [SweetAlertService]
 })
 export class OrderCreateComponent implements OnInit {
 
   regionName = GLOBAL.regionName;
   cityName = GLOBAL.cityName;
   // order
-  order: any = { type: 'ENVASADO', commitmentDate: '04-07-2017' }
+  order: any = { type: 'ENVASADO', commitmentDate: '04-07-2017' };
   // selects
-  allRegions: any[]
-  allPriceLists: any[]
-  regions: Array<IOption> = []
-  cities: Array<IOption> = []
-  productTypes: Array<IOption> = []
-  vehicles: Array<IOption> = []
-  priceLists: Array<IOption> = []
-  selectedRegion: any = {}
-  selectedCity: any = {}
-  selectedProductType: any = {}
-  selectedPriceList: any = {}
-  selectedPriceListName: string
-  selectedVehicle: any = {}
-  selectedPrices: any[] = []
+  allRegions: any[];
+  allPriceLists: any[];
+  regions: Array<IOption> = [];
+  cities: Array<IOption> = [];
+  productTypes: Array<IOption> = [];
+  vehicles: Array<IOption> = [];
+  priceLists: Array<IOption> = [];
+  payMethods: Array<IOption> = [];
+  selectedRegion: any = {};
+  selectedCity: any = {};
+  selectedProductType: any = {};
+  selectedPriceList: any = {};
+  selectedPriceListName: string;
+  selectedVehicle: any = {};
+  selectedPrices: any[] = [];
+  selectedClient: any;
   // items
   items: any[] = [];
   item: any = { quantity: 1 };
@@ -51,12 +56,18 @@ export class OrderCreateComponent implements OnInit {
   minZoom: number = 14;
   //maxZoom: number = 14;
   addresses: any[] = [];
-  errorMessageItems: string
+  errorMessageItems: string;
+  
   // config 
   delaySearch: number = 10000 // 10 segundos
+  protected searchStr: string;
+  protected dataService: RemoteData;
+
+  
   constructor(
     private _selectsService: SelectsService,
     private _orderService: OrderService,
+    private _clientService: ClientsService,
     private _mapService: GoogleMapService,
     private _notificationService: NotificationsService,
     private _addressService: AddressService,
@@ -65,21 +76,33 @@ export class OrderCreateComponent implements OnInit {
     private _location: Location,
     private _router: Router,
     private _swal2: SweetAlertService,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+    private completerService: CompleterService
+  ) {
+      this.dataService = completerService
+        .remote(null, null, 'fulldata');
+      this.dataService.urlFormater(term => {
+        return `${ GLOBAL.apiUrl }clients/?filter=${term}&Authorization=${ this._userService.getToken()}`
+      })
+      this.dataService.dataField('data')
+   }
 
   ngOnInit() {
     this.getRegions();
     this.getProductTypes();
-    this.getAddresses();
     this.getVehicles();
     this.getPriceLists();
     this.getDefaultData();
-    
+    this.getPayMethods();
   }
   addItem() {
     if (this.item.quantity <= 0) {
       this.errorMessageItems = 'Ingrese una cantidad válida';
+      return;
+    }
+    var maxItemsOrder = GLOBAL.maxItemsOrder;
+    if(this.items.length >= maxItemsOrder){
+      this._notificationService.error(`Ha ingresado la cantidad máxima de ítems permitidos (${maxItemsOrder})`);
       return;
     }
     this.errorMessageItems = null;
@@ -92,11 +115,50 @@ export class OrderCreateComponent implements OnInit {
     } else {
       this.item.id = Math.random().toString(36).slice(2);
       this.item.productTypeName = this.selectedProductType;
+      var discounts = [];
+      if(this.selectedClient) {
+        discounts = this.selectedClient.discountSurcharges
+        var discountToProduct = Enumerable.from(discounts)
+                                          .where(w => { return w.productType == this.item.productType })
+                                          .firstOrDefault()
+        
+        this.item.discount = !discountToProduct ? 0 : discountToProduct.isDiscount ? discountToProduct.value : 0
+        this.item.surcharge = !discountToProduct ? 0 : !discountToProduct.isDiscount ? discountToProduct.value : 0
+      } else {
+        this.item.discount = 0
+        this.item.surcharge = 0
+      }
+
+      console.log('adding discount', this.item)
       this.items.push(this.item);
       var pt = this.item.productType;
       this.item = { quantity: 1, productType: pt, productTypeName: this.selectedProductType }
     }
     this.updatePrices();
+  }
+  onSearchClient (client) {
+    console.log('selected client', client)
+    if(!client) return;
+    var obj = client.originalObject
+    this.setClientObject(obj)
+  }
+  setClientObject (obj) {
+    console.log('selected client obj', obj)
+    this.order.address = obj.address
+    this.order.region = obj.region
+    this.selectedRegion = { label: this.order.region, value: this.order.region }
+    this.order.client = obj._id
+    this.order.phone = obj.phone
+    this.searchStr = obj.fullname
+    this.getAddresses(obj._id);
+    this.selectedClient = obj;
+    this.getCities()
+    setTimeout(() => {
+      this.order.city = obj.city
+      this.findCoords()
+    }, 100);
+    this.updateDiscountSurcharge()
+    this.updatePrices()
   }
   deleteItem(id: any) {
     this.items = this.items.filter((i) => { return i.id != id });
@@ -150,8 +212,8 @@ export class OrderCreateComponent implements OnInit {
       error => console.log(error)
       )
   }
-  getAddresses() {
-    this._addressService.getAddresses()
+  getAddresses(client?: any) {
+    this._addressService.getAddresses(client)
       .subscribe(
       res => {
         if (res.done) {
@@ -184,6 +246,24 @@ export class OrderCreateComponent implements OnInit {
     else {
       this.cities = []
     }
+  }
+  getRegions() {
+    this._selectsService.getCountryData()
+      .subscribe(
+      res => {
+        var data = res.data;
+        this.allRegions = data;
+        var array = [];
+        data.forEach(d => {
+          var option = { label: d.departamento, value: d.departamento }
+          array.push(option)
+        })
+        this.regions = array;
+      },
+      error => {
+
+      }
+      )
   }
   getDefaultData() {
     var self = this;
@@ -240,6 +320,23 @@ export class OrderCreateComponent implements OnInit {
       }
       )
   }
+  getPayMethods() {
+    this._selectsService.getPayMethods()
+      .subscribe(
+      res => {
+        var data = res.data;
+        var array = [];
+        data.forEach(d => {
+          var option = { label: d, value: d }
+          array.push(option)
+        })
+        this.payMethods = array;
+      },
+      error => {
+        console.log(error)
+      }
+      )
+  }
   getProductTypes() {
     this._orderService.getProductTypes()
       .subscribe(
@@ -257,24 +354,7 @@ export class OrderCreateComponent implements OnInit {
       }
       )
   }
-  getRegions() {
-    this._selectsService.getCountryData()
-      .subscribe(
-      res => {
-        var data = res.data;
-        this.allRegions = data;
-        var array = [];
-        data.forEach(d => {
-          var option = { label: d.departamento, value: d.departamento }
-          array.push(option)
-        })
-        this.regions = array;
-      },
-      error => {
-
-      }
-      )
-  }
+  
   getVehicles() {
     this._selectsService.getVehicleToAsign(this.order.type)
       .subscribe(
@@ -377,9 +457,7 @@ export class OrderCreateComponent implements OnInit {
       this._notificationService.error('Error', 'Debe ingresar al menos 1 ítem');
       return;
     }
-
-    var strItems = JSON.stringify(this.items);
-    this.order.items = strItems;
+    this.order.items = this.items;
 
     this._orderService.postOrder(this.order)
       .subscribe(res => {
@@ -425,8 +503,8 @@ export class OrderCreateComponent implements OnInit {
   }
   searchClosest () {
     if(this.order.lat && this.order.lng) {
-      //var requestId = Math.random().toString(36).slice(2);
-      var requestId = '5hdx2znvohx'
+      var requestId = Math.random().toString(36).slice(2);
+      //var requestId = '5hdx2znvohx'
 
       this._orderService
           .requestClosest(requestId, this.order.lat, this.order.lng)
@@ -461,7 +539,6 @@ export class OrderCreateComponent implements OnInit {
                                     })
                                     .then(
                                       response => {
-                                        console.log('res vehiculo encontrado', response)
                                         this.order.vehicle = res.data.veh._id;
                                       },
                                       cancel => {
@@ -488,7 +565,7 @@ export class OrderCreateComponent implements OnInit {
                             }
                           },
                           err => {
-                            console.log(err)
+                            console.log(err);
                           }
                         )
                     }
@@ -497,7 +574,7 @@ export class OrderCreateComponent implements OnInit {
               }
             },
             error => {
-              console.log('error', error)
+              console.log('error', error);
             })
       
     } else {
@@ -527,13 +604,81 @@ export class OrderCreateComponent implements OnInit {
     }
 
   }
+  updateDiscountSurcharge () {
+    this.items.forEach(element => {
+      var discounts = []
+      if(this.selectedClient) {
+        discounts = this.selectedClient.discountSurcharges
+        var discountToProduct = Enumerable.from(discounts)
+                                          .where(w => { return w.productType == element.productType })
+                                          .firstOrDefault()
+        
+        element.discount = !discountToProduct ? 0 : discountToProduct.isDiscount ? discountToProduct.value : 0
+        element.surcharge = !discountToProduct ? 0 : !discountToProduct.isDiscount ? discountToProduct.value : 0
+      } else {
+        element.discount = 0
+        element.surcharge = 0
+      }
+    });
+  }
   updatePrices () {
     if(!this.items) return;
     this.totalToPay = 0;
     this.items.forEach(element => {
+      
       element.price = this.getPrice (element)
-      this.totalToPay = this.totalToPay + (element.price * element.quantity);
+      console.log('updating prices', { price: element.price, surcharge: element.surcharge, discount: element.discount})
+      this.totalToPay = this.totalToPay + ((element.price + element.surcharge - element.discount) * element.quantity);
     });
+  }
+  onCreateNewClient(client) {
+    this.setClientObject(client)
+  }
+  resetClient () {
+    this.selectedClient = null;
+    this.order.address = null;
+    this.order.lat = null;
+    this.order.lng = null;
+    this.order.client = null;
+    this.order.region = null;
+    this.order.city = null;
+    this.order.phone = null;
+    this.order.placeId = null;
+    this.searchStr = null;
+    this.updateDiscountSurcharge()
+    this.updatePrices ()
+  }
+  newClientQuick () {
+    console.log('new client quick')
+    if(!this.order.lat || !this.order.lng) {
+      this._notificationService.error('Error', 'Ingrese una dirección correcta');
+      return;
+    }
+    var client = { 
+      name: this.searchStr || 'NN',
+      address: this.order.address, 
+      city: this.order.city, 
+      region: this.order.region,
+      phone: this.order.phone 
+    }
+    this._clientService.postClientsQuick(client)
+        .subscribe(res => {
+          console.log(res)
+          if(res.done) {
+            this.setClientObject(res.stored)
+            this._notificationService.success('OK', res.message)
+          } else {
+            this._notificationService.error('Error', res.message)
+          }
+            
+        }, error => {
+          this._notificationService.error('Error', 'Ha ocurrido un error')
+        })
+
+  }
+  onSelectClient(client) {
+    if(!client) return;
+    this.setClientObject(client)
   }
 }
 

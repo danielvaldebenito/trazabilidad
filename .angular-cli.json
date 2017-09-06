@@ -21,15 +21,16 @@
       "styles": [
         "styles.css",
         "../node_modules/font-awesome/css/font-awesome.css",
-        "../node_modules/sweetalert2/dist/sweetalert2.css"
+        "../node_modules/ngx-sweetalert2/node_modules/sweetalert2/dist/sweetalert2.css"
       ],
       "scripts": [
-        "../node_modules/sweetalert2/dist/sweetalert2.js"
+        "../node_modules/ngx-sweetalert2/node_modules/sweetalert2/dist/sweetalert2.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "prod": "environments/environment.prod.ts",
+        "devProd": "environments/environment.dev.ts"
       }
     }
   ],

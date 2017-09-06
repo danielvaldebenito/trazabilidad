@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms'
 import { FoliosService } from '../../../services/folios.service'
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common'
 
 function startMinorEnd (c: AbstractControl) {
@@ -11,7 +11,8 @@ function startMinorEnd (c: AbstractControl) {
 @Component({
   selector: 'app-folios-new',
   templateUrl: './folios-new.component.html',
-  styleUrls: ['./folios-new.component.css']
+  styleUrls: ['./folios-new.component.css'],
+  providers: [SweetAlertService]
 })
 export class FoliosNewComponent implements OnInit {
   form: FormGroup

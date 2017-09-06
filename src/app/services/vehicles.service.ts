@@ -20,7 +20,7 @@ export class VehicleService {
     }
 
     getVehicles (filter: string, limit: number, page: number) {
-        
+        console.log('user', this.user)
         var myDistributor = this.user.distributor._id;
         var url = this.url + 'vehicles/' + myDistributor;
         var params = { filter: filter, limit: limit, page: page }
@@ -31,6 +31,7 @@ export class VehicleService {
     postVehicle (vehicle: any) {
         var url = this.url + 'vehicle/';
         var params = vehicle;
+        params.distributor = this.user.distributor._id
         return this._http.post(url, params, { headers: this.headers })
                         .map(res => res.json());
     }

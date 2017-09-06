@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FoliosService } from '../../../services/folios.service'
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2'
 @Component({
   selector: 'app-folios-list',
   templateUrl: './folios-list.component.html',
-  styleUrls: ['./folios-list.component.css']
+  styleUrls: ['./folios-list.component.css'],
+  providers: [SweetAlertService]
 })
 export class FoliosListComponent implements OnInit {
   @Input() folios: any[]

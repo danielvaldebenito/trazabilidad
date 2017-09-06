@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { VehicleService } from '../../../services/vehicles.service'
 import { SelectsService } from '../../../services/selects.service'
-import { SweetAlertService } from 'ng-sweetalert2-slc'
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common'
 import { IOption } from "ng-select"
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
@@ -9,7 +9,8 @@ import * as Enumerable from 'linq'
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+  styleUrls: ['./create.component.css'],
+  providers: [SweetAlertService]
 })
 export class CreateVehicleComponent implements OnInit {
 

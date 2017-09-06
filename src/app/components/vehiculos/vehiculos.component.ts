@@ -3,12 +3,13 @@ import { VehicleService } from '../../services/vehicles.service';
 import { SelectsService } from '../../services/selects.service';
 import { Vehicle } from '../../models/vehicle.model';
 import { PagerService } from '../../services/pager.service';
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2'
 import * as _ from 'underscore';
 @Component({
   selector: 'app-vehiculos',
   templateUrl: './vehiculos.component.html',
-  styleUrls: ['./vehiculos.component.css']
+  styleUrls: ['./vehiculos.component.css'],
+  providers: [SweetAlertService]
 })
 export class VehiculosComponent implements OnInit {
   // array of all items to be paged

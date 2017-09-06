@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common';
 import { OrderService } from '../../../services/order.service';
 import { PriceListService } from '../../../services/price-list.service';
@@ -9,7 +9,8 @@ import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: 'app-price-list-edit',
   templateUrl: './price-list-edit.component.html',
-  styleUrls: ['./price-list-edit.component.css']
+  styleUrls: ['./price-list-edit.component.css'],
+  providers: [SweetAlertService]
 })
 export class PriceListEditComponent implements OnInit {
 

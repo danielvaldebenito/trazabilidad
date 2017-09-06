@@ -17,9 +17,10 @@ export class AddressService {
         })
     }
 
-    getAddresses () {
+    getAddresses (client?) {
         var url = this.url + 'address/';
-        return this._http.get(url, { headers: this.headers })
+        var params = { client: client }
+        return this._http.get(url, { headers: this.headers, params: params })
                 .map(res => res.json());
     }
 

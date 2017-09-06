@@ -4,7 +4,7 @@ import { SelectsService } from '../../../services/selects.service';
 import { UsersService } from '../../../services/users.service';
 import { IOption } from "ng-select";
 import { NotificationsService } from 'angular2-notifications';
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { GLOBAL } from '../../../global'
@@ -21,7 +21,8 @@ function vehicleValidator (c: AbstractControl) {
 @Component({
   selector: 'app-users-edit',
   templateUrl: './users-edit.component.html',
-  styleUrls: ['./users-edit.component.css']
+  styleUrls: ['./users-edit.component.css'],
+  providers: [SweetAlertService]
 })
 export class UsersEditComponent implements OnInit {
   form: FormGroup

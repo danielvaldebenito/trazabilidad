@@ -4,17 +4,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 // external modules
 import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 import { SimpleNotificationsModule } from 'angular2-notifications';
-import { JasperoConfirmationsModule } from '@jaspero/ng2-confirmations';
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { DateTimePickerModule } from 'ng-pick-datetime';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SelectModule } from 'ng-select';
 import { AgmCoreModule } from '@agm/core';
 import { Ng2CompleterModule } from "ng2-completer";
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // routes
 import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
@@ -26,11 +27,12 @@ import { VehicleService } from './services/vehicles.service';
 import { OrderService } from './services/order.service';
 import { PriceListService } from './services/price-list.service';
 import { FoliosService } from './services/folios.service';
+import { ClientsService } from './services/clients.service';
 import { PagerService } from './services/pager.service';
 import { SelectsService } from './services/selects.service';
 import { GoogleMapService }  from './services/googlemap.service';
 import { AddressService } from './services/addresses.service';
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -57,13 +59,20 @@ import { DependencesEditComponent } from './components/dependences/dependences-e
 import { DependencesListComponent } from './components/dependences/dependences-list/dependences-list.component';
   import { PriceListListComponent } from './components/price-list/price-list-list/price-list-list.component';
   import { PriceListDetailComponent } from './components/price-list/price-list-detail/price-list-detail.component';
-
-// entorno
-import { environment } from '../environments/environment';
 import { DependencesDetailComponent } from './components/dependences/dependences-detail/dependences-detail.component';
 import { FoliosComponent } from './components/folios/folios.component';
 import { FoliosNewComponent } from './components/folios/folios-new/folios-new.component';
 import { FoliosListComponent } from './components/folios/folios-list/folios-list.component';
+import { ClientsComponent } from './components/clients/clients.component';
+import { ClientsNewComponent } from './components/clients/clients-new/clients-new.component';
+import { ClientsEditComponent } from './components/clients/clients-edit/clients-edit.component';
+import { ClientsListComponent } from './components/clients/clients-list/clients-list.component';
+import { ClientsDetailComponent } from './components/clients/clients-detail/clients-detail.component';
+
+// entorno
+import { environment } from '../environments/environment';
+import { OrderListComponent } from './components/order/order-list/order-list.component';
+import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
 
 
 
@@ -97,7 +106,14 @@ import { FoliosListComponent } from './components/folios/folios-list/folios-list
     DependencesDetailComponent,
     FoliosComponent,
     FoliosNewComponent,
-    FoliosListComponent
+    FoliosListComponent,
+    ClientsComponent,
+    ClientsNewComponent,
+    ClientsEditComponent,
+    ClientsListComponent,
+    ClientsDetailComponent,
+    OrderListComponent,
+    OrderDetailComponent
   ],
   imports: [
     FormsModule,
@@ -106,7 +122,6 @@ import { FoliosListComponent } from './components/folios/folios-list/folios-list
     BrowserModule,
     BrowserAnimationsModule,
     SimpleNotificationsModule.forRoot(),
-    JasperoConfirmationsModule,
     AngularFontAwesomeModule,
     DateTimePickerModule,
     NgxChartsModule,
@@ -115,8 +130,7 @@ import { FoliosListComponent } from './components/folios/folios-list/folios-list
     NgbModule.forRoot(),
     AgmCoreModule.forRoot({ apiKey: environment.GOOGLE_MAPS_API_KEY }),
     RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true } 
+      appRoutes, { enableTracing: true, useHash: true } 
     )
   ],
   providers: [
@@ -127,12 +141,14 @@ import { FoliosListComponent } from './components/folios/folios-list/folios-list
     NewPassComponent,
     PriceListService,
     FoliosService,
+    ClientsService,
     PagerService, 
     SelectsService, 
     OrderService, 
     GoogleMapService,
     AddressService,
     SweetAlertService
+    //{provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

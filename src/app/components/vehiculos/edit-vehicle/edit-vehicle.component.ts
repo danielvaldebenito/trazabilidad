@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { VehicleService } from '../../../services/vehicles.service'
 import { SelectsService } from '../../../services/selects.service'
-import { SweetAlertService } from 'ng-sweetalert2-slc'
+import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common'
 import { IOption } from "ng-select"
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap"
 @Component({
   selector: 'app-edit-vehicle',
   templateUrl: './edit-vehicle.component.html',
-  styleUrls: ['./edit-vehicle.component.css']
+  styleUrls: ['./edit-vehicle.component.css'],
+  providers: [SweetAlertService]
 })
 export class EditVehicleComponent implements OnInit {
 

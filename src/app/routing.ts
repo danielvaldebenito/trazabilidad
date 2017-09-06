@@ -15,7 +15,9 @@ import { DependencesComponent } from './components/dependences/dependences.compo
     import { DependencesEditComponent } from './components/dependences/dependences-edit/dependences-edit.component'
 import { FoliosComponent } from './components/folios/folios.component'
     import { FoliosNewComponent } from './components/folios/folios-new/folios-new.component'
-
+import { ClientsComponent } from './components/clients/clients.component'
+    import { ClientsNewComponent } from './components/clients/clients-new/clients-new.component'
+    import { ClientsEditComponent } from './components/clients/clients-edit/clients-edit.component'
 
 export const appRoutes: Routes = [
   { path: 'vehicles', component: VehiculosComponent },
@@ -33,5 +35,8 @@ export const appRoutes: Routes = [
   { path: 'dependences/new', component: DependencesNewComponent },
   { path: 'dependences/edit/:id', component: DependencesEditComponent },
   { path: 'folios', component: FoliosComponent },
-  { path: 'folios/new', component: FoliosNewComponent }
+  { path: 'folios/new', component: FoliosNewComponent },
+  { path: 'clients', component: ClientsComponent },
+  { path: 'clients/new', component: ClientsNewComponent },
+  { path: 'clients/edit/:id', component: ClientsEditComponent }
 ];

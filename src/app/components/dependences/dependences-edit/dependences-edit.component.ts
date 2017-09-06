@@ -3,12 +3,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { DependencesService } from '../../../services/dependences.service'
 import { UserService } from '../../../services/user.service'
 import { Location } from '@angular/common'
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2';
 import { ActivatedRoute } from '@angular/router'
 @Component({
   selector: 'app-dependences-edit',
   templateUrl: './dependences-edit.component.html',
-  styleUrls: ['./dependences-edit.component.css']
+  styleUrls: ['./dependences-edit.component.css'],
+  providers: [SweetAlertService]
 })
 export class DependencesEditComponent implements OnInit {
   form: FormGroup

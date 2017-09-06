@@ -10,7 +10,7 @@
       <input type="text" class="form-control-filter" #filter placeholder="Buscar" (keyup)="onKey(filter.value)" >
     </div>
   </div>
-  <div class="card-deck">
+  <div class="card-deck" *ngIf="allItems">
     <div class="card" style="margin:0; margin-bottom: 2px;" *ngFor="let item of allItems">
       <div class="card-header">
         <h2 class="card-title d-flex p-2 flex-row justify-content-around align-items-center" [ngClass]="{ 'granel-color': item.type == 'GRANEL'}"><fa name="truck" size="2x"></fa>{{ item.licensePlate }}</h2>

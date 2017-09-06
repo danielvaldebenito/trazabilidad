@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../services/user.service'
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms'
-import { SweetAlertService } from 'ng-sweetalert2-slc';
+import { SweetAlertService } from 'ngx-sweetalert2'
 function passwordMatcher (c: AbstractControl) {
     return c.get('newPassword').value === c.get('confirm').value
       ? null : { 'nomatch': true }
@@ -9,7 +9,8 @@ function passwordMatcher (c: AbstractControl) {
 @Component({
   selector: 'app-new-pass',
   templateUrl: './new-pass.component.html',
-  styleUrls: ['./new-pass.component.css']
+  styleUrls: ['./new-pass.component.css'],
+  providers: [SweetAlertService]
 })
 export class NewPassComponent implements OnInit {
   @Output() resetPass = new EventEmitter ();

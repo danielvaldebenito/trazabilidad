@@ -11,6 +11,10 @@
 *:not(i){
     font-family: 'Roboto', sans-serif !important;
 }
+
+.list-group-item {
+    border-color: #485563;
+}
 .navbar-inverse .navbar-nav .nav-link {
     text-transform: uppercase;
     padding: 5px 20px;
@@ -108,14 +112,47 @@
     cursor: pointer;
     text-transform: uppercase;
 }
+.btn-secondary {
+    background: var(--color-secondary);
+}
+
 .btn-outline-secondary {
     border-color: var(--color-inverse);
     color: var(--color-inverse);
+}
+.btn-refresh fa {
+    color: #FFF;
+}
+.btn-refresh:hover {
+    background: rgba(0,0,0,0.2);
+}
+.btn-secondary:disabled {
+    background: var(--color-secondary);
 }
 .btn-outline-secondary:hover {
     border-color: #FFF;
     color: #FFF;
 }
+.btn-group-justified {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate; 
+}
+  .btn-group-justified .btn,
+  .btn-group-justified .btn-group {
+        float: none;
+        display: table-cell;
+        width: 1%; 
+    }
+    .btn-group-justified .btn .btn,
+    .btn-group-justified .btn-group .btn {
+      width: 100%; 
+    }
+    .btn-group-justified .btn .dropdown-menu,
+    .btn-group-justified .btn-group .dropdown-menu {
+      left: auto; 
+    }
 .footer {
     position: fixed;
     text-align: center;
@@ -198,6 +235,9 @@ ng-select > div > div.multiple > div.option {
 }
 
 /*MAP*/
+agm-map {
+    height: 400px;
+  }
 .agm-map-container-inner.sebm-google-map-container-inner {
     border: 5px solid #FFF;
     box-shadow: 2px 2px 20px #ccc;
@@ -208,6 +248,15 @@ ng-select > div > div.multiple > div.option {
     background: var(--color-secondary);
     color: #FFF;
 }
+
+.completer-dropdown {
+    width: 100% !important;
+    font-size: 8pt !important
+}
+.completer-selected-row {
+    background: #37424A !important;
+    
+}
 .completer-selected-row:hover {
     background: #DDD !important;
     color: var(--color-secondary) !important;
@@ -216,6 +265,7 @@ ng-select > div > div.multiple > div.option {
     color: var(--color-secondary);
     width: 100%;
 }
+
 
 
 .granel-color > fa i {
@@ -274,3 +324,44 @@ ng-select > div > div.multiple > div.option {
 .progress-bar {
     color: #FFF
 }
+a:hover, a:focus {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+
+@media (min-width: 576px) {
+    .card-columns {
+         -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
+    }
+ }
+
+@media (min-width: 768px) {
+    .card-columns {
+         -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+ }
+
+@media (min-width: 992px) {
+    .card-columns {
+         -webkit-column-count: 3;
+        -moz-column-count: 3;
+        column-count: 3;
+    }
+    .modal-body .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+ }
+
+ /*dev*/
+ pre {
+     color: #FFF
+ }
+
+ 
