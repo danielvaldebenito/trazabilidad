@@ -73,6 +73,7 @@ import { ClientsDetailComponent } from './components/clients/clients-detail/clie
 import { environment } from '../environments/environment';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
 import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
+import { InventoryComponent } from './components/inventory/inventory.component';
 
 
 
@@ -113,7 +114,8 @@ import { OrderDetailComponent } from './components/order/order-detail/order-deta
     ClientsListComponent,
     ClientsDetailComponent,
     OrderListComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    InventoryComponent
   ],
   imports: [
     FormsModule,

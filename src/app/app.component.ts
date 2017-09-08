@@ -56,6 +56,7 @@ export class AppComponent implements OnInit {
     this._userService.clear();
     this._router.navigate(['']);
     this.refresh();
+    window.location.reload()
   }
   resetPass: boolean = false;
   

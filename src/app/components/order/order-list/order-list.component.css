@@ -4,35 +4,40 @@
 
 
 .recibido {
-    border-color: #d9534f;
+    /* border-color: #d9534f; */
 }
     .recibido .badge.badge-pill.badge-primary {
         background: #d9534f;
+        
     }
 .asignado {
-    border-color: #FFF176;
+    /* border-color: #FFF176; */
 }
     .asignado .badge.badge-pill.badge-primary {
         background: #FFF176;
+        
         color: #37424A;
     }
 .en-ruta{
-    border-color: #03A9F4;
+    /* border-color: #03A9F4; */
 }
     .en-ruta .badge.badge-pill.badge-primary {
         background: #03A9F4;
+        
     }
 .entregado {
-    border-color: #5cb85c;
+    /* border-color: #5cb85c; */
 }
     .entregado .badge.badge-pill.badge-primary { 
         background: #5cb85c;
+        
     }
 .cancelado {
-    border-color: #37424A;
+    /* border-color: #37424A; */
 }
     .cancelado .badge.badge-pill.badge-primary {
-        background: #37424A
+        background: #37424A;
+        
     }
 
 @media (min-width: 576px) {

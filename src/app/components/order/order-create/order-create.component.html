@@ -16,12 +16,12 @@
                 <div class="col">
                   <div class="d-flex flex-row justify-content-center">
                     <label class="custom-control custom-radio d-flex ">
-                        <input id="radio1" [(ngModel)]="order.type" value="ENVASADO" name="type" type="radio" class="custom-control-input">
+                        <input id="radio1" [(ngModel)]="order.type" value="ENVASADO" name="type" type="radio" class="custom-control-input" (change)="onChangeType('ENVASADO')">
                         <span class="custom-control-indicator"></span>
                         <span class="custom-control-description">ENVASADO</span>
                       </label>
                     <label class="custom-control custom-radio">
-                        <input id="radio2" [(ngModel)]="order.type" value="GRANEL" name="type" type="radio" class="custom-control-input">
+                        <input id="radio2" [(ngModel)]="order.type" value="GRANEL" name="type" type="radio" class="custom-control-input" (change)="onChangeType('GRANEL')">
                         <span class="custom-control-indicator"></span>
                         <span class="custom-control-description">GRANEL</span>
                       </label>
@@ -159,7 +159,7 @@
                     <label class="form-control-label">Vehículo asignado</label>
                     
                     <div class="input-group">
-                      <ng-select #vehicle name="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo" highlightColor="#37424A"
+                      <ng-select #vehicle name="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo para {{ order.type }}" highlightColor="#37424A"
                         highlightTextColor="#fff" placeholder="{{ order.after ? 'Lo asignaré más tarde': 'Seleccione vehículo'}}"
                         [options]="vehicles" [allowClear]="true" [noFilter]="5" [disabled]="order.after" (selected)="onSelectVehicle($event)"
                         (deselected)="onDeselectVehicle($event)" [(ngModel)]="order.vehicle">
@@ -241,7 +241,7 @@
                   </div>
                 </div>
                 <div class="col">
-                  <button id="add" class="btn btn-outline-primary btn-block align-self-end" type="submit" [disabled]="!formDetail.form.valid">
+                  <button id="add" class="btn btn-primary btn-block align-self-end" type="submit" [disabled]="!formDetail.form.valid">
                   <fa name="plus"></fa>
                   AGREGAR
                 </button>
@@ -296,7 +296,7 @@
           </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-primary btn-block" [disabled]="!form.form.valid || !order.client" (click)="onSubmit()"> <fa name="save"></fa> GUARDAR </button>
+          <button class="btn btn-primary btn-lg btn-block" [disabled]="!form.form.valid || !order.client" (click)="onSubmit()"> <fa name="save"></fa> GUARDAR </button>
         </div>
       </div>
     </div>

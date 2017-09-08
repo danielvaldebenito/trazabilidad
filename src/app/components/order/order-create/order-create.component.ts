@@ -360,6 +360,8 @@ export class OrderCreateComponent implements OnInit {
       .subscribe(
         res => {
           if(res.done) {
+            this.vehicles = []
+            this.order.vehicle = null
             var data = res.data;
             data.forEach(d => { 
               var data = res.data;
@@ -430,6 +432,10 @@ export class OrderCreateComponent implements OnInit {
   onSelectCity(city) {
     this.selectedCity = city;
     this.onBlur()
+  }
+  onChangeType(data) {
+    this.order.type = data;
+    this.getVehicles();
   }
   onSelectPriceList (pl) {
     this.selectedPriceList = pl.value;

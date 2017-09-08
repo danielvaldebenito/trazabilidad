@@ -125,4 +125,7 @@ export class OrderComponent implements OnInit {
           },
           error => console.log(error))
   }
+  onCancelOrder(id) {
+    this.refresh();
+  }
 }

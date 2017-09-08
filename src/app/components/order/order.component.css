@@ -18,33 +18,33 @@ select.form-control-filter {
     cursor: pointer;
 }
 .recibido {
-    border-color: #d9534f;
+    /* border-color: #d9534f; */
 }
     .recibido .card-header {
-        background: #d9534f;
+        border-left: 6px solid #d9534f;
     }
 .asignado {
-    border-color: #FFF176;
+    /* border-color: #FFF176; */
 }
     .asignado .card-header {
-        background: #FFF176;
-        color: #37424A;
+        border-left: 6px solid #FFF176;
+        /* color: #37424A; */
     }
 .en-ruta{
-    border-color: #03A9F4;
+    /* border-color: #03A9F4; */
 }
     .en-ruta .card-header {
-        background: #03A9F4;
+        border-left: 6px solid #03A9F4;
     }
 .entregado {
-    border-color: #5cb85c;
+    /* border-color: #5cb85c; */
 }
     .entregado .card-header { 
-        background: #5cb85c;
+        border-left: 6px solid #5cb85c;
     }
 .cancelado {
-    border-color: #37424A;
+    /* border-color: #37424A; */
 }
     .cancelado .card-header {
-        background: #37424A;
+        border-left: 6px solid #37424A;
     }

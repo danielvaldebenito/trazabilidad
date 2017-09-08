@@ -78,4 +78,11 @@ export class OrderService {
             .map(res => res.json())
 
   }
+  cancelOrder (id: string) {
+    var url = this.url + 'order-cancel/' + id;
+    return this
+            ._http
+            .put (url, {}, { headers: this.headers })
+            .map(res => res.json())
+  }
 }

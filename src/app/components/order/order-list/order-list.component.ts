@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { SweetAlertService } from 'ngx-sweetalert2';
+import { OrderService } from '../../../services/order.service'
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
@@ -7,15 +9,18 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 })
 export class OrderListComponent implements OnInit {
   @Input() selectedState: any
-  @Input() allItems: any
+  @Input() allItems: any = []
   @Input() sidx: string
   @Input() sord: number
   @Output() sorted = new EventEmitter<string>()
+  @Output() oncancel = new EventEmitter<string>()
   orderSelected: any;
   zoom: number = 14;
   minZoom: number = 8;
   constructor(
-    private _modalService: NgbModal
+    private _modalService: NgbModal,
+    private _swal2: SweetAlertService,
+    private _orderService: OrderService
   ) { }
 
   ngOnInit() {
@@ -34,5 +39,25 @@ export class OrderListComponent implements OnInit {
         }, (reason) => {
           //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
+  }
+  cancel(id) {
+    this._swal2.confirm({
+      title: 'Cancelar pedido',
+      text: '¿Está seguro que desea cancelar este pedido?',
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí'
+    })
+    .then(res => {
+      this._orderService.cancelOrder(id)
+          .subscribe(
+            res => {
+              if(res.done) {
+                this.oncancel.emit(id)
+              }
+            }, 
+            err => console.log(err)
+          )
+    })
+    .catch(error => console.log(error))
   }
 }

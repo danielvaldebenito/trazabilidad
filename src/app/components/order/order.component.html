@@ -49,7 +49,7 @@
         <div class="card-block">
           <div class="row">
             <div class="col">
-                <app-order-list [allItems]="allItems" [selectedState]="selectedState" [sidx]="sidx" [sord]="sord" (sorted)="onSort($event)"></app-order-list>
+                <app-order-list [allItems]="allItems" [selectedState]="selectedState" (oncancel)="onCancelOrder($event)" [sidx]="sidx" [sord]="sord" (sorted)="onSort($event)"></app-order-list>
             </div>
           </div>
           
