@@ -2,8 +2,10 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { SelectsService } from '../../services/selects.service';
 import { PagerService } from '../../services/pager.service';
+import { GLOBAL } from '../../global'
 import * as moment from 'moment'
 import * as Enumerable from 'linq'
+import * as io from 'socket.io-client'
 moment.locale('es')
 @Component({
   selector: 'app-order',
@@ -12,6 +14,7 @@ moment.locale('es')
 })
 export class OrderComponent implements OnInit {
 
+  socket: any;
   innerWidth: number;
   private allItems: any[];
   currentPage: number = 1;
@@ -27,26 +30,38 @@ export class OrderComponent implements OnInit {
   sord: number = 1;
   view: any[] = [800, 200];
   bgcolors: string[] = ['#d9534f', '#FFF176', '#03A9F4', '#5cb85c', '#37424A'];
-  colors: string[]  = ['#FFFFFF', '#37424A', '#FFFFFF','#FFFFFF','#FFFFFF']
+  colors: string[]  = ['#FFFFFF', '#37424A', '#FFFFFF', '#FFFFFF', '#FFFFFF']
   states: any[]
   resume = [];
 
   constructor(
-    private _orderService : OrderService,
+    private _orderService: OrderService,
     private _pagerService: PagerService,
     private _selectsService: SelectsService
   ) {
 
     this.getStates()
+    // SOCKET.IO
+    this.socket = io(GLOBAL.socketUrl + 'orders', { query: `distributor=${JSON.parse(localStorage.getItem('identity')).distributor._id}` });
+
+    this.socket.on('new-order', (data) => {
+      console.log('Han ingresado otro pedido', data)
+      this.refresh()
+    })
+
+    this.socket.on('change-state-order', (data) => {
+      console.log('Se ha cambiado estado de pedido', data)
+      this.refresh()
+    })
   }
   getStates () {
     this._selectsService.getOrderStates()
         .subscribe(
-          res => { 
-            if(res.done) {
+          res => {
+            if (res.done) {
               res.data.forEach((element, i) => {
-                this.resume.push({ 
-                  state: element, 
+                this.resume.push({
+                  state: element,
                   value: 0,
                   bgcolor: this.bgcolors[i],
                   color: this.colors[i]
@@ -63,10 +78,12 @@ export class OrderComponent implements OnInit {
         .subscribe(
           res => {
             if (res.done) {
-              var data = res.data;
+              const data = res.data;
+              this.resume.forEach(r => r.value = 0)
               data.forEach(element => {
                 this.resume.forEach(r => {
-                  if(element._id == r.state) {
+                  
+                  if (element._id === r.state) {
                     r.value = element.count
                   }
                 })
@@ -78,13 +95,11 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    
   }
   setPage(page: number) {
       this.currentPage = page;
       this.refresh();
   }
-  
   onSelect(event) {
     this.selectedState = event.state;
     this.refresh();
@@ -97,8 +112,6 @@ export class OrderComponent implements OnInit {
     this.momentValue = moment(date).format('YYYY-MM-DD');
     this.refresh();
   }
-  
-  
   refresh() {
     this.getResume();
     this.getOrders();
@@ -108,15 +121,14 @@ export class OrderComponent implements OnInit {
     this.sord = this.sord * -1
     this.getOrders()
   }
-  getOrders ()
-  {
+  getOrders () {
     this._orderService
         .getOrders(
           this.selectedState, this.filter, this.momentValue, this.limit, this.currentPage, this.sidx, this.sord
         )
         .subscribe(
           res => {
-            if(res.done){
+            if (res.done) {
               this.allItems = res.data;
               this.totalItems = res.total;
               this.pager = this._pagerService.getPager(res.total, this.currentPage, this.limit);

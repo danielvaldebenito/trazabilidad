@@ -18,7 +18,7 @@ import { FoliosComponent } from './components/folios/folios.component'
 import { ClientsComponent } from './components/clients/clients.component'
     import { ClientsNewComponent } from './components/clients/clients-new/clients-new.component'
     import { ClientsEditComponent } from './components/clients/clients-edit/clients-edit.component'
-
+import { InventoryComponent } from './components/inventory/inventory.component'
 export const appRoutes: Routes = [
   { path: 'vehicles', component: VehiculosComponent },
   { path: 'vehicles/create', component: CreateVehicleComponent },
@@ -38,5 +38,6 @@ export const appRoutes: Routes = [
   { path: 'folios/new', component: FoliosNewComponent },
   { path: 'clients', component: ClientsComponent },
   { path: 'clients/new', component: ClientsNewComponent },
-  { path: 'clients/edit/:id', component: ClientsEditComponent }
+  { path: 'clients/edit/:id', component: ClientsEditComponent },
+  { path: 'inventory', component: InventoryComponent}
 ];

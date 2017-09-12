@@ -34,10 +34,9 @@
               </div>
               <div class="row">
                 <div class="col">
-              <div class="form-group" [ngClass]="{'has-success': !search.errors && order.client, 'has-danger': (search.errors || !order.client ) && (search.dirty || search.touched) }">
-                    <label class="form-control-label">Cliente (*)</label>
+                  <div class="form-group" *ngIf="!order.client">
                     <ng2-completer required #search="ngModel" [(ngModel)]="searchStr" name="searchStr" (selected)="onSearchClient($event)" matchClass="match"
-                      inputClass="form-control" [datasource]="dataService" [minSearchLength]="1" textNoResults="Sin coincidencias."
+                      inputClass="form-control-filter" [datasource]="dataService" [minSearchLength]="1" textNoResults="Sin coincidencias."
                       textSearching="Buscando Clientes..." placeholder="Busqueda rápida de cliente por nit, nombre, dirección, ciudad, etc"
                       autoMatch="false"></ng2-completer>
                     <div class="form-control-feedback">
@@ -50,6 +49,20 @@
                         Para crear un cliente nuevo, presione el botón "NUEVO CLIENTE", o "NUEVO RÁPIDO" para hacerlo con los datos ya ingresados
                       </div>
                     </div>
+                  </div>
+                  <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="">NIT (*)</label>
+                          <input type="text" name="clientNit" [(ngModel)]="order.clientNit" class="form-control" placeholder="NIT Cliente" (blur)="onBlurNit()">
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="">Cliente (*)</label>
+                          <input type="text" name="clientName" [(ngModel)]="order.clientName" class="form-control" placeholder="Nombre Cliente">
+                        </div>
+                      </div>
                   </div>
                   <div class="row">
                     <div class="col">

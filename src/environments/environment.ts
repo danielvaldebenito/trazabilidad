@@ -5,6 +5,7 @@
 
 export const environment = {
   apiUrl: 'http://localhost:3548/api/',
+  socketURL: 'http://localhost:3549/',
   production: false,
   GOOGLE_MAPS_API_KEY: 'AIzaSyCdo5HgF-LydsGMOxv4QEuSo9G24DlfgDU'
 };

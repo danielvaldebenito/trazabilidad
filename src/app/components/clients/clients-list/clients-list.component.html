@@ -1,16 +1,18 @@
-<div class="card-columns">
-  <div class="card" *ngFor="let client of clients">
-    <div class="card-header" [ngClass]="{'destacado': filter && (client.fullname).toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.fullname }}</div>
-    <div class="card-block">
-      <app-clients-detail [client]="client" [filter]="filter"></app-clients-detail>
-    </div>
-    <div class="card-footer">
-      <button type="button" *ngIf="!fromModal" class="btn btn-outline-primary" [routerLink]="['/clients/edit/', client._id]">
-        <fa name="pencil"></fa> EDITAR
-      </button>
-      <button type="button" *ngIf="fromModal" class="btn btn-outline-primary" (click)="onSelectClient(client)">
-        <fa name="check"></fa> SELECCIONAR
-      </button>
-    </div>
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-4" [ngClass]="{'col-md-6 col-lg-12': fromModal}" *ngFor="let client of clients">
+      <div class="card" >
+        <div class="card-header" [ngClass]="{'destacado': filter && client.fullname && client.fullname?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.fullname }}</div>
+        <div class="card-block">
+          <app-clients-detail [client]="client" [filter]="filter"></app-clients-detail>
+        </div>
+        <div class="card-footer">
+          <button type="button" *ngIf="!fromModal" class="btn btn-outline-primary" [routerLink]="['/clients/edit/', client._id]">
+              <fa name="pencil"></fa> EDITAR
+            </button>
+          <button type="button" *ngIf="fromModal" class="btn btn-outline-primary" (click)="onSelectClient(client)">
+              <fa name="check"></fa> SELECCIONAR
+            </button>
+        </div>
+      </div>
   </div>
 </div>

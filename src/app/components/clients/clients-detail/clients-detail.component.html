@@ -2,27 +2,36 @@
   <tbody>
     <tr>
       <th>Nit</th>
-      <td [ngClass]="{'destacado': client.nit && filter && client.nit?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.nit }}</td>
-    </tr>
-    <tr>
-      <th>Dirección</th>
-      <td [ngClass]="{'destacado': client.address && filter && client.address?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.address }}</td>
-    </tr>
-    <tr>
-      <th>{{ regionName }}</th>
-      <td [ngClass]="{'destacado': client.region && filter && client.region?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.region }}</td>
-    </tr>
-    <tr>
-      <th>{{ cityName }}</th>
-      <td [ngClass]="{'destacado': client.city && filter && client.city?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.city }}</td>
+      <td colspan="4" [ngClass]="{'destacado': client.nit && filter && client.nit?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.nit }}</td>
     </tr>
     <tr>
       <th>Teléfono</th>
-      <td [ngClass]="{'destacado': client.phone && filter && client.phone?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.phone }}</td>
+      <td colspan="4" [ngClass]="{'destacado': client.phone && filter && client.phone?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.phone }}</td>
     </tr>
     <tr>
       <th>Email</th>
-      <td [ngClass]="{'destacado': client.email && filter && client.email?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.email }}</td>
+      <td colspan="4" [ngClass]="{'destacado': client.email && filter && client.email?.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ client.email }}</td>
     </tr>
+    <tr *ngIf="client.addresses && client.addresses.length">
+      <th>Direcciones ({{ client.addresses.length }})</th>
+      <td>
+        <table>
+          <tr>
+            <th>{{filter}}</th>
+            <th>Dirección</th>
+            <th>{{ regionName }}</th>
+            <th>{{ cityName }}</th>
+          </tr>
+          <tr *ngFor="let a of client.addresses; let i = index">
+            <td><span class="badge badge-pill badge-default pull-right">{{ i + 1 }}</span></td>
+            <td [ngClass]="{'destacado': filter && a.location && a.location.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ a.location }}</td>
+            <td [ngClass]="{'destacado': filter && a.region && a.region.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ a.region }}</td>
+            <td [ngClass]="{'destacado': filter && a.city && a.city.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ a.city }}</td>
+          </tr>
+        </table>
+      </td>
+      
+    </tr>
+    
   </tbody>
 </table>

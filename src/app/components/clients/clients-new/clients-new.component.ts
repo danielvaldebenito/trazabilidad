@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, FormArray } from '@angular/forms'
+import { FormGroup, FormBuilder, Validators, AbstractControl, FormArray, ValidationErrors } from '@angular/forms'
 import { SelectsService } from '../../../services/selects.service'
 import { ClientsService } from '../../../services/clients.service'
 import { OrderService } from '../../../services/order.service'
@@ -10,6 +10,15 @@ import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common'
 
 
+function minOneAddress(c: AbstractControl) {
+  return null;
+}
+function customEmailValidator(control: AbstractControl): ValidationErrors {
+  if (!control.value) {
+    return null;
+  }
+  return Validators.email(control);
+}
 @Component({
   selector: 'app-clients-new',
   templateUrl: './clients-new.component.html',
@@ -29,6 +38,7 @@ export class ClientsNewComponent implements OnInit {
   @Input() fromModal: boolean = false
   @Output() submitForm = new EventEmitter<any> ();
   get discountSurcharge() { return this.form.get('discountSurcharge') as FormArray; }
+  //get addresses() { return this.form.get('addresses') as FormArray; }
   constructor(
     private _fb: FormBuilder,
     private _selectsService: SelectsService,
@@ -49,16 +59,38 @@ export class ClientsNewComponent implements OnInit {
       name: [null, Validators.required],
       surname: [null],
       phone: [null],
-      email: [null, Validators.email],
-      address: [null, Validators.required],
-      region: [null, Validators.required],
-      city: [null, Validators.required],
+      email: [null, customEmailValidator],
+      // address: [null, Validators.required],
+      // region: [null, Validators.required],
+      // city: [null, Validators.required],
       contact: [null, Validators.required],
       discountSurcharge: this._fb.array([
 
+      ]),
+      addresses: this._fb.array([
+        this.initAddress()
       ])
+
+    })
+    
+  }
+  initAddress() {
+    return this._fb.group({
+      location: [null, Validators.required],
+      region: [null, Validators.required],
+      city: [null, Validators.required]
     })
   }
+  addAddress() {
+    const control = <FormArray>this.form.controls['addresses'];
+    control.push(this.initAddress())
+  }
+  removeAddress(i: number) {
+    // remove address from the list
+    const control = <FormArray>this.form.controls['addresses'];
+    control.removeAt(i);
+  }
+
   addDiscountSurcharge (productType) {
     this.discountSurcharge.push(this._fb.group({
       productType: productType._id,
@@ -134,6 +166,12 @@ export class ClientsNewComponent implements OnInit {
   }
   onCancel() {
     this._location.back()
+  }
+  onBlurContactName(data) {
+    var contact = this.form.get('contact').value
+    if(!contact) {
+      this.form.get('contact').setValue(this.form.value.name + ' ' + this.form.value.surname)
+    }
   }
   validateNit() {
     this._clientsService.validateNit(this.form.get('nit').value)

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './services/user.service';
-import { Router } from '@angular/router';
+import { Router, Event as RouterEvent, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { NotificationComponent, NotificationsService } from 'angular2-notifications';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { GLOBAL } from './global'
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,6 +17,8 @@ export class AppComponent implements OnInit {
   token: string;
   userToReset: any = {}
   apiUrl: any = GLOBAL.apiUrl
+  loading: boolean = true;
+
   public confirmOptions = {
     confirmText: 'Sí',
     declineText: 'No'
@@ -32,8 +35,31 @@ export class AppComponent implements OnInit {
     private _notificationService: NotificationsService,
     private _modalService: NgbModal
   )
-  {   }
+  {  
+    _router.events.subscribe((event: RouterEvent) => {
+      this.navigationInterceptor(event)
+    })
 
+
+   }
+
+
+  navigationInterceptor(event: RouterEvent) :void {
+    if (event instanceof NavigationStart) {
+      this.loading = true
+    }
+    if (event instanceof NavigationEnd) {
+      this.loading = false
+    }
+
+    // Set loading state to false in both of the below events to hide the spinner in case a request fails
+    if (event instanceof NavigationCancel) {
+      this.loading = false
+    }
+    if (event instanceof NavigationError) {
+      this.loading = false
+    }
+  }
   ngOnInit() {
     this.refresh();
   }

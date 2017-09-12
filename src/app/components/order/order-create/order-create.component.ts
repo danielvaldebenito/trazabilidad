@@ -16,7 +16,7 @@ import * as Enumerable from 'linq';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { CompleterService, CompleterData, RemoteData } from 'ng2-completer';
 import { Headers, RequestOptions } from '@angular/http'
-
+import * as io from 'socket.io-client'
 @Component({
   selector: 'app-order-create',
   templateUrl: './order-create.component.html',
@@ -25,6 +25,7 @@ import { Headers, RequestOptions } from '@angular/http'
 })
 export class OrderCreateComponent implements OnInit {
 
+  socket: any
   regionName = GLOBAL.regionName;
   cityName = GLOBAL.cityName;
   // order
@@ -57,13 +58,13 @@ export class OrderCreateComponent implements OnInit {
   //maxZoom: number = 14;
   addresses: any[] = [];
   errorMessageItems: string;
-  
+
   // config 
   delaySearch: number = 10000 // 10 segundos
   protected searchStr: string;
   protected dataService: RemoteData;
 
-  
+
   constructor(
     private _selectsService: SelectsService,
     private _orderService: OrderService,
@@ -79,13 +80,15 @@ export class OrderCreateComponent implements OnInit {
     private modalService: NgbModal,
     private completerService: CompleterService
   ) {
-      this.dataService = completerService
-        .remote(null, null, 'fulldata');
-      this.dataService.urlFormater(term => {
-        return `${ GLOBAL.apiUrl }clients/?filter=${term}&Authorization=${ this._userService.getToken()}`
-      })
-      this.dataService.dataField('data')
-   }
+    this.dataService = completerService
+      .remote(null, null, 'fulldata');
+    this.dataService.urlFormater(term => {
+      return `${GLOBAL.apiUrl}clients/?filter=${term}&Authorization=${this._userService.getToken()}`
+    })
+    this.dataService.dataField('data')
+
+    this.socket = io(GLOBAL.socketUrl + 'orders', { query: `distributor=${JSON.parse(localStorage.getItem('identity')).distributor._id}` });
+  }
 
   ngOnInit() {
     this.getRegions();
@@ -101,7 +104,7 @@ export class OrderCreateComponent implements OnInit {
       return;
     }
     var maxItemsOrder = GLOBAL.maxItemsOrder;
-    if(this.items.length >= maxItemsOrder){
+    if (this.items.length >= maxItemsOrder) {
       this._notificationService.error(`Ha ingresado la cantidad máxima de ítems permitidos (${maxItemsOrder})`);
       return;
     }
@@ -111,17 +114,17 @@ export class OrderCreateComponent implements OnInit {
       .firstOrDefault();
     if (exists) {
       exists.quantity = exists.quantity + this.item.quantity;
-      
+
     } else {
       this.item.id = Math.random().toString(36).slice(2);
       this.item.productTypeName = this.selectedProductType;
       var discounts = [];
-      if(this.selectedClient) {
+      if (this.selectedClient) {
         discounts = this.selectedClient.discountSurcharges
         var discountToProduct = Enumerable.from(discounts)
-                                          .where(w => { return w.productType == this.item.productType })
-                                          .firstOrDefault()
-        
+          .where(w => { return w.productType == this.item.productType })
+          .firstOrDefault()
+
         this.item.discount = !discountToProduct ? 0 : discountToProduct.isDiscount ? discountToProduct.value : 0
         this.item.surcharge = !discountToProduct ? 0 : !discountToProduct.isDiscount ? discountToProduct.value : 0
       } else {
@@ -136,26 +139,28 @@ export class OrderCreateComponent implements OnInit {
     }
     this.updatePrices();
   }
-  onSearchClient (client) {
+  onSearchClient(client) {
     console.log('selected client', client)
-    if(!client) return;
+    if (!client) return;
     var obj = client.originalObject
     this.setClientObject(obj)
   }
-  setClientObject (obj) {
+  setClientObject(obj) {
     console.log('selected client obj', obj)
-    this.order.address = obj.address
-    this.order.region = obj.region
+    this.order.address = obj.addresses && obj.addresses.length > 0 ? obj.addresses[0].location : ''
+    this.order.region = obj.addresses && obj.addresses.length > 0 ? obj.addresses[0].region : ''
     this.selectedRegion = { label: this.order.region, value: this.order.region }
     this.order.client = obj._id
+    this.order.clientName = obj.fullname
     this.order.phone = obj.phone
-    this.searchStr = obj.fullname
+    this.order.clientNit = obj.nit
     this.getAddresses(obj._id);
     this.selectedClient = obj;
     this.getCities()
     setTimeout(() => {
-      this.order.city = obj.city
+      this.order.city = obj.addresses && obj.addresses.length > 0 ? obj.addresses[0].city : ''
       this.findCoords()
+      this.searchStr = obj.fullname
     }, 100);
     this.updateDiscountSurcharge()
     this.updatePrices()
@@ -172,13 +177,13 @@ export class OrderCreateComponent implements OnInit {
         console.log(res)
         if (res.status == 'OK') {
           var results = res.results;
-          var first =  results[0];
+          var first = results[0];
           this.order.placeId = first.place_id;
           var formatted_address = first.formatted_address;
           var split_formatted_addres = formatted_address.split(', ')
           this.order.address = split_formatted_addres[0];
           this.order.city = split_formatted_addres[1];
-          
+
         }
       },
       error => console.log(error)
@@ -218,6 +223,7 @@ export class OrderCreateComponent implements OnInit {
       res => {
         if (res.done) {
           var data = res.data.records;
+          this.addresses = []
           data.forEach(d => { this.addresses.push(d.location); })
         }
         console.log('direcciones', this.addresses)
@@ -280,26 +286,26 @@ export class OrderCreateComponent implements OnInit {
           self.selectedCity = cityUser;
         }
       }
-    }, 1000); 
+    }, 1000);
   }
   getPrice(item: any) {
-    if(!item) return 0;
-    if(!this.selectedPriceList) return 0;
+    if (!item) return 0;
+    if (!this.selectedPriceList) return 0;
     var pt = item.productType;
     var pl = Enumerable.from(this.allPriceLists)
-              .where(w => { return w._id == this.selectedPriceList })
-              .firstOrDefault();
-    
-    if(!pl) return 0;
+      .where(w => { return w._id == this.selectedPriceList })
+      .firstOrDefault();
+
+    if (!pl) return 0;
     var prices = []
     prices = pl.items;
 
-    if(!prices) return 0;
+    if (!prices) return 0;
     var price = Enumerable.from(prices)
-                  .where(w => { return w.productType._id == pt})
-                  .firstOrDefault ()
+      .where(w => { return w.productType._id == pt })
+      .firstOrDefault()
 
-    if(!price) return 0;
+    if (!price) return 0;
     return price.price;
   }
   getPriceLists() {
@@ -354,29 +360,29 @@ export class OrderCreateComponent implements OnInit {
       }
       )
   }
-  
+
   getVehicles() {
     this._selectsService.getVehicleToAsign(this.order.type)
       .subscribe(
-        res => {
-          if(res.done) {
-            this.vehicles = []
-            this.order.vehicle = null
+      res => {
+        if (res.done) {
+          this.vehicles = []
+          this.order.vehicle = null
+          var data = res.data;
+          data.forEach(d => {
             var data = res.data;
-            data.forEach(d => { 
-              var data = res.data;
-              var array = [];
-              data.forEach(d => {
-                var option = { label: d.licensePlate, value: d._id }
-                array.push(option)
-              })
-              this.vehicles = array;
+            var array = [];
+            data.forEach(d => {
+              var option = { label: d.licensePlate, value: d._id }
+              array.push(option)
             })
-          }
-        },
-        error => {
-          console.log(error)
+            this.vehicles = array;
+          })
         }
+      },
+      error => {
+        console.log(error)
+      }
       )
   }
   markerDragEnd(event) {
@@ -394,39 +400,39 @@ export class OrderCreateComponent implements OnInit {
       this.order.lat = null; this.order.lng = null;
     }
   }
-  onCancel () {
+  onCancel() {
     this._location.back();
   }
   onCreatePriceList(pl) {
     console.log('recibiendo stored', pl)
     this.getPriceLists();
     var self = this;
-    setTimeout(function() {
+    setTimeout(function () {
       self.selectedPriceList = pl._id;
       self.selectedPriceListName = pl.name;
       self.order.priceList = pl._id;
       self.selectedPrices = pl.items;
-      self.updatePrices ();
+      self.updatePrices();
     }, 500);
-    
+
 
   }
   onDeselectCity(city) {
     this.selectedCity = null;
     this.onBlur()
   }
-  onDeselectPriceList (pl) {
+  onDeselectPriceList(pl) {
     this.selectedPriceList = null;
     this.updatePrices();
   }
-  onDeselectProductType (pt) {
+  onDeselectProductType(pt) {
     this.selectedProductType = null;
   }
   onDeselectRegion(region) {
     this.selectedRegion = null;
     this.getCities()
   }
-  onDeselectVehicle (v) {
+  onDeselectVehicle(v) {
     this.selectedVehicle = null;
   }
   onSelectCity(city) {
@@ -437,24 +443,24 @@ export class OrderCreateComponent implements OnInit {
     this.order.type = data;
     this.getVehicles();
   }
-  onSelectPriceList (pl) {
+  onSelectPriceList(pl) {
     this.selectedPriceList = pl.value;
     this.selectedPriceListName = pl.label;
     this.order.priceList = pl.value;
     var selected = Enumerable.from(this.allPriceLists)
-                    .where(w => { return w._id == pl.value })
-                    .firstOrDefault ();
+      .where(w => { return w._id == pl.value })
+      .firstOrDefault();
     this.selectedPrices = selected.items;
-    this.updatePrices ();
+    this.updatePrices();
   }
-  onSelectProductType (pt) {
+  onSelectProductType(pt) {
     this.selectedProductType = pt.label;
   }
   onSelectRegion(region) {
     this.selectedRegion = region;
     this.getCities()
   }
-  onSelectVehicle (v) {
+  onSelectVehicle(v) {
     this.selectedVehicle = v.value;
   }
   onSubmit() {
@@ -468,140 +474,141 @@ export class OrderCreateComponent implements OnInit {
     this._orderService.postOrder(this.order)
       .subscribe(res => {
         console.log(res);
-        if(res.done){
+        if (res.done) {
+          //this.socket.emit('new-order', res.stored)
           this._swal2.success({
             title: 'Ingresado',
             text: res.message
           })
-          .then(
+            .then(
             ok => this.onCancel(),
             no => this.onCancel()
-          )
+            )
           this.setDefaultData();
-          
+
         } else {
           this._swal2.error({
             title: 'Error',
             text: res.message
           }).then(ok => this.onCancel(), no => this.onCancel())
         }
-        
+
       }, error => {
         console.log(error)
         this._swal2.error({
-            title: 'Error',
-            text: 'Ha ocurrido un error'
-          }).then(ok => this.onCancel(), no => this.onCancel())
+          title: 'Error',
+          text: 'Ha ocurrido un error'
+        }).then(ok => this.onCancel(), no => this.onCancel())
       })
 
-    
+
   }
   onSubmitDetail() {
     this.addItem()
   }
   open(content) {
     this.modalService.open(content, { size: 'lg' })
-        .result.then((result) => {
-          //this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
+      .result.then((result) => {
+        //this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
   }
-  searchClosest () {
-    if(this.order.lat && this.order.lng) {
+  searchClosest() {
+    if (this.order.lat && this.order.lng) {
       var requestId = Math.random().toString(36).slice(2);
       //var requestId = '5hdx2znvohx'
 
       this._orderService
-          .requestClosest(requestId, this.order.lat, this.order.lng)
-          .subscribe(
-            res => {
-              if(res.done) {
-                this._swal2.swal({
-                  title: 'Buscando',
-                  text: 'Buscando vehículos cercanos a ' + this.order.address + '... Espere ' + this.delaySearch / 1000 + ' segundos por favor',
-                  timer: 10000,
-                  showCancelButton: true,
-                  showConfirmButton: false,
-                  cancelButtonText: 'Cancelar',
-                  allowOutsideClick: false
-                })
-                .then(
-                  res => console.log(res),
-                  cancel => {
-                    if (cancel == 'timer') { // Se agotó el tiempo de espera, es decir hay que buscar geo
-                      this._orderService
-                        .responseClosest(requestId)
-                        .subscribe(
-                          res => {
-                            if(res.done) {
-                              if(res.data) {
-                                if(res.data.veh) {
-                                  var licensePlate = res.data.veh.licensePlate;
-                                  this._swal2.success({
-                                      title: 'Vehículo encontrado',
-                                      text: 'Se encontró el vehículo ' + licensePlate + ', como más cercano al destino señalado',
-                                      confirmButtonText: 'Asignar'
-                                    })
-                                    .then(
-                                      response => {
-                                        this.order.vehicle = res.data.veh._id;
-                                      },
-                                      cancel => {
-
-                                      }
-                                    )
-                                }
-                              } else {
-                                this._swal2.confirm({
-                                      title: 'Sin resultados',
-                                      text: 'No se encontraron dispositivos. ¿Desea volver a intentarlo?',
-                                      confirmButtonText: 'Reintentar',
-                                      cancelButtonText: 'Cancelar'
-                                    })
-                                    .then(
-                                      res => {
-                                        this.searchClosest();
-                                      },
-                                      cancel => {
-
-                                      }
-                                    )
-                              }
-                            }
-                          },
-                          err => {
-                            console.log(err);
-                          }
-                        )
-                    }
-                  }
-                  )
-              }
-            },
-            error => {
-              console.log('error', error);
+        .requestClosest(requestId, this.order.lat, this.order.lng)
+        .subscribe(
+        res => {
+          if (res.done) {
+            this._swal2.swal({
+              title: 'Buscando',
+              text: 'Buscando vehículos cercanos a ' + this.order.address + '... Espere ' + this.delaySearch / 1000 + ' segundos por favor',
+              timer: 10000,
+              showCancelButton: true,
+              showConfirmButton: false,
+              cancelButtonText: 'Cancelar',
+              allowOutsideClick: false
             })
-      
+              .then(
+              res => console.log(res),
+              cancel => {
+                if (cancel == 'timer') { // Se agotó el tiempo de espera, es decir hay que buscar geo
+                  this._orderService
+                    .responseClosest(requestId)
+                    .subscribe(
+                    res => {
+                      if (res.done) {
+                        if (res.data) {
+                          if (res.data.veh) {
+                            var licensePlate = res.data.veh.licensePlate;
+                            this._swal2.success({
+                              title: 'Vehículo encontrado',
+                              text: 'Se encontró el vehículo ' + licensePlate + ', como más cercano al destino señalado',
+                              confirmButtonText: 'Asignar'
+                            })
+                              .then(
+                              response => {
+                                this.order.vehicle = res.data.veh._id;
+                              },
+                              cancel => {
+
+                              }
+                              )
+                          }
+                        } else {
+                          this._swal2.confirm({
+                            title: 'Sin resultados',
+                            text: 'No se encontraron dispositivos. ¿Desea volver a intentarlo?',
+                            confirmButtonText: 'Reintentar',
+                            cancelButtonText: 'Cancelar'
+                          })
+                            .then(
+                            res => {
+                              this.searchClosest();
+                            },
+                            cancel => {
+
+                            }
+                            )
+                        }
+                      }
+                    },
+                    err => {
+                      console.log(err);
+                    }
+                    )
+                }
+              }
+              )
+          }
+        },
+        error => {
+          console.log('error', error);
+        })
+
     } else {
-      this._swal2.warning ({
+      this._swal2.warning({
         title: 'Ingrese dirección',
         text: 'Para buscar vehículos cercanos, ingrese primeramente la dirección para el pedido'
       })
-      .then(
+        .then(
         res => console.log(res),
         cancel => console.log(cancel)
-      )
+        )
     }
-    
-    
+
+
   }
-  seeList(list) { 
+  seeList(list) {
     this._swal2.confirm({ title: 'Titulo', text: 'Message' })
-          .then(
-            res => console.log(res),
-            cancel => { console.log(cancel) }
-          )
+      .then(
+      res => console.log(res),
+      cancel => { console.log(cancel) }
+      )
   }
   setDefaultData() {
     if (this.selectedRegion && this.selectedCity) {
@@ -610,15 +617,15 @@ export class OrderCreateComponent implements OnInit {
     }
 
   }
-  updateDiscountSurcharge () {
+  updateDiscountSurcharge() {
     this.items.forEach(element => {
       var discounts = []
-      if(this.selectedClient) {
+      if (this.selectedClient) {
         discounts = this.selectedClient.discountSurcharges
         var discountToProduct = Enumerable.from(discounts)
-                                          .where(w => { return w.productType == element.productType })
-                                          .firstOrDefault()
-        
+          .where(w => { return w.productType == element.productType })
+          .firstOrDefault()
+
         element.discount = !discountToProduct ? 0 : discountToProduct.isDiscount ? discountToProduct.value : 0
         element.surcharge = !discountToProduct ? 0 : !discountToProduct.isDiscount ? discountToProduct.value : 0
       } else {
@@ -627,21 +634,23 @@ export class OrderCreateComponent implements OnInit {
       }
     });
   }
-  updatePrices () {
-    if(!this.items) return;
+  updatePrices() {
+    if (!this.items) return;
     this.totalToPay = 0;
     this.items.forEach(element => {
-      
-      element.price = this.getPrice (element)
-      console.log('updating prices', { price: element.price, surcharge: element.surcharge, discount: element.discount})
+
+      element.price = this.getPrice(element)
+      console.log('updating prices', { price: element.price, surcharge: element.surcharge, discount: element.discount })
       this.totalToPay = this.totalToPay + ((element.price + element.surcharge - element.discount) * element.quantity);
     });
   }
   onCreateNewClient(client) {
     this.setClientObject(client)
   }
-  resetClient () {
+  resetClient() {
     this.selectedClient = null;
+    this.order.clientName = null;
+    this.order.clientNit = null;
     this.order.address = null;
     this.order.lat = null;
     this.order.lng = null;
@@ -652,39 +661,50 @@ export class OrderCreateComponent implements OnInit {
     this.order.placeId = null;
     this.searchStr = null;
     this.updateDiscountSurcharge()
-    this.updatePrices ()
+    this.updatePrices()
   }
-  newClientQuick () {
+  newClientQuick() {
     console.log('new client quick')
-    if(!this.order.lat || !this.order.lng) {
+    if (!this.order.lat || !this.order.lng) {
       this._notificationService.error('Error', 'Ingrese una dirección correcta');
       return;
     }
-    var client = { 
-      name: this.searchStr || 'NN',
-      address: this.order.address, 
-      city: this.order.city, 
+    var client = {
+      nit: this.order.clientNit,
+      name: this.order.clientName || 'NN',
+      location: this.order.address,
+      city: this.order.city,
       region: this.order.region,
-      phone: this.order.phone 
+      phone: this.order.phone
     }
     this._clientService.postClientsQuick(client)
-        .subscribe(res => {
-          console.log(res)
-          if(res.done) {
-            this.setClientObject(res.stored)
-            this._notificationService.success('OK', res.message)
-          } else {
-            this._notificationService.error('Error', res.message)
-          }
-            
-        }, error => {
-          this._notificationService.error('Error', 'Ha ocurrido un error')
-        })
+      .subscribe(res => {
+        console.log(res)
+        if (res.done) {
+          this.setClientObject(res.stored)
+          this._notificationService.success('OK', res.message)
+        } else {
+          this._notificationService.error('Error', res.message)
+        }
+
+      }, error => {
+        this._notificationService.error('Error', 'Ha ocurrido un error')
+      })
 
   }
   onSelectClient(client) {
-    if(!client) return;
+    if (!client) return;
     this.setClientObject(client)
+  }
+  onBlurNit() {
+    var nit = this.order.clientNit
+    this._clientService.getOneClientByNit(nit)
+      .subscribe(res => {
+        if(res.done) {
+          if(res.client)
+            this.setClientObject(res.client)
+        }
+      }, error => console.log(error))
   }
 }
 

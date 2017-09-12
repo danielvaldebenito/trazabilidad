@@ -47,6 +47,11 @@ export class ClientsService {
         return this._http.get(url, { headers: this.headers })
                         .map(res => res.json());
     }
+    getOneClientByNit(nit: string) {
+        var url = this.url + 'client-nit/' + nit;
+        return this._http.get(url, { headers: this.headers })
+            .map(res => res.json());
+    }
     validateNit(nit: string) {
         var url = this.url + 'client-validate-nit/' + nit;
         return this._http.get(url, { headers: this.headers })

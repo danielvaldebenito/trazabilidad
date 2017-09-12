@@ -1,48 +1,47 @@
-<div class="row principal">
-  <div class="col">
-    <div class="card-columns" *ngIf="allItems">
-      <div class="card" *ngFor="let order of allItems" [ngClass]="{
+<div class="row principal" *ngIf="allItems">
+  <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let order of allItems">
+    <div class="card" [ngClass]="{
                         'recibido': selectedState == 'RECIBIDO', 
                         'asignado': selectedState == 'ASIGNADO',
                         'en-ruta': selectedState == 'EN RUTA',
                         'entregado': selectedState == 'ENTREGADO',
                         'cancelado': selectedState == 'CANCELADO'
                       }">
-        <div class="card-block">
-          <h6 class="card-title d-flex justify-content-between align-items-center">
-            <span class="badge badge-pill badge-primary">{{order.orderNumber }}</span>
-            <span>{{ order.address?.location }}</span>
-            <fa name="asd"></fa>
-          </h6>
-          <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-between align-items-center">
-            <fa name="handshake-o"></fa>
-            <span>{{ order.client?.fullname }}</span>
-            <fa name="asd"></fa>
-          </h6>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item justify-content-between">
-            <fa name="truck"></fa>
-            <span>{{ order.vehicle?.licensePlate }}</span>
-          </li>
-          <li class="list-group-item justify-content-between">
-            <fa name="calendar"></fa>
-            <span>{{ order.commitmentDate | date: 'dd-MM-yyyy HH:mm' }}</span>
-          </li>
-        </ul>
-        <div class="card-footer">
-          <button class="btn btn-primary" *ngIf="order.address.coordinates" (click)="open(map, order, 'lg')">
+      <div class="card-block">
+        <h6 class="card-title d-flex justify-content-between align-items-center">
+          <span class="badge badge-pill badge-primary">{{order.orderNumber }}</span>
+          <span>{{ order.address?.location }}</span>
+          <fa name="asd"></fa>
+        </h6>
+        <h6 class="card-subtitle mb-2 text-muted d-flex justify-content-between align-items-center">
+          <fa name="handshake-o"></fa>
+          <span>{{ order.client?.fullname }}</span>
+          <fa name="asd"></fa>
+        </h6>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item justify-content-between">
+          <fa name="truck"></fa>
+          <span>{{ order.vehicle?.licensePlate }}</span>
+        </li>
+        <li class="list-group-item justify-content-between">
+          <fa name="calendar"></fa>
+          <span>{{ order.commitmentDate | date: 'dd-MM-yyyy HH:mm' }}</span>
+        </li>
+      </ul>
+      <div class="card-footer">
+        <button class="btn btn-primary" *ngIf="order.address.coordinates" (click)="open(map, order, 'lg')">
             <fa name="map-marker"></fa>
           </button>
-          <button class="btn btn-outline-secondary" (click)="open(detail, order, 'sm')">
+        <button class="btn btn-outline-secondary" (click)="open(detail, order, 'sm')">
             <fa name="list"></fa>
           </button>
-          <button class="btn btn-outline-danger" (click)="cancel(order._id)" *ngIf="order.status != 'CANCELADO'">
+        <button class="btn btn-outline-danger" (click)="cancel(order._id)" *ngIf="order.status != 'CANCELADO'">
             <fa name="times"></fa>    
           </button>
-        </div>
       </div>
     </div>
+
     <div class="card" *ngIf="allItems && allItems.length == 0">
       <div class="card-block text-center">
         NO HAY REGISTROS EN ESTADO {{selectedState}}
