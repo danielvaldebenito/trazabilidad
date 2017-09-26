@@ -37,7 +37,6 @@ export class OrderService {
         return this._http.get(url, { headers: this.headers, params: params })
                 .map(res => res.json());
   }
-
   getProductTypes () {
       return this._http.get(this.url + 'productType', { headers: this.headers })
                       .map(res => res.json())
@@ -61,7 +60,6 @@ export class OrderService {
     return this._http.post(url, body, { headers: this.headers })
                     .map(res => res.json());
   }
-
   requestClosest (requestId: string, lat: number, lng: number) {
     var url = this.url + 'georeference-request/';
     var myDistributor = this.user.distributor._id;
@@ -69,7 +67,6 @@ export class OrderService {
     return this._http.post(url, body, { headers: this.headers })
                     .map(res => res.json());
   }
-  
   responseClosest (requestId: string) {
     var url = this.url + 'georeference/';
     return this
@@ -84,5 +81,11 @@ export class OrderService {
             ._http
             .put (url, {}, { headers: this.headers })
             .map(res => res.json())
+  }
+  assignVehicleToOrder (orderId, vehicleId) {
+    var url = this.url + 'order-assign-vehicle';
+    return this._http
+                .put(url, { order: orderId, vehicle: vehicleId }, {headers: this.headers})
+                .map(res => res.json())
   }
 }

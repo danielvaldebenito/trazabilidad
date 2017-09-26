@@ -5,6 +5,6 @@ export var GLOBAL = {
     country: 'Colombia',
     company: 'Unigas',
     regionName: 'Departamento', // Region
-    cityName: 'Ciudad', // Comuna
+    cityName: 'Municipio', // Comuna
     maxItemsOrder: 4
 }

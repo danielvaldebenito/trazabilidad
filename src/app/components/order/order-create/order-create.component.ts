@@ -47,6 +47,7 @@ export class OrderCreateComponent implements OnInit {
   selectedVehicle: any = {};
   selectedPrices: any[] = [];
   selectedClient: any;
+  selectedIndexAddress = 0;
   // items
   items: any[] = [];
   item: any = { quantity: 1 };
@@ -58,7 +59,7 @@ export class OrderCreateComponent implements OnInit {
   //maxZoom: number = 14;
   addresses: any[] = [];
   errorMessageItems: string;
-
+  prev: boolean; next: boolean;
   // config 
   delaySearch: number = 10000 // 10 segundos
   protected searchStr: string;
@@ -162,6 +163,8 @@ export class OrderCreateComponent implements OnInit {
       this.findCoords()
       this.searchStr = obj.fullname
     }, 100);
+    this.prev = false
+    this.next = obj.addresses.length > 1
     this.updateDiscountSurcharge()
     this.updatePrices()
   }
@@ -660,6 +663,8 @@ export class OrderCreateComponent implements OnInit {
     this.order.phone = null;
     this.order.placeId = null;
     this.searchStr = null;
+    this.prev = false;
+    this.next = false;
     this.updateDiscountSurcharge()
     this.updatePrices()
   }
@@ -705,6 +710,23 @@ export class OrderCreateComponent implements OnInit {
             this.setClientObject(res.client)
         }
       }, error => console.log(error))
+  }
+  choiceAddress(index) {
+    this.selectedIndexAddress = this.selectedIndexAddress + index;
+    this.prev = this.selectedIndexAddress == this.selectedClient.addresses.length - 1
+    this.next = this.selectedIndexAddress == 0
+    var address = this.selectedClient.addresses[this.selectedIndexAddress]
+    console.log('address selected', address, this.selectedIndexAddress)
+    if(address) {
+      this.order.address = address.location
+      this.order.region = address.region
+      this.selectedRegion = { label: this.order.region, value: this.order.region }
+      this.getCities()
+      setTimeout(() => {
+        this.order.city = address.city
+        this.findCoords()
+      }, 100);
+    }
   }
 }
 

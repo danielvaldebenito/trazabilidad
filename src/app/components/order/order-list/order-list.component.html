@@ -22,7 +22,10 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item justify-content-between">
           <fa name="truck"></fa>
-          <span>{{ order.vehicle?.licensePlate }}</span>
+          <span *ngIf="order.vehicle">{{ order.vehicle?.licensePlate }}</span>
+          <span *ngIf="!order.vehicle">
+            <button type="button" class="btn btn-primary" (click)="open(vehicles, order, 'lg')">ASIGNAR</button>
+          </span>
         </li>
         <li class="list-group-item justify-content-between">
           <fa name="calendar"></fa>
@@ -79,6 +82,21 @@
         [markerDraggable]="false">
       </agm-marker>
     </agm-map>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #vehicles let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Asignar vehículo</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <app-vehiculos [fromModal]="true" (selected)="d(''); onSelectedVehicle($event)"></app-vehiculos>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>

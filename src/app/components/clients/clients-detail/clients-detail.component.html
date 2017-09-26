@@ -15,7 +15,7 @@
     <tr *ngIf="client.addresses && client.addresses.length">
       <th>Direcciones ({{ client.addresses.length }})</th>
       <td>
-        <table>
+        <table class="table table-sm table-details">
           <tr>
             <th>{{filter}}</th>
             <th>Dirección</th>
@@ -23,7 +23,7 @@
             <th>{{ cityName }}</th>
           </tr>
           <tr *ngFor="let a of client.addresses; let i = index">
-            <td><span class="badge badge-pill badge-default pull-right">{{ i + 1 }}</span></td>
+            <td><span class="badge badge-pill badge-primary pull-right">{{ i + 1 }}</span></td>
             <td [ngClass]="{'destacado': filter && a.location && a.location.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ a.location }}</td>
             <td [ngClass]="{'destacado': filter && a.region && a.region.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ a.region }}</td>
             <td [ngClass]="{'destacado': filter && a.city && a.city.toLowerCase().indexOf(filter.toLowerCase()) > -1}">{{ a.city }}</td>

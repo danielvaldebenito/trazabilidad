@@ -15,6 +15,7 @@
 
 .list-group-item {
     border-color: #485563;
+
 }
 .navbar-inverse .navbar-nav .nav-link {
     text-transform: uppercase;
@@ -63,6 +64,9 @@
 .container.pager {
     margin-bottom: 50px;
 }
+.form-control:focus {
+    border: 2px solid var(--color-primary)
+}
 .form-control::-webkit-input-placeholder { color: #CCC; }  /* WebKit, Blink, Edge */
 .form-control:-moz-placeholder { color: #CCC; }  /* Mozilla Firefox 4 to 18 */
 .form-control::-moz-placeholder { color: #CCC; }  /* Mozilla Firefox 19+ */
@@ -88,7 +92,8 @@
     border-bottom: 1px solid #ddd;
     outline: none;
     padding: 5px 15px;
-    font-size: 16pt;
+    font-size: 11pt;
+    text-align: center;
 }
 .form-control-filter:focus {
     border-bottom-color: var(--color-primary);
@@ -200,6 +205,9 @@
 
 
 /* SELECT*/
+ng-select > div:focus {
+    border: 2px solid var(--color-primary);
+}
 ng-select > div {
     background: #FFF !important;
     height: 38px;

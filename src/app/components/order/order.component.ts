@@ -53,12 +53,17 @@ export class OrderComponent implements OnInit {
       console.log('Se ha cambiado estado de pedido', data)
       this.refresh()
     })
+    this.socket.on('new-order', (data) => {
+      console.log('Se ha ingresado un nuevo pedido', data)
+      this.refresh()
+    })
   }
   getStates () {
     this._selectsService.getOrderStates()
         .subscribe(
           res => {
             if (res.done) {
+              this.states = res.data;
               res.data.forEach((element, i) => {
                 this.resume.push({
                   state: element,

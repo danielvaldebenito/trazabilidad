@@ -64,8 +64,6 @@ export class PriceListEditComponent implements OnInit {
 
   onSubmit() {
     var json = this.plForm.value;
-    json.items = JSON.stringify(json.items)
-    console.log('tosave', json)
     this._plService.updatePriceList(this.id, json)
         .subscribe(
           res => {

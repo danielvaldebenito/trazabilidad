@@ -32,11 +32,11 @@
   <div class="row principal">
     <div class="col" *ngIf="selectedState">
       <div class="card" id="card-detalle" [ngClass]="{
-        'recibido': selectedState == 'RECIBIDO', 
-        'asignado': selectedState == 'ASIGNADO',
-        'en-ruta': selectedState == 'EN RUTA',
-        'entregado': selectedState == 'ENTREGADO',
-        'cancelado': selectedState == 'CANCELADO'
+        'recibido': selectedState == states[0], 
+        'asignado': selectedState == states[1],
+        'en-ruta': selectedState == states[2],
+        'entregado': selectedState == states[3],
+        'cancelado': selectedState == states[4]
       }">
         <div class="card-header">
           <h2 class="d-flex p-2 flex-row justify-content-between align-items-center">{{ selectedState }}
@@ -49,7 +49,7 @@
         <div class="card-block">
           <div class="row">
             <div class="col">
-                <app-order-list [allItems]="allItems" [selectedState]="selectedState" (oncancel)="onCancelOrder($event)" [sidx]="sidx" [sord]="sord" (sorted)="onSort($event)"></app-order-list>
+                <app-order-list [allItems]="allItems" [selectedState]="selectedState" (refresh)="onSelect(states[1])" (oncancel)="onCancelOrder($event)" [sidx]="sidx" [sord]="sord" (sorted)="onSort($event)"></app-order-list>
             </div>
           </div>
           

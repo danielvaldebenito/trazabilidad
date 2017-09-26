@@ -14,6 +14,7 @@ export class OrderListComponent implements OnInit {
   @Input() sord: number
   @Output() sorted = new EventEmitter<string>()
   @Output() oncancel = new EventEmitter<string>()
+  @Output() refresh = new EventEmitter()
   orderSelected: any;
   zoom: number = 14;
   minZoom: number = 8;
@@ -33,7 +34,7 @@ export class OrderListComponent implements OnInit {
   open(content, order, size) {
     this.orderSelected = order;
     console.log('order selected', this.orderSelected)
-    this._modalService.open(content, { size: size })
+    this._modalService.open(content, { size: size || 'sm' })
         .result.then((result) => {
           //this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
@@ -59,5 +60,20 @@ export class OrderListComponent implements OnInit {
           )
     })
     .catch(error => console.log(error))
+  }
+  onSelectedVehicle(vehicle) {
+    if(!vehicle || !this.orderSelected)
+      return;
+    this._orderService.assignVehicleToOrder(this.orderSelected._id, vehicle._id)
+      .subscribe(
+        res => {
+          console.log(res)
+          if(res.done) {
+            
+            this.refresh.emit()
+          }
+        }, 
+        error => console.log(error)
+      )
   }
 }

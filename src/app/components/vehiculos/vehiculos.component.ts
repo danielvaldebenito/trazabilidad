@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { VehicleService } from '../../services/vehicles.service';
 import { SelectsService } from '../../services/selects.service';
 import { Vehicle } from '../../models/vehicle.model';
@@ -22,6 +22,8 @@ export class VehiculosComponent implements OnInit {
   pager: any = {};
   // paged items
   pagedItems: any[];
+  @Input() fromModal: boolean;
+  @Output() selected = new EventEmitter<any>();
   constructor(
     private _vehicleService: VehicleService, 
     private _pagerService: PagerService,
@@ -32,6 +34,9 @@ export class VehiculosComponent implements OnInit {
   ngOnInit() {
     this.refresh();
     
+  }
+  onSelect(vehicle) {
+    this.selected.emit(vehicle);
   }
   getVehicles(filter: string, limit: number){
     this._vehicleService
