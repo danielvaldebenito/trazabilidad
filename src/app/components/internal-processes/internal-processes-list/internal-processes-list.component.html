@@ -1,0 +1,27 @@
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th>Dependencia</th>
+      <th *ngIf="!fromModal"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let ip of internalProcesses; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{ ip.name }}</td>
+      <td>{{ ip.internalProcessType?.name }}</td>
+      <td>{{ ip.warehouse?.dependence?.name }}</td>
+      <td *ngIf="!fromModal">
+        <button type="button" class="btn btn-sm btn-primary" [routerLink]="['/internalprocess/edit', ip._id]">
+          <fa name="pencil"></fa>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" (click)="tryDelete(ip)">
+          <fa name="trash"></fa>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

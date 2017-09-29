@@ -1,8 +1,8 @@
   <div class="container-fluid">
     <!-- pager -->
     <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></div>
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="col d-flex flex-row justify-content-between align-items-center">
+        <ul></ul>
         <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
           <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
             <a class="page-link" (click)="setPage(1)">
@@ -28,14 +28,12 @@
             </a>
           </li>
         </ul>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
         <ul class="pagination justify-content-end">
-          <li class="page-item">
-            <small *ngIf="pager.totalItems > 0">Viendo {{ pager.startIndex + 1 }} - {{ pager.endIndex + 1 }} de {{ pager.totalItems }}</small>
-            <small *ngIf="pager.totalItems == 0">Sin resultados</small>
-          </li>
-        </ul>
+            <li class="page-item">
+              <small *ngIf="pager.totalItems > 0">Viendo {{ pager.startIndex + 1 }} - {{ pager.endIndex + 1 }} de {{ pager.totalItems }}</small>
+              <small *ngIf="pager.totalItems == 0">Sin resultados</small>
+            </li>
+          </ul>
       </div>
     </div>
   </div>

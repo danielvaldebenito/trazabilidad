@@ -6,7 +6,7 @@
           <app-clients-detail [client]="client" [filter]="filter"></app-clients-detail>
         </div>
         <div class="card-footer">
-          <button type="button" *ngIf="!fromModal" class="btn btn-outline-primary" [routerLink]="['/clients/edit/', client._id]">
+          <button type="button" *ngIf="!fromModal" class="btn btn-outline-primary" [routerLink]="['/clients/edit', client._id]">
               <fa name="pencil"></fa> EDITAR
             </button>
           <button type="button" *ngIf="fromModal" class="btn btn-outline-primary" (click)="onSelectClient(client)">

@@ -8,6 +8,8 @@ import { SweetAlertService } from 'ngx-sweetalert2'
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { GLOBAL } from '../../../global'
+import { InternalProcessesService } from 'app/services/internal-processes.service';
+import { DependencesService } from 'app/services/dependences.service';
 
 function minOne (c: AbstractControl) {
   return c.get('isAdmin').value === true || c.get('isVehicle').value === true || c.get('isOperator').value === true
@@ -25,6 +27,9 @@ function vehicleValidator (c: AbstractControl) {
   providers: [SweetAlertService]
 })
 export class UsersEditComponent implements OnInit {
+  selectedDependence: any;
+  dependences: any[];
+  internalProcesses: any[];
   form: FormGroup
   vehicles: Array<IOption>
   allProcess: any[]
@@ -40,22 +45,33 @@ export class UsersEditComponent implements OnInit {
     private _swal2: SweetAlertService,
     private _router: Router,
     private _route: ActivatedRoute,
-    private _location: Location
+    private _location: Location,
+    private _internalProcessesService: InternalProcessesService,
+    private _dependencesService: DependencesService
   ) 
   {
     this.getVehicles();
+    this.getDependences();
+    
     
     this.id =  this._route.snapshot.params["id"];
+    
     this.getOne (this.id);
+    const self = this
+    setTimeout(function() {
+      if(self.user.dependence)
+        self.getInternalProcesses(self.user.dependence, self.user.internalProcessTypes)
+      self.getProcesses();
+    }, 500);
+    
   }
   getOne (id) {
     this._usersService.getUser (id)
         .subscribe(res =>{
           if(res.done) {
             this.user = res.data
-            console.log('user', this.user)
             this.initForm(this.user)
-            this.getProcesses();
+            
           }
         }, error => {
           console.log(error)
@@ -82,12 +98,16 @@ export class UsersEditComponent implements OnInit {
       process: new FormArray([
 
       ]),
+      internalProcess: [user.internalProcess],
+      dependence: user.dependence,
       roles: this._fb.group({
         isAdmin: new FormControl(user.isAdmin),
         isVehicle: new FormControl(user.roles.indexOf('VEHÍCULO') > -1),
         isOperator: new FormControl(this.user.internalProcessTypes != null && this.user.internalProcessTypes.length > 0)
       }, { validator: minOne })
     }, { validator: vehicleValidator })
+
+    
   }
   ngOnInit() {
   }
@@ -104,6 +124,35 @@ export class UsersEditComponent implements OnInit {
             this.vehicles = array;
           }
         }, error => console.log(error))
+  }
+  getInternalProcesses(dependence, types) {
+    console.log({dependence, types})
+    if(!dependence || !types) return;
+    this._internalProcessesService.getByDependenceAndType(dependence, types)
+      .subscribe(res => {
+        if(res.done) {
+          var data = res.records;
+          var array = []
+          data.forEach(element => {
+            array.push({ value: element._id, label: element.name })
+          });
+          this.internalProcesses = array;
+          this.form.get('internalProcess').setValue(this.user.internalProcess)
+        }
+      }, error => console.log(error))
+  }
+  getDependences() {
+    this._selectsService.getDependences()
+      .subscribe(res => {
+        if(res.done) {
+          var data = res.data;
+          var array = []
+          data.forEach(element => {
+            array.push({ label: element.name, value: element._id })
+          });
+          this.dependences = array
+        }
+      }, error => console.log(error))
   }
   onCancel () {
     console.log('oncancel')
@@ -148,6 +197,7 @@ export class UsersEditComponent implements OnInit {
             data.forEach(element => {
               this.addProcess(element)
             });
+            
           }
         }, err => console.log(err))
   }
@@ -189,5 +239,19 @@ export class UsersEditComponent implements OnInit {
           }
         )
 
+  }
+  onSelectDependence(dependence) {
+    if(dependence == null) return;
+    this.selectedDependence = dependence;
+    const value = this.form.value
+    const process = value.process.filter((f) => { return f.selected })
+    console.log('select dependence', process)
+    const types = process.map((a) => {return a.id })
+    
+    this.getInternalProcesses(dependence.value, types)
+  }
+  onDeselectDependence (algo) {
+    this.selectedDependence = null;
+    this.internalProcesses = [];
   }
 }

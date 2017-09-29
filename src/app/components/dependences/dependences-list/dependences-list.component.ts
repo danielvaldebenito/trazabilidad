@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common'
 import { DependencesService } from '../../../services/dependences.service'
+import { InternalProcessesService } from '../../../services/internal-processes.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
   selector: 'app-dependences-list',
@@ -12,10 +14,13 @@ import { DependencesService } from '../../../services/dependences.service'
 export class DependencesListComponent implements OnInit {
   @Input() dependences: any[]
   @Output() deletedItem = new EventEmitter()
+  internalProcesses: any[] = []
   constructor(
     private _swal2: SweetAlertService,
     private _location: Location,
-    private _dependenceService: DependencesService
+    private _dependenceService: DependencesService,
+    private _internalProcessesService: InternalProcessesService,
+    private _modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -49,5 +54,22 @@ export class DependencesListComponent implements OnInit {
         }
         
       }, e => console.log(e))
+  }
+  getInternalProcesses(dependence) {
+    this._internalProcessesService.getByDependence(dependence._id)
+      .subscribe(res => { 
+        console.log(res)
+        if(res.done) {
+          this.internalProcesses = res.records
+        }
+      }, error => { console.log(error)})
+  }
+  open(content, size) {
+    this._modalService.open(content, { size: size || 'sm' })
+        .result.then((result) => {
+          //this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
   }
 }

@@ -19,6 +19,9 @@ import { ClientsComponent } from './components/clients/clients.component'
     import { ClientsNewComponent } from './components/clients/clients-new/clients-new.component'
     import { ClientsEditComponent } from './components/clients/clients-edit/clients-edit.component'
 import { InventoryComponent } from './components/inventory/inventory.component'
+import { InternalProcessesComponent } from './components/internal-processes/internal-processes.component'
+    import { InternalProcessesNewComponent } from './components/internal-processes/internal-processes-new/internal-processes-new.component'
+    import { InternalProcessesEditComponent } from './components/internal-processes/internal-processes-edit/internal-processes-edit.component'
 export const appRoutes: Routes = [
   { path: 'vehicles', component: VehiculosComponent },
   { path: 'vehicles/create', component: CreateVehicleComponent },
@@ -39,5 +42,8 @@ export const appRoutes: Routes = [
   { path: 'clients', component: ClientsComponent },
   { path: 'clients/new', component: ClientsNewComponent },
   { path: 'clients/edit/:id', component: ClientsEditComponent },
-  { path: 'inventory', component: InventoryComponent}
+  { path: 'inventory', component: InventoryComponent},
+  { path: 'internalprocess', component: InternalProcessesComponent },
+  { path: 'internalprocess/new', component: InternalProcessesNewComponent },
+  { path: 'internalprocess/edit/:id', component: InternalProcessesEditComponent }
 ];

@@ -114,6 +114,7 @@ export class OrderComponent implements OnInit {
     this.refresh();
   }
   setMoment(date: any): any {
+    if(date == null) return;
     this.momentValue = moment(date).format('YYYY-MM-DD');
     this.refresh();
   }

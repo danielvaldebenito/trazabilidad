@@ -110,7 +110,7 @@
               </div>
               
             </div>
-            <div>
+            <!-- <div>
               <div class="row">
                 <div class="col"></div>
                 <div class="col">
@@ -142,8 +142,63 @@
                   </div>
                 </div>
               </div>
-            </div>
-            
+            </div> -->
+            <div [hidden]="fromVehiclesModule">
+                <div class="row" *ngIf="form.value.roles.isVehicle">
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-block">
+                        <div class="form-group" *ngIf="form.value.roles.isVehicle" [ngClass]="{'has-success': !form.hasError('vehicleValidator'), 'has-danger': form.hasError('vehicleValidator')}">
+                          <label class="form-control-label">Vehículo asignado</label>
+                          <ng-select formControlName="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo"
+                            highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione vehículo..." [options]="vehicles"
+                            [allowClear]="true" [noFilter]="5">
+                          </ng-select>
+                          <div [hidden]="!form.hasError('vehicleValidator')" class="form-control-feedback">
+                            Debe ingresar el vehículo asignado al usuario
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" *ngIf="form.value.roles.isOperator">
+                    <div class="card">
+                      <div class="card-block">
+                        <label>Procesos</label>
+                        <div class="row">
+                          <div class="col" formArrayName="process" *ngFor="let control of form.controls['process'].controls; let i = index">
+                            <div formGroupName="{{i}}">
+                              <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" formControlName="selected" (change)="onSelectDependence(selectedDependence)">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">{{ allProcess[i].name }}</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="form.value.roles.isOperator">
+                          <div class="col-lg-6 form-group">
+                            <label for="">Dependencia</label>
+                            <ng-select formControlName="dependence" filterPlaceholder="Buscar Dependences..." notFoundMsg="No se encontró ninguna dependencia" highlightColor="#37424A"
+                              highlightTextColor="#fff" placeholder="Seleccione dependencia..." [options]="dependences" [allowClear]="true"
+                              [noFilter]="5" (selected)="onSelectDependence($event)" (deselected)="onDeselectDependence($event)">
+                            </ng-select>
+                          </div>
+                          <div class="col-lg-6 form-group">
+                            <label for="">Procesos Internos</label>
+                            <ng-select formControlName="internalProcess" filterPlaceholder="Buscar Procesos..." notFoundMsg="No se encontró ningún proceso"
+                              highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione proceso..." [options]="internalProcesses"
+                              [allowClear]="true" [noFilter]="5" [multiple]="true">
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
         <div class="card-footer">
           <button type="submit" [disabled]="!form.valid || userExistsError" class="btn btn-primary btn-block">

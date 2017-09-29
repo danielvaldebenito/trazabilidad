@@ -1,0 +1,56 @@
+<div class="container principal">
+    <div class="row">
+      <div class="col" *ngIf="form">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="card">
+            <div class="card-header d-flex flex-row justify-content-between align-items-center">
+              <button class="btn btn-secondary" type="button" *ngIf="!fromModal" (click)="onCancel()" title="Volver">
+                  <fa name="arrow-left"></fa>
+                </button>
+              <h1>Editar Proceso Interno</h1>
+              <fa name="cog" size="2x"></fa>
+            </div>
+            <div class="card-block">
+              <div class="form-group" [ngClass]="{'has-success': form.get('type').valid, 'has-danger': form.get('type').errors && (form.get('type').dirty || form.get('type').touched) }">
+                <label class="form-control-label">Tipo (*)</label>
+                <ng-select filterPlaceholder="Buscar Tipo..." notFoundMsg="No se encontró ningún Tipo" highlightColor="#37424A" highlightTextColor="#fff"
+                  placeholder="Seleccione Tipo..." [options]="types" [allowClear]="true" [noFilter]="5" formControlName="type">
+                </ng-select>
+                <div class="form-control-feedback">
+                  <div *ngIf="!form.get('type').valid && form.get('type').touched">
+                    Ingrese un Tipo
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" [ngClass]="{'has-success': form.get('name').valid, 'has-danger': form.get('name').errors && (form.get('name').dirty || form.get('name').touched) }">
+                <label class="form-control-label">Nombre (*)</label>
+                <input type="text" formControlName="name" class="form-control">
+                <div class="form-control-feedback">
+                  <div *ngIf="!form.get('name').valid && form.get('name').touched">
+                    Ingrese un Nombre
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" [ngClass]="{'has-success': form.get('dependence').valid, 'has-danger': form.get('dependence').errors && (form.get('dependence').dirty || form.get('dependence').touched) }">
+                <label class="form-control-label">Dependencia (*)</label>
+                <ng-select filterPlaceholder="Buscar Dependencia..." notFoundMsg="No se encontró ninguna dependencia" highlightColor="#37424A" highlightTextColor="#fff"
+                  placeholder="Seleccione Dependencia..." [options]="dependences" [allowClear]="true" [noFilter]="5" formControlName="dependence">
+                </ng-select>
+                <div class="form-control-feedback">
+                  <div *ngIf="!form.get('dependence').valid && form.get('dependence').touched">
+                    Ingrese una dependencia
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary btn-block btn-lg" type="submit" [disabled]="!form.valid">
+                  <fa name="save"></fa> GUARDAR
+                </button>
+            </div>
+          </div>
+        </form>
+  
+      </div>
+    </div>
+  </div>

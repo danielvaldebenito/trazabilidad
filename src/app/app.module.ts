@@ -32,7 +32,7 @@ import { PagerService } from './services/pager.service';
 import { SelectsService } from './services/selects.service';
 import { GoogleMapService }  from './services/googlemap.service';
 import { AddressService } from './services/addresses.service';
-
+import { InternalProcessesService } from './services/internal-processes.service';
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -68,12 +68,17 @@ import { ClientsNewComponent } from './components/clients/clients-new/clients-ne
 import { ClientsEditComponent } from './components/clients/clients-edit/clients-edit.component';
 import { ClientsListComponent } from './components/clients/clients-list/clients-list.component';
 import { ClientsDetailComponent } from './components/clients/clients-detail/clients-detail.component';
-
-// entorno
-import { environment } from '../environments/environment';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
 import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
+import { InternalProcessesComponent } from './components/internal-processes/internal-processes.component';
+import { InternalProcessesNewComponent } from './components/internal-processes/internal-processes-new/internal-processes-new.component';
+import { InternalProcessesEditComponent } from './components/internal-processes/internal-processes-edit/internal-processes-edit.component';
+import { InternalProcessesListComponent } from './components/internal-processes/internal-processes-list/internal-processes-list.component';
+import { InternalProcessesDetailComponent } from './components/internal-processes/internal-processes-detail/internal-processes-detail.component';
+
+// entorno
+import { environment } from '../environments/environment';
 
 
 
@@ -115,7 +120,12 @@ import { InventoryComponent } from './components/inventory/inventory.component';
     ClientsDetailComponent,
     OrderListComponent,
     OrderDetailComponent,
-    InventoryComponent
+    InventoryComponent,
+    InternalProcessesComponent,
+    InternalProcessesNewComponent,
+    InternalProcessesEditComponent,
+    InternalProcessesListComponent,
+    InternalProcessesDetailComponent
   ],
   imports: [
     FormsModule,
@@ -144,12 +154,14 @@ import { InventoryComponent } from './components/inventory/inventory.component';
     PriceListService,
     FoliosService,
     ClientsService,
+    InternalProcessesService,
     PagerService, 
     SelectsService, 
     OrderService, 
     GoogleMapService,
     AddressService,
     SweetAlertService
+
     //{provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

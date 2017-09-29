@@ -1,7 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { SelectsService } from '../../../services/selects.service';
+import { UserService } from '../../../services/user.service';
 import { UsersService } from '../../../services/users.service';
+import { InternalProcessesService } from '../../../services/internal-processes.service'
+import { DependencesService } from '../../../services/dependences.service'
 import { IOption } from "ng-select";
 import { NotificationsService } from 'angular2-notifications';
 import { SweetAlertService } from 'ngx-sweetalert2'
@@ -27,7 +30,10 @@ export class UsersNewComponent implements OnInit {
 
   form: FormGroup
   vehicles: Array<IOption>;
-  allProcess: any[]
+  dependences: Array<IOption>
+  selectedDependence: any;
+  allProcess: any[];
+  internalProcesses: any[];
   userExistsError: boolean = false
   @Input() fromModal: boolean = false
   @Input() fromVehiclesModule: boolean = false
@@ -36,11 +42,14 @@ export class UsersNewComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _selectsService: SelectsService,
+    private _userService: UserService,
     private _usersService: UsersService,
     private _notify: NotificationsService,
     private _swal2: SweetAlertService,
     private _router: Router,
-    private _location: Location
+    private _location: Location,
+    private _internalProcessesService: InternalProcessesService,
+    private _dependencesService: DependencesService
   ) {
     
     
@@ -55,6 +64,8 @@ export class UsersNewComponent implements OnInit {
       process: new FormArray([
 
       ]),
+      internalProcess: [null],
+      dependence: [null],
       fvm: this.fromVehiclesModule,
       roles: this._fb.group({
         isAdmin: [!this.fromVehiclesModule],
@@ -99,17 +110,45 @@ export class UsersNewComponent implements OnInit {
         .subscribe(res => {
           if(res.done) {
             var data = res.data;
-            this.allProcess = data;
+            
             var array = []
             data.forEach(element => {
               this.addProcess(element)
             });
+            this.allProcess = data;
           }
         }, err => console.log(err))
+  }
+  getInternalProcesses(dependence, types) {
+    this._internalProcessesService.getByDependenceAndType(dependence, types)
+      .subscribe(res => {
+        if(res.done) {
+          var data = res.records;
+          var array = []
+          data.forEach(element => {
+            array.push({ value: element._id, label: element.name })
+          });
+          this.internalProcesses = array;
+        }
+      }, error => console.log(error))
+  }
+  getDependences() {
+    this._selectsService.getDependences()
+      .subscribe(res => {
+        if(res.done) {
+          var data = res.data;
+          var array = []
+          data.forEach(element => {
+            array.push({ label: element.name, value: element._id })
+          });
+          this.dependences = array
+        }
+      }, error => console.log(error))
   }
   ngOnInit() {
     this.getVehicles();
     this.getProcesses();
+    this.getDependences();
     this.initForm();
   }
 
@@ -185,5 +224,24 @@ export class UsersNewComponent implements OnInit {
 
         }, err => console.log(err))
   }
+  isIntern() {
+    return this._userService.getUserIdentity().distributor.intern;
+  }
+
+  onSelectDependence(dependence) {
+    if(dependence == null) return;
+    this.selectedDependence = dependence;
+    const value = this.form.value
+    const process = value.process.filter((f) => { return f.selected })
+    console.log('select dependence', process)
+    const types = process.map((a) => {return a.id })
+    
+    this.getInternalProcesses(dependence.value, types)
+  }
+  onDeselectDependence (algo) {
+    this.selectedDependence = null;
+    this.internalProcesses = [];
+  }
+
   
 }
