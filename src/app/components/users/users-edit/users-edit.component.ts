@@ -60,6 +60,7 @@ export class UsersEditComponent implements OnInit {
     const self = this
     setTimeout(function() {
       if(self.user.dependence)
+        this.selectedDependence = self.user.dependence
         self.getInternalProcesses(self.user.dependence, self.user.internalProcessTypes)
       self.getProcesses();
     }, 500);
@@ -70,8 +71,10 @@ export class UsersEditComponent implements OnInit {
         .subscribe(res =>{
           if(res.done) {
             this.user = res.data
+            console.log('user', this.user)
             this.initForm(this.user)
-            
+            if(this.user.dependence)
+              this.onSelectDependence({ value: this.user.dependence })
           }
         }, error => {
           console.log(error)
