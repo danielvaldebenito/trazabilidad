@@ -81,16 +81,16 @@
                     <div class="col-12" [ngClass]="{'col-sm-10': prev && next, 'col-sm-11': prev && !next || !prev && next, 'col-sm-12': !prev && !next}">
                       <div class="row">
                         <div class="col-12">
-                          <div class="form-group" [ngClass]="{'has-success': !address.errors, 'has-danger': address.errors && (address.dirty || address.touched) }">
+                          <div class="form-group" [ngClass]="{'has-success': !location.errors, 'has-danger': location.errors && (location.dirty || location.touched) }">
                             <label class="form-control-label" for="">Dirección (*)</label>
-                            <ng2-completer #address="ngModel" name="address" matchClass="match" inputClass="form-control" [(ngModel)]="order.address"
-                              [datasource]="addresses" [minSearchLength]="2" inputName="address" textNoResults="Sin coincidencias. Se creará nuevo registro"
+                            <ng2-completer #location="ngModel" name="location" matchClass="match" inputClass="form-control" [(ngModel)]="order.location"
+                              [datasource]="addresses" [minSearchLength]="2" inputName="location" textNoResults="Sin coincidencias. Se creará nuevo registro"
                               textSearching="Buscando..." placeholder="Busque una dirección ya existente o ingrese una nueva"
                               autoMatch="true" (blur)="onBlur()" required>
                             </ng2-completer>
                             <div class="form-control-feedback">
-                              <div *ngIf="address.errors && (address.dirty || address.touched)" class="danger">
-                                <div [hidden]="!address.errors.required">
+                              <div *ngIf="location.errors && (location.dirty || location.touched)" class="danger">
+                                <div [hidden]="!location.errors.required">
                                   Ingrese la dirección para el pedido
                                 </div>
                               </div>

@@ -30,7 +30,7 @@
     </div>
   </div>
   <div class="row principal">
-    <div class="col" *ngIf="selectedState">
+    <div class="col" *ngIf="selectedState && states">
       <div class="card" id="card-detalle" [ngClass]="{
         'recibido': selectedState == states[0], 
         'asignado': selectedState == states[1],

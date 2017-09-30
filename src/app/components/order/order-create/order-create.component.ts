@@ -148,7 +148,7 @@ export class OrderCreateComponent implements OnInit {
   }
   setClientObject(obj) {
     console.log('selected client obj', obj)
-    this.order.address = obj.addresses && obj.addresses.length > 0 ? obj.addresses[0].location : ''
+    this.order.location = obj.addresses && obj.addresses.length > 0 ? obj.addresses[0].location : ''
     this.order.region = obj.addresses && obj.addresses.length > 0 ? obj.addresses[0].region : ''
     this.selectedRegion = { label: this.order.region, value: this.order.region }
     this.order.client = obj._id
@@ -184,7 +184,7 @@ export class OrderCreateComponent implements OnInit {
           this.order.placeId = first.place_id;
           var formatted_address = first.formatted_address;
           var split_formatted_addres = formatted_address.split(', ')
-          this.order.address = split_formatted_addres[0];
+          this.order.location = split_formatted_addres[0];
           this.order.city = split_formatted_addres[1];
 
         }
@@ -193,7 +193,7 @@ export class OrderCreateComponent implements OnInit {
       )
   }
   findCoords() {
-    var address = this.order.address;
+    var address = this.order.location;
     var region = this.order.region;
     var city = this.order.city;
     var country = GLOBAL.country;
@@ -529,7 +529,7 @@ export class OrderCreateComponent implements OnInit {
           if (res.done) {
             this._swal2.swal({
               title: 'Buscando',
-              text: 'Buscando vehículos cercanos a ' + this.order.address + '... Espere ' + this.delaySearch / 1000 + ' segundos por favor',
+              text: 'Buscando vehículos cercanos a ' + this.order.location + '... Espere ' + this.delaySearch / 1000 + ' segundos por favor',
               timer: 10000,
               showCancelButton: true,
               showConfirmButton: false,
@@ -654,7 +654,7 @@ export class OrderCreateComponent implements OnInit {
     this.selectedClient = null;
     this.order.clientName = null;
     this.order.clientNit = null;
-    this.order.address = null;
+    this.order.location = null;
     this.order.lat = null;
     this.order.lng = null;
     this.order.client = null;
@@ -677,7 +677,7 @@ export class OrderCreateComponent implements OnInit {
     var client = {
       nit: this.order.clientNit,
       name: this.order.clientName || 'NN',
-      location: this.order.address,
+      location: this.order.location,
       city: this.order.city,
       region: this.order.region,
       phone: this.order.phone
@@ -718,7 +718,7 @@ export class OrderCreateComponent implements OnInit {
     var address = this.selectedClient.addresses[this.selectedIndexAddress]
     console.log('address selected', address, this.selectedIndexAddress)
     if(address) {
-      this.order.address = address.location
+      this.order.location = address.location
       this.order.region = address.region
       this.selectedRegion = { label: this.order.region, value: this.order.region }
       this.getCities()
