@@ -33,7 +33,7 @@
         </li>
       </ul>
       <div class="card-footer">
-        <button class="btn btn-primary" *ngIf="order.address.coordinates" (click)="open(map, order, 'lg')">
+        <button class="btn btn-primary" *ngIf="order.address && order.address.coordinates" (click)="open(map, order, 'lg')">
             <fa name="map-marker"></fa>
           </button>
         <button class="btn btn-outline-secondary" (click)="open(detail, order, 'sm')">
@@ -75,7 +75,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body" *ngIf="orderSelected">
     <agm-map [latitude]="orderSelected.address?.coordinates?.lat || 0" [longitude]="orderSelected.address?.coordinates?.lng || 0"
       [zoom]="zoom" [minZoom]="minZoom">
       <agm-marker [latitude]="orderSelected.address?.coordinates?.lat || 0" [longitude]="orderSelected.address?.coordinates?.lng || 0"

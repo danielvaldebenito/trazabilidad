@@ -22,6 +22,9 @@ import { InventoryComponent } from './components/inventory/inventory.component'
 import { InternalProcessesComponent } from './components/internal-processes/internal-processes.component'
     import { InternalProcessesNewComponent } from './components/internal-processes/internal-processes-new/internal-processes-new.component'
     import { InternalProcessesEditComponent } from './components/internal-processes/internal-processes-edit/internal-processes-edit.component'
+import { DistributorsComponent } from './components/distributors/distributors.component'
+    import { DistributorsNewComponent } from './components/distributors/distributors-new/distributors-new.component'
+    import { DistributorsEditComponent } from './components/distributors/distributors-edit/distributors-edit.component'
 export const appRoutes: Routes = [
   { path: 'vehicles', component: VehiculosComponent },
   { path: 'vehicles/create', component: CreateVehicleComponent },
@@ -45,5 +48,9 @@ export const appRoutes: Routes = [
   { path: 'inventory', component: InventoryComponent},
   { path: 'internalprocess', component: InternalProcessesComponent },
   { path: 'internalprocess/new', component: InternalProcessesNewComponent },
-  { path: 'internalprocess/edit/:id', component: InternalProcessesEditComponent }
+  { path: 'internalprocess/edit/:id', component: InternalProcessesEditComponent },
+  { path: 'distributors', component: DistributorsComponent },
+  { path: 'distributors/new', component: DistributorsNewComponent },
+  { path: 'distributors/edit', component: DistributorsEditComponent }
+
 ];

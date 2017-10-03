@@ -33,6 +33,7 @@ import { SelectsService } from './services/selects.service';
 import { GoogleMapService }  from './services/googlemap.service';
 import { AddressService } from './services/addresses.service';
 import { InternalProcessesService } from './services/internal-processes.service';
+import { DistributorsService } from './services/distributors.service'
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -76,9 +77,15 @@ import { InternalProcessesNewComponent } from './components/internal-processes/i
 import { InternalProcessesEditComponent } from './components/internal-processes/internal-processes-edit/internal-processes-edit.component';
 import { InternalProcessesListComponent } from './components/internal-processes/internal-processes-list/internal-processes-list.component';
 import { InternalProcessesDetailComponent } from './components/internal-processes/internal-processes-detail/internal-processes-detail.component';
+import { DistributorsComponent } from './components/distributors/distributors.component';
+import { DistributorsNewComponent } from './components/distributors/distributors-new/distributors-new.component';
+import { DistributorsEditComponent } from './components/distributors/distributors-edit/distributors-edit.component';
+import { DistributorsListComponent } from './components/distributors/distributors-list/distributors-list.component';
+import { DistributorsDetailComponent } from './components/distributors/distributors-detail/distributors-detail.component';
 
 // entorno
 import { environment } from '../environments/environment';
+
 
 
 
@@ -125,7 +132,12 @@ import { environment } from '../environments/environment';
     InternalProcessesNewComponent,
     InternalProcessesEditComponent,
     InternalProcessesListComponent,
-    InternalProcessesDetailComponent
+    InternalProcessesDetailComponent,
+    DistributorsComponent,
+    DistributorsNewComponent,
+    DistributorsEditComponent,
+    DistributorsListComponent,
+    DistributorsDetailComponent
   ],
   imports: [
     FormsModule,
@@ -155,6 +167,7 @@ import { environment } from '../environments/environment';
     FoliosService,
     ClientsService,
     InternalProcessesService,
+    DistributorsService,
     PagerService, 
     SelectsService, 
     OrderService, 

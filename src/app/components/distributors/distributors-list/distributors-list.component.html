@@ -1,0 +1,26 @@
+<table class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th>NIT</th>
+      <th>NOMBRE</th>
+      <th>TELÉFONO</th>
+      <th>EMAIL</th>
+      <th>CONTACTO</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let distributor of distributors">
+      <td> {{ distributor.nit }}</td>
+      <td> {{ distributor.name }}</td>
+      <td> {{ distributor.phone }}</td>
+      <td> {{ distributor.email }}</td>
+      <td> {{ distributor.contact }}</td>
+      <th>
+        <button class="btn btn-sm btn-primary">
+          <fa name="pencil"></fa>
+        </button>
+      </th>
+    </tr>
+  </tbody>
+</table>

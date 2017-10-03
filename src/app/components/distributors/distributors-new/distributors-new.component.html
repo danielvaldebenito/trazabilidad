@@ -1,0 +1,117 @@
+<div class="container principal">
+  <div class="row">
+    <div class="col">
+      <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="card">
+          <div class="card-header d-flex flex-row justify-content-between align-items-center">
+            <button class="btn btn-secondary" type="button" *ngIf="!fromModal" (click)="onCancel()" title="Volver">
+              <fa name="arrow-left"></fa>
+            </button>
+            <h1>Distribuidores</h1>
+            <fa name="handshake-o" size="2x"></fa>
+          </div>
+          <div class="card-block">
+            <div class="form-group" [ngClass]="{'has-success': form.get('nit').valid && !errorNit, 'has-danger':(!form.get('nit').valid && form.get('nit').touched || errorNit)}">
+              <label for="" class="form-control-label">Nit (*)</label>
+              <input type="text" (keyup)="validateNit()" class="form-control" [ngClass]="{'form-control-success': form.get('nit').valid && !errorNit, 'form-control-danger':(!form.get('nit').valid && form.get('nit').touched || errorNit) }"
+                formControlName="nit" placeholder="Nit del distribuidor">
+              <div class="form-control-feedback">
+                <div *ngIf="!form.get('nit').valid && form.get('nit').touched">
+                  Ingrese el nit del distribuidor
+                </div>
+                <div *ngIf="errorNit">
+                  El nit ingresado ya existe en el sistema
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group" [ngClass]="{'has-success': form.get('name').valid, 'has-danger':!form.get('name').valid && form.get('name').touched }">
+                  <label for="" class="form-control-label">Nombre (*)</label>
+                  <input type="text" class="form-control" [ngClass]="{'form-control-success': form.get('name').valid, 'form-control-danger':!form.get('name').valid && form.get('name').touched }"
+                    formControlName="name" placeholder="Nombre del distribuidor">
+                  <div class="form-control-feedback">
+                    <div *ngIf="!form.get('name').valid && form.get('name').touched">
+                      Ingrese el nombre del distribuidor
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="form-control-label">Nombre de contacto</label>
+              <input type="text" class="form-control" formControlName="contact" placeholder="Nombre de contacto">
+
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="" class="form-control-label">Teléfono de contacto:</label>
+                  <input type="text" class="form-control" formControlName="phone" placeholder="Teléfono de contacto">
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group" [ngClass]="{'has-success': form.get('email').valid && form.get('email').touched, 'has-danger':!form.get('email').valid && form.get('email').touched }">
+                  <label for="" class="form-control-label">Email de contacto (*)</label>
+                  <input type="email" class="form-control" formControlName="email" placeholder="Email de contacto" [ngClass]="{'form-control-success': form.get('email').valid && form.get('email').touched, 'form-control-danger':!form.get('email').valid && form.get('email').touched }">
+                  <div class="form-control-feedback">
+                    <div *ngIf="!form.get('email').valid && form.get('email').touched">
+                      Ingrese un e-mail válido
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group" [ngClass]="{'has-success': form.get('address').valid && form.get('address').touched, 'has-danger':!form.get('address').valid && form.get('address').touched }">
+                  <label for="" class="form-control-label">Dirección (*)</label>
+                  <input type="text" class="form-control" [ngClass]="{'form-control-success': form.get('address').valid && form.get('address').touched, 'form-control-danger': !form.get('address').valid && form.get('address').touched }"
+                    formControlName="address" placeholder="Dirección">
+                  <div class="form-control-feedback">
+                    <div *ngIf="!form.get('address').valid && form.get('address').touched">
+                      Ingrese una dirección para el cliente
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group" [ngClass]="{'has-success': form.get('region').valid && form.get('region').touched, 'has-danger':!form.get('region').valid && form.get('region').touched}">
+                  <label class="form-control-label">{{ regionName }} (*)</label>
+                  <ng-select filterPlaceholder="Buscar {{ regionName }}..." notFoundMsg="No se encontró ningún {{ regionName }}" highlightColor="#37424A"
+                    highlightTextColor="#fff" placeholder="Seleccione {{ regionName }}..." [options]="regions" [allowClear]="true"
+                    [noFilter]="5" formControlName="region" (selected)="onSelectRegion($event)" (deselected)="onDeselectRegion($event)">
+                  </ng-select>
+                  <div class="form-control-feedback">
+                    <div *ngIf="!form.get('region').valid && form.get('region').touched">
+                      Ingrese un {{ regionName }}
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" [ngClass]="{'has-success': form.get('city').valid && form.get('city').touched, 'has-danger':!form.get('city').valid && form.get('city').touched }">
+                  <label class="form-control-label">{{ cityName }} (*)</label>
+                  <ng-select filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró {{ cityName }}" highlightColor="#37424A"
+                    highlightTextColor="#fff" placeholder="Seleccione {{ cityName }}..." [options]="cities" [allowClear]="true"
+                    [noFilter]="5" formControlName="city" (selected)="onSelectCity($event)" (deselected)="onDeselectCity($event)">
+                  </ng-select>
+                  <div class="form-control-feedback">
+                    <div *ngIf="!form.get('city').valid && form.get('city').touched">
+                      Ingrese un {{ cityName }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary btn-block btn-lg" type="submit" [disabled]="!form.valid">
+              <fa name="save"></fa> GUARDAR
+            </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

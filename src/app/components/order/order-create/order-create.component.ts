@@ -183,9 +183,9 @@ export class OrderCreateComponent implements OnInit {
           var first = results[0];
           this.order.placeId = first.place_id;
           var formatted_address = first.formatted_address;
-          var split_formatted_addres = formatted_address.split(', ')
-          this.order.location = split_formatted_addres[0];
-          this.order.city = split_formatted_addres[1];
+          var split_formatted_address = formatted_address.split(', ')
+          this.order.location = split_formatted_address[0];
+          this.order.city = split_formatted_address[1];
 
         }
       },
@@ -197,8 +197,8 @@ export class OrderCreateComponent implements OnInit {
     var region = this.order.region;
     var city = this.order.city;
     var country = GLOBAL.country;
-    console.log('find coords', { address, region, city, country })
-    var completeAddress = `${address}+${city}+${region}+${country}`;
+    console.log('find coords', { address, city, region, country })
+    var completeAddress = `${address}+, ${city}, +${region}, +${country}`;
     this._mapService
       .getCoordinatesFromAddress(completeAddress)
       .subscribe(
@@ -213,7 +213,13 @@ export class OrderCreateComponent implements OnInit {
             var location = geometry.location;
             this.order.lat = location.lat;
             this.order.lng = location.lng;
+          } else {
+            this.order.lat = null;
+            this.order.lng = null;
           }
+        } else {
+          this.order.lat = null;
+          this.order.lng = null;
         }
 
       },
@@ -397,7 +403,7 @@ export class OrderCreateComponent implements OnInit {
   }
   onBlur() {
     var order = this.order;
-    if (order.address && order.region && order.city)
+    if (order.location && order.region && order.city)
       this.findCoords();
     else {
       this.order.lat = null; this.order.lng = null;
