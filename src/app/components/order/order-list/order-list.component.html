@@ -1,5 +1,5 @@
 <div class="row principal" *ngIf="allItems">
-  <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let order of allItems">
+  <div class="col col-sm-6 col-md-6 col-lg-4" *ngFor="let order of allItems">
     <div class="card" [ngClass]="{
                         'recibido': selectedState == 'RECIBIDO', 
                         'asignado': selectedState == 'ASIGNADO',
@@ -31,16 +31,23 @@
           <fa name="calendar"></fa>
           <span>{{ order.commitmentDate | date: 'dd-MM-yyyy HH:mm' }}</span>
         </li>
+        <li class="list-group-item justify-content-between" *ngIf="order.device">
+            <fa name="mobile"></fa>
+            <span>{{ order.device?.pos }}</span>
+          </li>
       </ul>
       <div class="card-footer">
-        <button class="btn btn-primary" *ngIf="order.address && order.address.coordinates" (click)="open(map, order, 'lg')">
+        <button class="btn btn-outline-primary" ngbTooltip="COORDENADAS" *ngIf="order.address && order.address.coordinates" (click)="open(map, order, 'lg')">
             <fa name="map-marker"></fa>
           </button>
-        <button class="btn btn-outline-secondary" (click)="open(detail, order, 'sm')">
+        <button class="btn btn-outline-secondary" ngbTooltip="DETALLE DE PEDIDO" (click)="open(detail, order, 'sm')">
             <fa name="list"></fa>
           </button>
-        <button class="btn btn-outline-danger" (click)="cancel(order._id)" *ngIf="order.status != 'CANCELADO'">
+        <button class="btn btn-outline-danger" ngbTooltip="CANCELAR PEDIDO" (click)="cancel(order._id)" *ngIf="order.status != 'CANCELADO' && order.status != 'ENTREGADO'">
             <fa name="times"></fa>    
+          </button>
+        <button class="btn btn-outline-success" ngbTooltip="DETALLE ENTREGA" (click)="open(saleDetail, order, 'lg')" *ngIf="order.status == 'ENTREGADO'">
+            <fa name="check-square-o"></fa>    
           </button>
       </div>
     </div>
@@ -70,7 +77,7 @@
 
 <ng-template #map let-c="close" let-d="dismiss">
   <div class="modal-header">
-    <h4 class="modal-title">{{ orderSelected.address.location }}</h4>
+    <h4 class="modal-title">{{ orderSelected.address?.location }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -102,3 +109,19 @@
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
   </div>
 </ng-template>
+
+<ng-template #saleDetail let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Detalle de Entrega</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+      <app-sale-detail [orderId]="orderSelected._id"></app-sale-detail>    
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+    </div>
+  </ng-template>
+  

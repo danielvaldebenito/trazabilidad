@@ -16,6 +16,7 @@ import { SelectModule } from 'ng-select';
 import { AgmCoreModule } from '@agm/core';
 import { Ng2CompleterModule } from "ng2-completer";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DatepickerModule } from 'ngx-date-picker'
 // routes
 import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
@@ -34,6 +35,7 @@ import { GoogleMapService }  from './services/googlemap.service';
 import { AddressService } from './services/addresses.service';
 import { InternalProcessesService } from './services/internal-processes.service';
 import { DistributorsService } from './services/distributors.service'
+import { SaleService } from './services/sale.service'
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -85,6 +87,9 @@ import { DistributorsDetailComponent } from './components/distributors/distribut
 
 // entorno
 import { environment } from '../environments/environment';
+import { SalesComponent } from './components/sales/sales.component';
+import { SaleDetailComponent } from './components/sales/sale-detail/sale-detail.component';
+
 
 
 
@@ -137,7 +142,9 @@ import { environment } from '../environments/environment';
     DistributorsNewComponent,
     DistributorsEditComponent,
     DistributorsListComponent,
-    DistributorsDetailComponent
+    DistributorsDetailComponent,
+    SalesComponent,
+    SaleDetailComponent
   ],
   imports: [
     FormsModule,
@@ -148,6 +155,7 @@ import { environment } from '../environments/environment';
     SimpleNotificationsModule.forRoot(),
     AngularFontAwesomeModule,
     DateTimePickerModule,
+    DatepickerModule,
     NgxChartsModule,
     SelectModule,
     Ng2CompleterModule,
@@ -161,6 +169,7 @@ import { environment } from '../environments/environment';
     DependencesService, 
     UserService,
     UsersService,
+    SaleService,
     VehicleService,
     NewPassComponent,
     PriceListService,

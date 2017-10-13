@@ -4,3 +4,11 @@ fa[name=truck] {
 .list-group-item.d-flex {
     padding: 3px;
 }
+.connect fa {
+    color: #76FF03;
+    cursor: pointer;
+}
+.disconnect fa {
+    color: #E0E0E0;
+    cursor: pointer;
+}

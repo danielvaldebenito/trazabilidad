@@ -36,7 +36,7 @@ export class OrderCreateComponent implements OnInit {
   regions: Array<IOption> = [];
   cities: Array<IOption> = [];
   productTypes: Array<IOption> = [];
-  vehicles: Array<IOption> = [];
+  devices: Array<IOption> = [];
   priceLists: Array<IOption> = [];
   payMethods: Array<IOption> = [];
   selectedRegion: any = {};
@@ -94,7 +94,7 @@ export class OrderCreateComponent implements OnInit {
   ngOnInit() {
     this.getRegions();
     this.getProductTypes();
-    this.getVehicles();
+    this.getDevices();
     this.getPriceLists();
     this.getDefaultData();
     this.getPayMethods();
@@ -184,8 +184,8 @@ export class OrderCreateComponent implements OnInit {
           this.order.placeId = first.place_id;
           var formatted_address = first.formatted_address;
           var split_formatted_address = formatted_address.split(', ')
-          this.order.location = split_formatted_address[0];
-          this.order.city = split_formatted_address[1];
+          // this.order.location = split_formatted_address[0];
+          // this.order.city = split_formatted_address[1];
 
         }
       },
@@ -353,7 +353,7 @@ export class OrderCreateComponent implements OnInit {
       )
   }
   getProductTypes() {
-    this._orderService.getProductTypes()
+    this._orderService.getProductTypes(this.order.type)
       .subscribe(
       res => {
         var data = res.data;
@@ -370,22 +370,23 @@ export class OrderCreateComponent implements OnInit {
       )
   }
 
-  getVehicles() {
-    this._selectsService.getVehicleToAsign(this.order.type)
+  getDevices() {
+    this._selectsService.getPos(this.order.type)
       .subscribe(
       res => {
+        console.log(res)
         if (res.done) {
-          this.vehicles = []
-          this.order.vehicle = null
-          var data = res.data;
+          this.devices = []
+          this.order.device = null
+          const data = res.data;
           data.forEach(d => {
-            var data = res.data;
-            var array = [];
+            const data = res.data;
+            const array = [];
             data.forEach(d => {
-              var option = { label: d.licensePlate, value: d._id }
+              let option = { label: d.pos, value: d._id }
               array.push(option)
             })
-            this.vehicles = array;
+            this.devices = array;
           })
         }
       },
@@ -450,7 +451,8 @@ export class OrderCreateComponent implements OnInit {
   }
   onChangeType(data) {
     this.order.type = data;
-    this.getVehicles();
+    this.getDevices();
+    this.getProductTypes();
   }
   onSelectPriceList(pl) {
     this.selectedPriceList = pl.value;
@@ -711,8 +713,8 @@ export class OrderCreateComponent implements OnInit {
     var nit = this.order.clientNit
     this._clientService.getOneClientByNit(nit)
       .subscribe(res => {
-        if(res.done) {
-          if(res.client)
+        if (res.done) {
+          if (res.client)
             this.setClientObject(res.client)
         }
       }, error => console.log(error))
@@ -723,7 +725,7 @@ export class OrderCreateComponent implements OnInit {
     this.next = this.selectedIndexAddress == 0
     var address = this.selectedClient.addresses[this.selectedIndexAddress]
     console.log('address selected', address, this.selectedIndexAddress)
-    if(address) {
+    if (address) {
       this.order.location = address.location
       this.order.region = address.region
       this.selectedRegion = { label: this.order.region, value: this.order.region }

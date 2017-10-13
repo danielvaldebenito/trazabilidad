@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { SelectsService } from '../../services/selects.service';
 import { PagerService } from '../../services/pager.service';
@@ -53,10 +53,7 @@ export class OrderComponent implements OnInit {
       console.log('Se ha cambiado estado de pedido', data)
       this.refresh()
     })
-    this.socket.on('new-order', (data) => {
-      console.log('Se ha ingresado un nuevo pedido', data)
-      this.refresh()
-    })
+
   }
   getStates () {
     this._selectsService.getOrderStates()
@@ -107,6 +104,7 @@ export class OrderComponent implements OnInit {
   }
   onSelect(event) {
     this.selectedState = event.state;
+    this.currentPage = 1;
     this.refresh();
   }
   onKey (value: string) {

@@ -90,4 +90,30 @@ export class VehiculosComponent implements OnInit {
   refresh() {
     this.getVehicles(this.filter, this.limit);
   }
+  tryForceLogout(user) {
+    if(!user.online) return;
+    this._swal2.confirm({ 
+      title: 'Atención', 
+      text: `¿Está seguro que desea forzar el deslogueo de ${ user.name + ' ' + user.surname }?`,
+      confirmButtonText: 'Forzar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true
+     })
+    .then(
+      res => {console.log(res); this.forceLogout(user.username);},
+      cancel => { console.log(cancel) }
+    );
+  }
+  forceLogout(username) {
+    this._vehicleService.forceLogout(username)
+      .subscribe(res => {
+        if(res.done) {
+          this.refresh();
+          this._swal2.success({
+            title: 'Deslogueado',
+            text: res.message
+          })
+        }
+      }, error => console.log(error))
+  }
 }

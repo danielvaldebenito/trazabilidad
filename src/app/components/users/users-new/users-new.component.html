@@ -110,24 +110,23 @@
               </div>
             </div>
             <div [hidden]="fromVehiclesModule">
-              <div class="row" *ngIf="form.value.roles.isVehicle">
+              <div class="row" *ngIf="form.value.roles.isAdmin || form.value.roles.isOperator">
                 <div class="col">
                   <div class="card">
                     <div class="card-block">
-                      <div class="form-group" *ngIf="form.value.roles.isVehicle" [ngClass]="{'has-success': !form.hasError('vehicleValidator'), 'has-danger': form.hasError('vehicleValidator')}">
-                        <label class="form-control-label">Vehículo asignado</label>
-                        <ng-select formControlName="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo"
-                          highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione vehículo..." [options]="vehicles"
-                          [allowClear]="true" [noFilter]="5">
+                      <div class="form-group">
+                        <label for="">Dependencia</label>
+                        <ng-select formControlName="dependence" filterPlaceholder="Buscar Dependences..." notFoundMsg="No se encontró ninguna dependencia"
+                          highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione dependencia..." [options]="dependences"
+                          [allowClear]="true" [noFilter]="5" (selected)="onSelectDependence($event)" (deselected)="onDeselectDependence($event)">
                         </ng-select>
-                        <div [hidden]="!form.hasError('vehicleValidator')" class="form-control-feedback">
-                          Debe ingresar el vehículo asignado al usuario
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
               </div>
+              
               <div class="row">
                 <div class="col" *ngIf="form.value.roles.isOperator">
                   <div class="card">
@@ -145,14 +144,7 @@
                         </div>
                       </div>
                       <div class="row" *ngIf="form.value.roles.isOperator">
-                        <div class="col-lg-6 form-group">
-                          <label for="">Dependencia</label>
-                          <ng-select formControlName="dependence" filterPlaceholder="Buscar Dependences..." notFoundMsg="No se encontró ninguna dependencia" highlightColor="#37424A"
-                            highlightTextColor="#fff" placeholder="Seleccione dependencia..." [options]="dependences" [allowClear]="true"
-                            [noFilter]="5" (selected)="onSelectDependence($event)" (deselected)="onDeselectDependence($event)">
-                          </ng-select>
-                        </div>
-                        <div class="col-lg-6 form-group">
+                        <div class="col form-group">
                           <label for="">Procesos Internos</label>
                           <ng-select formControlName="internalProcess" filterPlaceholder="Buscar Procesos..." notFoundMsg="No se encontró ningún proceso"
                             highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione proceso..." [options]="internalProcesses"
@@ -164,10 +156,28 @@
                   </div>
                 </div>
               </div>
+              <div class="row" *ngIf="form.value.roles.isVehicle">
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-block">
+                        <div class="form-group" *ngIf="form.value.roles.isVehicle" [ngClass]="{'has-success': !form.hasError('vehicleValidator'), 'has-danger': form.hasError('vehicleValidator')}">
+                          <label class="form-control-label">Vehículo asignado</label>
+                          <ng-select formControlName="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo"
+                            highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione vehículo..." [options]="vehicles"
+                            [allowClear]="true" [noFilter]="5">
+                          </ng-select>
+                          <div [hidden]="!form.hasError('vehicleValidator')" class="form-control-feedback">
+                            Debe ingresar el vehículo asignado al usuario
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
           <div class="card-footer">
-            <button type="submit" [disabled]="!form.valid || userExistsError" class="btn btn-primary btn-block">
+            <button type="submit" [disabled]="!form.valid || userExistsError" class="btn btn-primary btn-block btn-lg">
             <fa name="save"></fa> GUARDAR
           </button>
           </div>
@@ -176,7 +186,3 @@
     </div>
   </div>
 </div>
-
-<pre>
-  {{ form.value | json }}
-</pre>

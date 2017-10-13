@@ -53,4 +53,10 @@ export class VehicleService {
         return this._http.delete(url, { headers: this.headers })
                         .map(res => res.json());
     }
+
+    forceLogout(username: string) {
+        const url = this.url + 'device/logout/' + username
+        return this._http.put(url, {}, { headers: this.headers })
+                        .map(res => res.json())
+    }
 }

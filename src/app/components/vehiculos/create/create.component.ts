@@ -36,7 +36,6 @@ export class CreateVehicleComponent implements OnInit {
   ngOnInit() {
     this.getVehicleTypes()
     this.getDependences()
-    this.getUsers()
   }
 
   getVehicleTypes () {

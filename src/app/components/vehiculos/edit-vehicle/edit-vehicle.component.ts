@@ -32,7 +32,6 @@ export class EditVehicleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getUsers()
     this.getVehicleTypes()
     this.id = this._route.snapshot.params['id']
     this.getDependences()
@@ -109,26 +108,6 @@ export class EditVehicleComponent implements OnInit {
               }
             }
           })
-  }
-  refreshUser (userId) {
-    this.getUsers ()
-    this.vehicle.user = userId
-  }
-  getUsers () {
-    var rol = 'VEHÍCULO'
-    this._selectsService.getUserFromRol(rol)
-        .subscribe(res => {
-          if(res.done) {
-            var data = res.data
-            this.allUsers = data
-            var array = []
-            data.forEach(element => {
-              array.push({ label: element.name + ' ' + element.surname, value: element._id })
-            })
-            this.users = array
-          }
-        }, 
-        error => console.log(error))
   }
 
   open (content) {

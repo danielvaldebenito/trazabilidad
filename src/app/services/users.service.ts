@@ -81,4 +81,15 @@ export class UsersService {
             .map(res => res.json());
   }
 
+  disableUser(id: string) {
+    const url = this.url + 'disable-user/' + id;
+    return this._http.put(url, { headers: this.headers })
+            .map(res => res.json());
+  }
+
+  enableUser(id: string) {
+    const url = this.url + 'enable-user/' + id;
+    return this._http.put(url, { headers: this.headers })
+            .map(res => res.json());
+  }
 }

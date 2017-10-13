@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid principal">
   <div *ngIf="!fromModal" class="page-header d-flex p-2 flex-row justify-content-between align-items-center">
     <fa name="truck" size="2x"></fa>
     <h1>Vehículos</h1> 
@@ -13,7 +13,12 @@
   <div class="card-deck" *ngIf="allItems">
     <div class="card" style="margin:0; margin-bottom: 2px;" *ngFor="let item of allItems">
       <div class="card-header">
-        <h2 class="card-title d-flex p-2 flex-row justify-content-around align-items-center" [ngClass]="{ 'granel-color': item.type == 'GRANEL'}"><fa name="truck" size="2x"></fa>{{ item.licensePlate }}</h2>
+        <h2 class="card-title d-flex p-2 flex-row justify-content-around align-items-center" [ngClass]="{ 'granel-color': item.type == 'GRANEL'}"><fa name="truck" size="2x"></fa>
+          {{ item.licensePlate }}
+          <span *ngIf="item.user" [ngClass]="{'disconnect': !item.user.online, 'connect': item.user.online }" ngbTooltip="{{ item.user.online ? 'CONECTADO desde ' + (item.user.lastLogin | date: 'dd/MM/yy HH:mm')  : item.user.lastLogout ? 'DESCONECTADO desde ' + (item.user.lastLogout | date: 'dd/MM/yy HH:mm') : 'DESCONECTADO' }}" (click)="tryForceLogout(item.user)">
+            <fa name="circle"></fa>  
+          </span>
+        </h2>
       </div>
       <div class="card-block">
         <ul class="list-group">
@@ -33,10 +38,10 @@
         
       </div>
       <div class="card-footer d-flex flex-row justify-content-between align-items-center">
-        <a class="btn btn-outline-primary" [routerLink]="['/vehicles/edit', item._id]" *ngIf="!fromModal">
+        <a class="btn btn-outline-primary" [routerLink]="['/vehicles/edit', item._id]" *ngIf="!fromModal" ngbTooltip="EDITAR">
           <fa name="pencil"></fa>
         </a>
-        <a class="btn btn-outline-danger" (click)="tryDelete(item._id)" *ngIf="!fromModal">
+        <a class="btn btn-outline-danger" (click)="tryDelete(item._id)" *ngIf="!fromModal" ngbTooltip="BORRAR">
           <fa name="trash"></fa>
         </a>
         <a class="btn btn-primary" (click)="onSelect(item)" *ngIf="fromModal">

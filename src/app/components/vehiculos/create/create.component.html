@@ -3,7 +3,7 @@
   <div class="col">
     <div class="card">
       <div class="card-header d-flex flex-row justify-content-between align-items-center">
-        <button class="btn btn-secondary" (click)="onCancel()" title="Volver">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()" title="Volver">
           <fa name="arrow-left"></fa>
         </button>
          <h1>Nuevo Vehículo</h1>  
@@ -66,7 +66,7 @@
             <div class="input-group">
               <ng-select #dependence="ngModel" filterPlaceholder="Buscar dependencia..." notFoundMsg="No se encontró ninguna dependencia"
                 placeholder="Seleccione dependencia..." [options]="dependences"
-                highlightColor="#37424A" highlightTextColor="#fff"
+                highlightColor="#37424A" highlightTextColor="#fff" required
                 [allowClear]="true" [noFilter]="3" [(ngModel)]="vehicle.dependence" name="dependence" 
                 (selected)="onSelectDependence($event)" (deselected)="onDeselectDependence($event)"
                 >
@@ -87,23 +87,9 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <label class="form-control-label">Usuario asignado</label>
-            <div class="input-group">
-              <ng-select filterPlaceholder="Buscar usuario..." notFoundMsg="No se encontró ningún usuario"
-                placeholder="Seleccione usuario... (Opcional)" [options]="users"
-                highlightColor="#37424A" highlightTextColor="#fff"
-                [allowClear]="true" [noFilter]="3" [(ngModel)]="vehicle.user" name="user" >
-              </ng-select>
-              <button type="button" class="btn btn-outline-primary" (click)="open(newuser)">
-                <fa name="plus"></fa>
-              </button>
-            </div>
-            
-          </div>
         </div>
         <div class="card-footer">
-          <button class="btn btn-primary btn-block" [disabled]="!form.form.valid"> <fa name="save"></fa> GUARDAR </button>
+          <button class="btn btn-primary btn-block btn-lg" [disabled]="!form.form.valid"> <fa name="save"></fa> GUARDAR </button>
         </div>
       </form>
     </div>
@@ -118,20 +104,6 @@
 </div>
 </div>
 
-<ng-template #newuser let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h5 class="modal-title">Complete los datos</h5>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-users-new [fromModal]="true" (onSubmitForm)="c('submit form'); refreshUser($event)" [fromVehiclesModule]="true"></app-users-new>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
-  </div>
-</ng-template>
 
 <ng-template #newdependence let-c="close" let-d="dismiss">
   <div class="modal-header">

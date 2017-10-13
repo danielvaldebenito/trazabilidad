@@ -184,13 +184,13 @@
 
                 <div class="col align-items-start">
                   <div class="form-group">
-                    <label class="form-control-label">Vehículo asignado</label>
+                    <label class="form-control-label">POS asignado</label>
 
                     <div class="input-group">
-                      <ng-select #vehicle name="vehicle" filterPlaceholder="Buscar vehículo..." notFoundMsg="No se encontró ningún vehículo para {{ order.type }}"
-                        highlightColor="#37424A" highlightTextColor="#fff" placeholder="{{ order.after ? 'Lo asignaré más tarde': 'Seleccione vehículo'}}"
-                        [options]="vehicles" [allowClear]="true" [noFilter]="5" [disabled]="order.after" (selected)="onSelectVehicle($event)"
-                        (deselected)="onDeselectVehicle($event)" [(ngModel)]="order.vehicle">
+                      <ng-select #device name="device" filterPlaceholder="Buscar POS..." notFoundMsg="No se encontró ningún POS para {{ order.type }}"
+                        highlightColor="#37424A" highlightTextColor="#fff" placeholder="{{ order.after ? 'Lo asignaré más tarde': 'Seleccione POS'}}"
+                        [options]="devices" [allowClear]="true" [noFilter]="5" [disabled]="order.after" (selected)="onSelectVehicle($event)"
+                        (deselected)="onDeselectVehicle($event)" [(ngModel)]="order.device">
                       </ng-select>
                       <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" [disabled]="order.after || !order.lat || !order.lng" type="button" class="btn btn-primary dropdown-toggle"
@@ -202,7 +202,7 @@
                       </div>
                     </div>
                     <label class="custom-control custom-checkbox">
-                      <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input" (change)="vehicle.clear()">
+                      <input [(ngModel)]="order.after" value="1" name="after" type="checkbox" class="custom-control-input" (change)="device.clear()">
                       <span class="custom-control-indicator"></span>
                       <span class="custom-control-description"> Lo asignaré más tarde</span>
                     </label>
@@ -335,6 +335,7 @@
     </div>
   </div>
 </div>
+
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">{{ selectedPriceListName }}</h4>
@@ -366,7 +367,7 @@
 
 <ng-template #map let-c="close" let-d="dismiss">
   <div class="modal-header">
-    <h4 class="modal-title">{{ order.address }}</h4>
+    <h4 class="modal-title">{{ order.location }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>

@@ -1,0 +1,170 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card" [ngClass]="{'card-success': delivery && delivery.done, 'card-danger': !delivery || !delivery.done }">
+        <div class="card-block text-center">
+          <h3>
+            <fa name="{{ delivery.done ? 'check' : 'times' }}"></fa>
+            {{ delivery.done ? 'ENTREGA REALIZADA' : 'NO ENTREGADA' }}
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ORDER -->
+  <div class="row detail" *ngIf="order">
+    <div class="col">
+      <h3>PEDIDO</h3>
+      <section>
+        <div class="row">
+          <div class="col">
+            <div class="label">Número Pedido</div>
+            <div class="data">{{order.orderNumber}}</div>
+          </div>
+          <div class="col">
+            <div class="label">Tipo de Pedido</div>
+            <div class="data">{{ order.type }}</div>
+          </div>
+          <div class="col">
+            <div class="label">Estado</div>
+            <div class="data">{{ order.status }}</div>
+          </div>
+
+        </div>
+        <div class="row">
+
+          <div class="col">
+            <div class="label">Dirección</div>
+            <div class="data">{{ order.address?.location }}</div>
+          </div>
+          <div class="col">
+            <div class="label">{{ cityName }}</div>
+            <div class="data">{{ order.address?.city}}</div>
+          </div>
+          <div class="col">
+            <div class="label">{{ regionName }}</div>
+            <div class="data">{{ order.address?.region }}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="label">NIT Cliente</div>
+            <div class="data">{{ order.client?.nit }}</div>
+          </div>
+          <div class="col">
+            <div class="label">Nombre Cliente</div>
+            <div class="data">{{ order.client?.fullname }}</div>
+          </div>
+          <div class="col">
+            <div class="label">Medio de pago</div>
+            <div class="data">{{ order.payMethod }}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="label">Detalle de pedido</div>
+            <table class="table table-striped table-bordered table-sm table-details">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>{{order.type == 'GRANEL' ? 'Litros' : 'Cantidad'}}</th>
+                  <th>$ U.</th>
+                  <th><fa name="minus-circle"></fa></th>
+                  <th><fa name="plus-circle"></fa></th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of order.items">
+                  <td>{{ item.productType.name }}</td>
+                  <td>{{ item.quantity | number }}</td>
+                  <td>{{ item.price | number }}</td>
+                  <td>{{ item.discount | number }}</td>
+                  <td>{{ item.surcharge | number }}</td>
+                  <td>{{ ((item.price - item.discount + item.surcharge) * item.quantity) | number }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section class="section-map">
+        <agm-map [zoom]="15" [latitude]="order.address?.coordinates?.lat || 0" [longitude]="order.address?.coordinates?.lng || 0">
+          <agm-marker [latitude]="order.address?.coordinates?.lat || 0" [longitude]="order.address?.coordinates?.lng || 0" [markerDraggable]="false">
+          </agm-marker>
+        </agm-map>
+      </section>
+    </div>
+
+  </div>
+  <!-- DELIVERY -->
+  <div class="row detail" *ngIf="sale">
+    <div class="col">
+      <h3>VENTA</h3>
+      <section>
+        <div class="row">
+          <div class="col">
+            <div class="label">Tipo de Venta</div>
+            <div class="data">{{ sale.type }}</div>
+          </div>
+          <div class="col">
+            <div class="label">Medio de Pago</div>
+            <div class="data">{{ sale.paymentMethod }}</div>
+          </div>
+          <div class="col">
+            <div class="label">Fecha de venta</div>
+            <div class="data">{{ sale.createdAt | date: 'dd-MM-yyyy HH:mm'}}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="label">Placa</div>
+            <div class="data">{{ order.vehicle?.licensePlate }}</div>
+          </div>
+          <div class="col">
+            <div class="label">Usuario</div>
+            <div class="data">{{ !sale.user ? '' : sale.user?.name + ' ' + sale.user?.surname }}</div>
+          </div>
+          <div class="col">
+              <div class="label"></div>
+              <div class="data"></div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="label">Detalle de venta</div>
+            <table class="table table-striped table-hover table-bordered table-sm table-details">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>{{order.type == 'GRANEL' ? 'Litros' : 'Cantidad'}}</th>
+                  <th>$ U.</th>
+                  <th><fa name="minus-circle"></fa></th>
+                  <th><fa name="plus-circle"></fa></th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of sale.items">
+                  <td>{{ item.productType.name }}</td>
+                  <td>{{ item.quantity | number }}</td>
+                  <td>{{ item.price | number }}</td>
+                  <td>{{ item.discount | number }}</td>
+                  <td>{{ item.surcharge | number }}</td>
+                  <td>{{ ((item.price - item.discount + item.surcharge) * item.quantity) | number }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section class="section-map">
+        <agm-map [zoom]="15" [latitude]="delivery?.coordinates?.lat || 0" [longitude]="delivery?.coordinates?.lng || 0">
+          <agm-marker [latitude]="delivery?.coordinates?.lat || 0" [longitude]="delivery?.coordinates?.lng || 0" [markerDraggable]="false">
+          </agm-marker>
+        </agm-map>
+      </section>
+    </div>
+
+  </div>
+</div>

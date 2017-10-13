@@ -37,8 +37,9 @@ export class OrderService {
         return this._http.get(url, { headers: this.headers, params: params })
                 .map(res => res.json());
   }
-  getProductTypes () {
-      return this._http.get(this.url + 'productType', { headers: this.headers })
+  getProductTypes (type? : any) {
+      const params = { type: type }
+      return this._http.get(this.url + 'productType', { params: params, headers: this.headers })
                       .map(res => res.json())
   }
   getPriceLists () {

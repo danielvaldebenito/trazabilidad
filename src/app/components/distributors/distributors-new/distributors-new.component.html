@@ -94,7 +94,7 @@
                   <label class="form-control-label">{{ cityName }} (*)</label>
                   <ng-select filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró {{ cityName }}" highlightColor="#37424A"
                     highlightTextColor="#fff" placeholder="Seleccione {{ cityName }}..." [options]="cities" [allowClear]="true"
-                    [noFilter]="5" formControlName="city" (selected)="onSelectCity($event)" (deselected)="onDeselectCity($event)">
+                    [noFilter]="5" formControlName="city">
                   </ng-select>
                   <div class="form-control-feedback">
                     <div *ngIf="!form.get('city').valid && form.get('city').touched">
@@ -105,11 +105,13 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="card-footer">
-          <button class="btn btn-primary btn-block btn-lg" type="submit" [disabled]="!form.valid">
-              <fa name="save"></fa> GUARDAR
-            </button>
+          <div class="card-footer">
+            <button class="btn btn-primary btn-block btn-lg" type="submit" [disabled]="!form.valid">
+                <fa name="save"></fa> GUARDAR
+              </button>
+
+              <pre>{{ form.value | json }}</pre>
+          </div>
         </div>
       </form>
     </div>

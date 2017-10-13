@@ -11,18 +11,22 @@
         </div>
         <form novalidate #form="ngForm" (ngSubmit)="onSubmit()">
           <div class="card-block">
-            <div class="d-flex flex-row justify-content-start">
+            <div class="form-group">
+              <label for="">Tipo</label>
+              <input type="text" name="type" class="form-control contraste" disabled #type="ngModel" disabled [(ngModel)]="vehicle.type" >
+            </div>
+            <!-- <div class="d-flex flex-row justify-content-start">
               <label class="custom-control custom-radio d-flex ">
-              <input id="radio1" #type="ngModel" [(ngModel)]="vehicle.type" value="ENVASADO" name="type" type="radio" class="custom-control-input">
+              <input id="radio1" #type="ngModel" disabled [(ngModel)]="vehicle.type" value="ENVASADO" name="type" type="radio" class="custom-control-input">
               <span class="custom-control-indicator"></span>
               <span class="custom-control-description">ENVASADO</span>
             </label>
               <label class="custom-control custom-radio">
-              <input id="radio2" #type="ngModel" [(ngModel)]="vehicle.type" value="GRANEL" name="type" type="radio" class="custom-control-input">
+              <input id="radio2" #type="ngModel" disabled [(ngModel)]="vehicle.type" value="GRANEL" name="type" type="radio" class="custom-control-input">
               <span class="custom-control-indicator"></span>
               <span class="custom-control-description">GRANEL</span>
             </label>
-            </div>
+            </div> -->
             <div class="form-group" [ngClass]="{'has-success': !licensePlate.errors, 'has-danger': licensePlate.errors && (licensePlate.dirty || licensePlate.touched) }">
               <label class="form-control-label" for="">Placa (*)</label>
               <input required type="text" #licensePlate="ngModel" name="licensePlate" [(ngModel)]="vehicle.licensePlate" class="form-control"
@@ -59,11 +63,14 @@
             </div>
             <div class="form-group" [ngClass]="{'has-success': !dependence.errors, 'has-danger': dependence.errors && (dependence.dirty || dependence.touched)}">
               <label class="form-control-label" for="">Dependencia (*)</label>
-              <select required #dependence="ngModel" name="dependence" [(ngModel)]="vehicle.dependence" class="form-control">
-              <option *ngFor="let d of dependences" [value]="d._id">
-                {{ d.name }}
-              </option>
-            </select>
+              <ng-select #dependence="ngModel" filterPlaceholder="Buscar dependencia..." notFoundMsg="No se encontró ninguna dependencia"
+              placeholder="Seleccione dependencia..." [options]="dependences"
+              highlightColor="#37424A" highlightTextColor="#fff" required
+              [allowClear]="true" [noFilter]="3" [(ngModel)]="vehicle.dependence" name="dependence" 
+              (selected)="onSelectDependence($event)" (deselected)="onDeselectDependence($event)"
+              >
+            </ng-select>
+              
               <div class="form-control-feedback">
                 <div *ngIf="dependence.errors && (dependence.dirty || dependence.touched)" class="danger">
                   <div [hidden]="!dependence.errors.required">
@@ -72,22 +79,9 @@
                 </div>
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-control-label">Usuario asignado</label>
-              <div class="input-group">
-                <ng-select filterPlaceholder="Buscar usuario..." notFoundMsg="No se encontró ningún usuario" placeholder="Seleccione usuario... (Opcional)"
-                  [options]="users" highlightColor="#37424A" highlightTextColor="#fff" [allowClear]="true" [noFilter]="3" [(ngModel)]="vehicle.user"
-                  name="user">
-                </ng-select>
-                <button type="button" class="btn btn-outline-primary" (click)="open(newuser)">
-                <fa name="plus"></fa>
-              </button>
-              </div>
-
-            </div>
           </div>
           <div class="card-footer">
-            <button class="btn btn-primary btn-block" [disabled]="!form.form.valid"> <fa name="save"></fa> GUARDAR </button>
+            <button class="btn btn-primary btn-lg btn-block" [disabled]="!form.form.valid"> <fa name="save"></fa> GUARDAR </button>
           </div>
         </form>
       </div>
@@ -101,18 +95,3 @@
   </div>
 </div>
 
-
-<ng-template #newuser let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h5 class="modal-title">Complete los datos</h5>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-users-new [fromModal]="true" (onSubmitForm)="c('submit form'); refreshUser($event)" [fromVehiclesModule]="true"></app-users-new>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
-  </div>
-</ng-template>

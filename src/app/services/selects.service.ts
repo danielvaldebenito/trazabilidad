@@ -61,5 +61,9 @@ export class SelectsService {
         return this._http.get(url, { headers: this.headers})
                     .map(res => res.json())
     }
-
-}
+    getPos(type: any) {
+        const url = this.url + 'pos/' +  this.myUser.distributor._id
+        return this._http.get(url, { headers: this.headers, params: { type: type } })
+                .map(res => res.json())
+    }
+}   

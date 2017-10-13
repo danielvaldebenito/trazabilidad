@@ -21,7 +21,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <app-users-list [users]="users"></app-users-list>
+      <app-users-list [users]="users" (toRefresh)="refresh()"></app-users-list>
       <app-pager [pager]="pager" (settingPage)="setPage($event)"></app-pager>
     </div>
   </div>
