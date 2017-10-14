@@ -19,6 +19,7 @@
             <fa name="circle"></fa>  
           </span>
         </h2>
+        <h6 class="card-subtitle text-center" [ngClass]="{ 'no-assign': !item.user?.device?.pos }"> {{ item.user?.device?.pos || 'No asignado' }} </h6>
       </div>
       <div class="card-block">
         <ul class="list-group">
@@ -44,10 +45,10 @@
         <a class="btn btn-outline-danger" (click)="tryDelete(item._id)" *ngIf="!fromModal" ngbTooltip="BORRAR">
           <fa name="trash"></fa>
         </a>
-        <a class="btn btn-primary" (click)="onSelect(item)" *ngIf="fromModal">
+        <button class="btn btn-primary" (click)="onSelect(item)" *ngIf="fromModal" [disabled]="!item.user?.device?.pos || !item.user?.online" ngbTooltip="{{ item.user?.device?.pos ? 'SELECCIONAR' : 'POS NO ASIGNADA' }}">
           <fa name="check"></fa>
           SELECCIONAR
-        </a>
+        </button>
       </div>
     </div>
     <div class="card" *ngIf="allItems?.length == 0">

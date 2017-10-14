@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
+import { GLOBAL } from '../../../global'
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
@@ -7,7 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class OrderDetailComponent implements OnInit {
 
-  @Input() items: any;
+  @Input() order: any;
+  cityName = GLOBAL.cityName
+  regionName = GLOBAL.regionName
   constructor() { }
 
   ngOnInit() {

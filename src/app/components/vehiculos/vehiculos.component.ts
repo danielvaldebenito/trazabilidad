@@ -23,6 +23,7 @@ export class VehiculosComponent implements OnInit {
   // paged items
   pagedItems: any[];
   @Input() fromModal: boolean;
+  @Input() noShow: string;
   @Output() selected = new EventEmitter<any>();
   constructor(
     private _vehicleService: VehicleService, 
@@ -36,6 +37,7 @@ export class VehiculosComponent implements OnInit {
     
   }
   onSelect(vehicle) {
+    console.log('onSelected en vehiculos.component.ts', vehicle)
     this.selected.emit(vehicle);
   }
   getVehicles(filter: string, limit: number){
@@ -45,7 +47,14 @@ export class VehiculosComponent implements OnInit {
           res => {
             if(res.done){
               this.allItems = res.data;
+              const length = this.allItems.length
               this.total = res.total;
+              if(this.noShow) {
+                this.allItems = this.allItems.filter((item) => { return item._id != this.noShow })
+                const newlength = this.allItems.length
+                if(length != newlength) 
+                  this.total = this.total - 1  
+              }
               this.pager = this._pagerService.getPager(this.total, this.currentPage, limit);
             }
           },

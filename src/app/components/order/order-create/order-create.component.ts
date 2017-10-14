@@ -377,7 +377,7 @@ export class OrderCreateComponent implements OnInit {
         console.log(res)
         if (res.done) {
           this.devices = []
-          this.order.device = null
+          this.order.device = undefined
           const data = res.data;
           data.forEach(d => {
             const data = res.data;
@@ -506,10 +506,12 @@ export class OrderCreateComponent implements OnInit {
 
       }, error => {
         console.log(error)
+        const body = error._body
+        const json = JSON.parse(body)
         this._swal2.error({
           title: 'Error',
-          text: 'Ha ocurrido un error'
-        }).then(ok => this.onCancel(), no => this.onCancel())
+          text: json.message
+        })
       })
 
 

@@ -12,3 +12,7 @@ fa[name=truck] {
     color: #E0E0E0;
     cursor: pointer;
 }
+.no-assign {
+    color: #d9534f;
+    
+}

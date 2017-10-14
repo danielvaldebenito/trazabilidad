@@ -83,10 +83,11 @@ export class OrderService {
             .put (url, {}, { headers: this.headers })
             .map(res => res.json())
   }
-  assignVehicleToOrder (orderId, vehicleId) {
-    var url = this.url + 'order-assign-vehicle';
+  assignDeviceToOrder (orderId, device, old) {
+    var url = this.url + 'order-assign-device';
     return this._http
-                .put(url, { order: orderId, vehicle: vehicleId }, {headers: this.headers})
+                .put(url, { order: orderId, device: device, old }, {headers: this.headers})
                 .map(res => res.json())
   }
+  
 }

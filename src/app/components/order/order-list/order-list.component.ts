@@ -61,10 +61,10 @@ export class OrderListComponent implements OnInit {
     })
     .catch(error => console.log(error))
   }
-  onSelectedVehicle(vehicle) {
+  onSelectedVehicle(vehicle, old) {
     if(!vehicle || !this.orderSelected)
       return;
-    this._orderService.assignVehicleToOrder(this.orderSelected._id, vehicle._id)
+    this._orderService.assignDeviceToOrder(this.orderSelected._id, vehicle.user.device._id, old)
       .subscribe(
         res => {
           console.log(res)
