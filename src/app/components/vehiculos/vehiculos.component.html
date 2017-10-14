@@ -45,7 +45,7 @@
         <a class="btn btn-outline-danger" (click)="tryDelete(item._id)" *ngIf="!fromModal" ngbTooltip="BORRAR">
           <fa name="trash"></fa>
         </a>
-        <button class="btn btn-primary" (click)="onSelect(item)" *ngIf="fromModal" [disabled]="!item.user?.device?.pos || !item.user?.online" ngbTooltip="{{ item.user?.device?.pos ? 'SELECCIONAR' : 'POS NO ASIGNADA' }}">
+        <button class="btn btn-primary" (click)="onSelect(item)" *ngIf="fromModal" [disabled]="!item.user?.device?.pos" ngbTooltip="{{ item.user?.device?.pos ? 'SELECCIONAR' : 'POS NO ASIGNADA' }}">
           <fa name="check"></fa>
           SELECCIONAR
         </button>
@@ -59,48 +59,7 @@
   </div>
   
 </div>
-<div class="container pager">
-        <!-- pager -->
-  <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></div>
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-    <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
-      <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
-          <a class="page-link" (click)="setPage(1)">
-            <fa name="fast-backward"></fa>
-          </a>
-      </li>
-      <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
-          <a class="page-link" (click)="setPage(pager.currentPage - 1)">
-            <fa name="backward"></fa>
-          </a>
-      </li>
-      <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-          <a class="page-link" (click)="setPage(page)">{{page}}</a>
-      </li>
-      <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-          <a class="page-link" (click)="setPage(pager.currentPage + 1)">
-            <fa name="forward"></fa>
-          </a>
-      </li>
-      <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-          <a class="page-link" (click)="setPage(pager.totalPages)">
-            <fa name="fast-forward"></fa>
-          </a>
-      </li>
-  </ul>
-  </div>
-  <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-    <ul class="pagination justify-content-end">
-      <li class="page-item">
-        <small *ngIf="total > 0">Viendo {{ pager.startIndex + 1 }} - {{ pager.endIndex + 1 }} de {{ total }}</small>
-        <small *ngIf="total == 0">Sin resultados</small>
-      </li>
-    </ul>
-  </div>
-  </div>
-  
-  
-  
-  
+<div class="container-fluid principal">
+  <app-pager [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>
 </div>
+

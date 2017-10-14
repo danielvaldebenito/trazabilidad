@@ -25,7 +25,7 @@
   </div>
   <div class="row principal">
     <div class="col">
-      <app-pager [pager]="pager" (settingPage)="setPage($event)"></app-pager>
+      <app-pager [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>
     </div>
   </div>
 </div>

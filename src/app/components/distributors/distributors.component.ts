@@ -33,4 +33,7 @@ export class DistributorsComponent implements OnInit {
   onKey() {
     this.getDistributors()
   }
+  refresh() {
+    this.getDistributors();
+  }
 }

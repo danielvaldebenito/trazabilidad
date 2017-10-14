@@ -2,7 +2,13 @@
     <!-- pager -->
     <div class="row">
       <div class="col d-flex flex-row justify-content-between align-items-center">
-        <ul></ul>
+        <ul class="pagination justify-content-start">
+          <li class="page-item">
+            <a class="page-link btn-sm" (click)="onRefresh()">
+              <fa name="refresh"></fa>
+            </a>
+          </li>
+        </ul>
         <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
           <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
             <a class="page-link" (click)="setPage(1)">

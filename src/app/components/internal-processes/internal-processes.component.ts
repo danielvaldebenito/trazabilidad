@@ -62,5 +62,9 @@ export class InternalProcessesComponent implements OnInit {
         })
       })
   } 
+
+  refresh() {
+    this.getInternalProcesses();
+  }
 }
 

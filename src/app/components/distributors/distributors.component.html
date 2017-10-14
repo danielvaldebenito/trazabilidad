@@ -21,7 +21,7 @@
   <div class="row principal">
     <div class="col">
       <app-distributors-list [fromModal]="fromModal" (selected)="onSelect($event)" [distributors]="distributors" [filter]="filter"></app-distributors-list>
-      <app-pager [pager]="pager" (settingPage)="setPage($event)"></app-pager>
+      <app-pager [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>
     </div>
   </div>
 </div>

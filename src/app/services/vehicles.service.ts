@@ -56,7 +56,7 @@ export class VehicleService {
 
     forceLogout(username: string) {
         const url = this.url + 'device/logout/' + username
-        return this._http.put(url, {}, { headers: this.headers })
+        return this._http.put(url, {}, { headers: this.headers, params: { bo: true } })
                         .map(res => res.json())
     }
 }

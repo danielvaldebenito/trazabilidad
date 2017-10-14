@@ -44,4 +44,7 @@ export class ClientsComponent implements OnInit {
   onSelect (client) {
     this.selected.emit(client)
   }
+  refresh() {
+    this.getClients();
+  }
 }

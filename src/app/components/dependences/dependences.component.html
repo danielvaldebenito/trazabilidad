@@ -21,7 +21,7 @@
   <div class="row">
     <div class="col">
       <app-dependences-list [dependences]="dependences" (deletedItem)="onDelete()"></app-dependences-list>
-      <app-pager [pager]="pager" (settingPage)="setPage($event)"></app-pager>
+      <app-pager [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>
     </div> 
   </div>
 </div>

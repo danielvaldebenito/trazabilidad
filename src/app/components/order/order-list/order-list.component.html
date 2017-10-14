@@ -27,7 +27,7 @@
         </li>
         <li class="list-group-item justify-content-between">
           <fa name="user"></fa>
-          <span *ngIf="order.vehicle">{{ order.vehicle ? order.vehicle?.user?.name + ' ' + order.vehicle?.user?.surname : 'No asignado' }}</span>
+          <span *ngIf="order.userName">{{ order.userName ? order.userName : 'No asignado' }}</span>
         </li>
         <li class="list-group-item justify-content-between">
             <fa name="mobile"></fa>

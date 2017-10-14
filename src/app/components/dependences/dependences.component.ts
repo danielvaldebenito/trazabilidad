@@ -48,4 +48,7 @@ export class DependencesComponent implements OnInit {
     this.currentPage = page
     this.getDependences()
   }
+  refresh() {
+    this.getDependences();
+  }
 }
