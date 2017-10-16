@@ -5,6 +5,8 @@ import { Vehicle } from '../../models/vehicle.model';
 import { PagerService } from '../../services/pager.service';
 import { SweetAlertService } from 'ngx-sweetalert2'
 import * as _ from 'underscore';
+import * as io from 'socket.io-client'
+import { GLOBAL } from '../../global'
 @Component({
   selector: 'app-vehiculos',
   templateUrl: './vehiculos.component.html',
@@ -12,6 +14,7 @@ import * as _ from 'underscore';
   providers: [SweetAlertService]
 })
 export class VehiculosComponent implements OnInit {
+  socket: any;
   // array of all items to be paged
   private allItems: any[];
   currentPage: number = 1;
@@ -30,7 +33,21 @@ export class VehiculosComponent implements OnInit {
     private _pagerService: PagerService,
     private _swal2: SweetAlertService
   ) 
-  { }
+  { 
+
+    // SOCKET.io
+    // SOCKET.IO
+    this.socket = io(GLOBAL.socketUrl + 'vehicles', { query: `distributor=${JSON.parse(localStorage.getItem('identity')).distributor._id}` });
+    
+        this.socket.on('logout', (data) => {
+          console.log('Logout event', data)
+          this.refresh()
+        })   
+        this.socket.on('login', (data) => {
+          console.log('Login event', data)
+          this.refresh()
+        })  
+  }
 
   ngOnInit() {
     this.refresh();

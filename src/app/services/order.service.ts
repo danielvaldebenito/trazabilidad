@@ -89,5 +89,12 @@ export class OrderService {
                 .put(url, { order: orderId, device: device, old }, {headers: this.headers})
                 .map(res => res.json())
   }
+
+  reassignDeviceToOrder (orderId, device, old) {
+    var url = this.url + 'order-reassign-device';
+    return this._http
+                .put(url, { order: orderId, device: device, old }, {headers: this.headers})
+                .map(res => res.json())
+  }
   
 }

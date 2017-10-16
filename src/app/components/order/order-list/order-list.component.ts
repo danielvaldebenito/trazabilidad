@@ -64,7 +64,19 @@ export class OrderListComponent implements OnInit {
   onSelectedVehicle(vehicle, old) {
     if(!vehicle || !this.orderSelected)
       return;
-    this._orderService.assignDeviceToOrder(this.orderSelected._id, vehicle.user.device._id, old)
+    if(old) {
+      this._orderService.reassignDeviceToOrder(this.orderSelected._id, vehicle.user.device._id, old)
+        .subscribe(
+          res => {
+            console.log(res)
+            if(res.done) {
+              this.refresh.emit()
+            }
+          }, 
+          error => console.log(error)
+        )
+    } else {
+      this._orderService.assignDeviceToOrder(this.orderSelected._id, vehicle.user.device._id, old)
       .subscribe(
         res => {
           console.log(res)
@@ -75,5 +87,7 @@ export class OrderListComponent implements OnInit {
         }, 
         error => console.log(error)
       )
+    }
+    
   }
 }

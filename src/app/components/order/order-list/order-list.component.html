@@ -31,7 +31,7 @@
         </li>
         <li class="list-group-item justify-content-between">
             <fa name="mobile"></fa>
-            <button *ngIf="order.device" type="button" class="btn btn-primary" (click)="open(vehiclesReassign, order, 'lg')">REASIGNAR</button>
+            <button *ngIf="order.device && order.status != 'ENTREGADO' && order.status != 'CANCELADO'" type="button" class="btn btn-primary" (click)="open(vehiclesReassign, order, 'lg')">REASIGNAR</button>
             <span *ngIf="!order.device">
               <button type="button" class="btn btn-primary" (click)="open(vehicles, order, 'lg')">ASIGNAR</button>
             </span>
