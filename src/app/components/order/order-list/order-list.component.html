@@ -21,7 +21,7 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item justify-content-between">
-          <fa name="truck"></fa>
+          <fa name="truck"></fa> 
           <span *ngIf="order.vehicle">{{ order.vehicle ? order.vehicle?.licensePlate: 'No asignado' }}</span>
           
         </li>
@@ -30,9 +30,9 @@
           <span *ngIf="order.userName">{{ order.userName ? order.userName : 'No asignado' }}</span>
         </li>
         <li class="list-group-item justify-content-between">
-            <fa name="mobile"></fa>
+            <fa name="mobile" size="2x" animation="{{ order.pendingConfirmCancel ? 'spin' : '' }}"></fa>
             <button *ngIf="order.device && order.status != 'ENTREGADO' && order.status != 'CANCELADO'" type="button" class="btn btn-primary" (click)="open(vehiclesReassign, order, 'lg')">REASIGNAR</button>
-            <span *ngIf="!order.device">
+            <span *ngIf="!order.device && order.status == 'RECIBIDO'">
               <button type="button" class="btn btn-primary" (click)="open(vehicles, order, 'lg')">ASIGNAR</button>
             </span>
             <span>{{ order.device?.pos }}</span>
