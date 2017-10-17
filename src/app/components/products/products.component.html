@@ -1,0 +1,32 @@
+<div class="container-fluid principal">
+  <div class="row">
+    <div class="col">
+      <div class="page-header d-flex p-2 flex-row justify-content-between align-items-center">
+        <fa name="tag" size="2x"></fa>
+        <h1>Productos</h1>
+        <span></span>
+      </div>
+      <div class="card">
+        <div class="card-block">
+            <app-product-query (found)="onFound($event)"></app-product-query>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <app-product-detail [product]="product"></app-product-detail>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <app-product-movements [movs]="movs"></app-product-movements>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <app-product-last-position [response]="response" [stock]="stock"></app-product-last-position>
+    </div>
+  </div>
+</div>

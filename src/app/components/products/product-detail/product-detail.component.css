@@ -1,0 +1,28 @@
+.label {
+    color: #DF691A;
+    font-size: 8pt;
+}
+.data {
+    font-size: 10pt;
+}
+
+.detail {
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.detail h3 {
+    width: 100%;
+    text-align: center;
+    color: #DF691A;
+}
+
+section {
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    color: #FFF;
+    border: 1px solid #FFF;
+}
+section .col {
+    padding: 10px;
+    
+}

@@ -25,6 +25,7 @@ import { InternalProcessesComponent } from './components/internal-processes/inte
 import { DistributorsComponent } from './components/distributors/distributors.component'
     import { DistributorsNewComponent } from './components/distributors/distributors-new/distributors-new.component'
     import { DistributorsEditComponent } from './components/distributors/distributors-edit/distributors-edit.component'
+import { ProductsComponent } from 'app/components/products/products.component';
 export const appRoutes: Routes = [
   { path: 'vehicles', component: VehiculosComponent },
   { path: 'vehicles/create', component: CreateVehicleComponent },
@@ -51,6 +52,7 @@ export const appRoutes: Routes = [
   { path: 'internalprocess/edit/:id', component: InternalProcessesEditComponent },
   { path: 'distributors', component: DistributorsComponent },
   { path: 'distributors/new', component: DistributorsNewComponent },
-  { path: 'distributors/edit', component: DistributorsEditComponent }
+  { path: 'distributors/edit', component: DistributorsEditComponent },
+  { path: 'products', component: ProductsComponent }
 
 ];

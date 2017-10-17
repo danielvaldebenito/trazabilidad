@@ -36,6 +36,7 @@ import { AddressService } from './services/addresses.service';
 import { InternalProcessesService } from './services/internal-processes.service';
 import { DistributorsService } from './services/distributors.service'
 import { SaleService } from './services/sale.service'
+import { ProductsService } from './services/products.service'
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -89,6 +90,11 @@ import { DistributorsDetailComponent } from './components/distributors/distribut
 import { environment } from '../environments/environment';
 import { SalesComponent } from './components/sales/sales.component';
 import { SaleDetailComponent } from './components/sales/sale-detail/sale-detail.component';
+import { ProductsComponent } from './components/products/products.component';
+import { ProductDetailComponent } from './components/products/product-detail/product-detail.component';
+import { ProductMovementsComponent } from './components/products/product-movements/product-movements.component';
+import { ProductLastPositionComponent } from './components/products/product-last-position/product-last-position.component';
+import { ProductQueryComponent } from './components/products/product-query/product-query.component';
 
 
 
@@ -144,7 +150,12 @@ import { SaleDetailComponent } from './components/sales/sale-detail/sale-detail.
     DistributorsListComponent,
     DistributorsDetailComponent,
     SalesComponent,
-    SaleDetailComponent
+    SaleDetailComponent,
+    ProductsComponent,
+    ProductDetailComponent,
+    ProductMovementsComponent,
+    ProductLastPositionComponent,
+    ProductQueryComponent
   ],
   imports: [
     FormsModule,
@@ -182,7 +193,8 @@ import { SaleDetailComponent } from './components/sales/sale-detail/sale-detail.
     OrderService, 
     GoogleMapService,
     AddressService,
-    SweetAlertService
+    SweetAlertService,
+    ProductsService
 
     //{provide: LocationStrategy, useClass: HashLocationStrategy}
   ],

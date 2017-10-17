@@ -39,14 +39,14 @@ export class VehiculosComponent implements OnInit {
     // SOCKET.IO
     this.socket = io(GLOBAL.socketUrl + 'vehicles', { query: `distributor=${JSON.parse(localStorage.getItem('identity')).distributor._id}` });
     
-        this.socket.on('logout', (data) => {
-          console.log('Logout event', data)
-          this.refresh()
-        })   
-        this.socket.on('login', (data) => {
-          console.log('Login event', data)
-          this.refresh()
-        })  
+    this.socket.on('logout', (data) => {
+      console.log('Logout event', data)
+      this.refresh()
+    })   
+    this.socket.on('login', (data) => {
+      console.log('Login event', data)
+      this.refresh()
+    })  
   }
 
   ngOnInit() {

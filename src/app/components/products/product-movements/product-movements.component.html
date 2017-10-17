@@ -1,0 +1,30 @@
+<div class="row detail" *ngIf="movs">
+    <div class="col">
+      <h3>ÚLTIMOS MOVIMIENTOS</h3>
+      <section>
+        <table class="table table-hover table-sm table-stripped table-details">
+          <thead>
+            <tr>
+              <th>Tipo Transacción</th>
+              <th>Tipo Movimiento</th>
+              <th>Fecha</th>
+              <th>Tipo bodega</th>
+              <th>Nombre bodega</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mov of movs">
+              <td>{{ mov.movement?.transaction?.type}}</td>
+              <td><fa size="2x" name="{{ mov.movement?.type == 'E' ? 'arrow-circle-right' : 'arrow-circle-left' }}" 
+                ngbTooltip="{{ mov.movement?.type == 'E' ? 'ENTRADA' : 'SALIDA'}}" [ngClass]="{'success': mov.movement?.type == 'E', 'danger': mov.movement?.type == 'S'}"></fa></td>
+              <td>{{ mov.createdAt | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
+              <td>{{ mov.movement?.warehouse?.type || 'Desconocido'}}</td>
+              <td>{{ mov.movement?.warehouse?.name || 'Desconocido'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+  
+    </div>
+  
+  </div>

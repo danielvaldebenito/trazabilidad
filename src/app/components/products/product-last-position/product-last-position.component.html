@@ -1,0 +1,81 @@
+<div class="row detail" *ngIf="stock && response">
+  <div class="col">
+    <h3>UBICACIÓN ACTUAL</h3>
+    <section>
+      <div class="row">
+        <div class="col">
+          <div class="label">Tipo de bodega</div>
+          <div class="data">{{ stock.warehouse?.type }}</div>
+        </div>
+        <div class="col">
+          <div class="label">Fecha última actualización</div>
+          <div class="data">{{ stock.warehouse?.updatedAt | date: 'dd-MM-yyyy HH:mm'}}</div>
+        </div>
+      </div>
+      <!-- Vehicle -->
+      <div class="row" *ngIf="response.vehicle">
+        <div class="col">
+          <div class="label">Placa</div>
+          <div class="data">{{ response.vehicle.licensePlate }}</div>
+        </div>
+        <div class="col">
+          <div class="label">Distribuidor</div>
+          <div class="data">{{ response.vehicle.distributor?.name }}</div>
+        </div>
+      </div>
+      <!-- Address -->
+      <div class="row" *ngIf="response.address">
+        <div class="col">
+          <div class="label">Dirección</div>
+          <div class="data">{{ response.address.location }}</div>
+        </div>
+        <div class="col">
+          <div class="label">{{cityName}}</div>
+          <div class="data">{{ response.address.city }}</div>
+        </div>
+        <div class="col">
+          <div class="label">{{regionName}}</div>
+          <div class="data">{{ response.address.region }}</div>
+        </div>
+      </div>
+      <!-- Store -->
+      <div class="row" *ngIf="response.store">
+        <div class="col">
+          <div class="label">Almacén</div>
+          <div class="data">{{ response.store.name }}</div>
+        </div>
+        <div class="col">
+          <div class="label">Dirección</div>
+          <div class="data">{{ response.store.address }}</div>
+        </div>
+      </div>
+      <!-- Mermas -->
+      <div class="row" *ngIf="response.decrease">
+        <div class="col">
+          <div class="label"></div>
+          <div class="data">Merma</div>
+        </div>
+        <div class="col">
+          <div class="label">Distribuidor</div>
+          <div class="data"></div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="response.internalProcess">
+          <div class="col">
+            <div class="label">Proceso Interno</div>
+            <div class="data">{{ response.internalProcess.name }}</div>
+          </div>
+          <div class="col">
+            <div class="label">Tipo</div>
+            <div class="data">{{ response.internalProcess.internalProcessType?.name }}</div>
+          </div>
+          <div class="col">
+              <div class="label">Dependencia</div>
+              <div class="data">{{ response.internalProcess.dependence?.name }}</div>
+            </div>
+        </div>
+
+    </section>
+  </div>
+</div>

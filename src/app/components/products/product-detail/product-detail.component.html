@@ -1,0 +1,21 @@
+<div class="row detail" *ngIf="product">
+  <div class="col">
+    <h3>DATOS PRODUCTO</h3>
+    <section>
+      <div class="row">
+        <div class="col">
+          <div class="label">NIF</div>
+          <div class="data">{{ product.nif}}</div>
+        </div>
+        <div class="col">
+          <div class="label">Tipo de producto</div>
+          <div class="data">{{ product.productType ? product.productType.name : 'No definido'}}</div>
+        </div>
+        <div class="col">
+          <div class="label">Fecha de creación</div>
+          <div class="data">{{ product.createdAt | date: 'dd-MM-yyyy'}}</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
