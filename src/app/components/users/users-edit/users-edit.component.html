@@ -96,7 +96,7 @@
                     </label>
                   </div>
                 </div>
-                <div class="col">
+                <div class="col" *ngIf="isIntern()">
                   <div class="form-group">
                     <label class="custom-control custom-checkbox">
                       <input type="checkbox" formControlName="isOperator" class="custom-control-input">
@@ -161,7 +161,7 @@
                 </div>
 
               </div>
-              <div class="row" *ngIf="form.value.roles.isVehicle">
+              <!-- <div class="row" *ngIf="form.value.roles.isVehicle">
                 <div class="col">
                   <div class="card">
                     <div class="card-block">
@@ -178,7 +178,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="row">
                 <div class="col" *ngIf="form.value.roles.isOperator">
                   <div class="card">
@@ -211,7 +211,7 @@
             </div>
           </div>
           <div class="card-footer">
-            <button type="submit" [disabled]="!form.valid || userExistsError" class="btn btn-primary btn-block">
+            <button type="submit" [disabled]="!form.valid || userExistsError" class="btn btn-primary btn-block btn-lg">
             <fa name="save"></fa> GUARDAR
           </button>
           </div>

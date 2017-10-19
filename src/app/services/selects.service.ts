@@ -33,8 +33,9 @@ export class SelectsService {
                         .map(res => res.json())
     }
     getDependences () {
-        var myDistributor = this.myUser.distributor._id;
-        var params = { distributor: myDistributor };
+        const myDistributor = this.myUser.distributor._id;
+        let params = { distributor: myDistributor, dependence: this.myUser.dependence };
+        
         return this._http.get(this.url + 'dependences', { headers: this.headers, params: params })
                         .map(res => res.json())
     }

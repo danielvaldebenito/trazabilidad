@@ -1,70 +1,86 @@
 <nav *ngIf="token" class="navbar navbar-toggleable-md navbar-inverse bg-primary">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+        aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-  <a class="navbar-brand" href="#">
-      <img src="../assets/images/logo.png" alt="" class="d-inline-block align-top logo">
-  </a>
-  <div class="collapse navbar-collapse" id="navbarColor01">
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-            <a class="nav-link" routerLink="/inventory"><fa name="barcode"></fa> INVENTARIO</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" routerLink="/order"><fa name="phone"></fa> PEDIDOS</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
-                <fa name="cogs"></fa>
-                CONFIGURACIÓN <span class="caret"></span></a>
+    <a class="navbar-brand" href="#">
+        <img src="../assets/images/logo.png" alt="" class="d-inline-block align-top logo">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                    <fa name="barcode"></fa> INVENTARIO
+                    <span class="caret"></span>
+                </a>
                 <div class="dropdown-menu" aria-labelledby="themes">
-                <a class="nav-link" routerLink="/vehicles">
-                    <fa name="truck"></fa> VEHÍCULOS
+                    <a class="nav-link" routerLink="/products" routerLinkActive="active">
+                        <fa name="tag"></fa> CONSULTA POR NIF
+                    </a>
+
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/order" routerLinkActive="active">
+                    <fa name="phone"></fa> PEDIDOS</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                    <fa name="cogs"></fa>
+                    CONFIGURACIÓN
+                    <span class="caret"></span>
                 </a>
-                <a class="nav-link" routerLink="/users">
-                    <fa name="users"></fa> USUARIOS
+                <div class="dropdown-menu" aria-labelledby="themes">
+                    <a class="nav-link" routerLink="/vehicles" routerLinkActive="active">
+                        <fa name="truck"></fa> VEHÍCULOS
+                    </a>
+                    <a class="nav-link" routerLink="/users" routerLinkActive="active">
+                        <fa name="users"></fa> USUARIOS
+                    </a>
+                    <a class="nav-link" routerLink="/dependences" routerLinkActive="active" *ngIf="isAdminFromAnyDependence() || isSuperAdmin()">
+                        <fa name="building"></fa> DEPENDENCIAS
+                    </a>
+                    <a class="nav-link" routerLink="/price-list" routerLinkActive="active">
+                        <fa name="usd"></fa> LISTA DE PRECIOS
+                    </a>
+                    <a class="nav-link" routerLink="/folios" routerLinkActive="active">
+                        <fa name="sort-numeric-desc"></fa> FOLIOS
+                    </a>
+                    <a class="nav-link" routerLink="/internalprocess" routerLinkActive="active" *ngIf="isIntern()">
+                        <fa name="cog"></fa> PROCESOS INTERNOS
+                    </a>
+                    <a class="nav-link" routerLink="/distributors" routerLinkActive="active" *ngIf="isSuperAdmin()">
+                        <fa name="cog"></fa> DISTRIBUIDORES
+                    </a>
+                </div>
+
+            </li>
+
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">
+                    <img [src]="identity.image ? apiUrl + 'get-image-user/' + identity.image : '../assets/images/default-user.png'" alt="" class="img-fluid rounded-circle img-avatar">
+                    <span>{{ identity.name + " " + identity.surname }} </span>
+                    <span class="caret"></span>
                 </a>
-                <a class="nav-link" routerLink="/dependences">
-                    <fa name="building"></fa> DEPENDENCIAS
-                </a>
-                <a class="nav-link" routerLink="/price-list">
-                    <fa name="usd"></fa> LISTA DE PRECIOS
-                </a>
-                <a class="nav-link" routerLink="/folios">
-                    <fa name="sort-numeric-desc"></fa> FOLIOS
-                </a>
-                <a class="nav-link" routerLink="/internalprocess">
-                    <fa name="cog"></fa> PROCESOS INTERNOS
-                </a>
-            </div>
-            
-        </li>
-        
-    </ul>
-    <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes">
-                <img [src]="identity.image ? apiUrl + 'get-image-user/' + identity.image : '../assets/images/default-user.png'" alt="" class="img-fluid rounded-circle img-avatar">
-                <span>{{ identity.name + " " + identity.surname }} </span>
-                <span class="caret"></span>
-            </a>
-            
-            <div class="dropdown-menu" aria-labelledby="themes">
-                <a class="dropdown-item" (click)="open(changePass)">
-                    <fa name="key"></fa> CAMBIAR CONTRASEÑA
-                </a>
-                <a class="dropdown-item" [routerLink]="['users/edit/', identity._id]">
-                    <fa name="cogs"></fa> EDITAR MI USUARIO
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" (click)="logout()">
-                    <fa name="sign-out"></fa> SALIR
-                </a>
-            </div>
-        </li>
-    </ul>
-  </div>
-  
+
+                <div class="dropdown-menu" aria-labelledby="themes">
+                    <a class="dropdown-item" (click)="open(changePass)">
+                        <fa name="key"></fa> CAMBIAR CONTRASEÑA
+                    </a>
+                    <a class="dropdown-item" [routerLink]="['users/edit/', identity._id]" routerLinkActive="active">
+                        <fa name="cogs"></fa> EDITAR MI USUARIO
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" (click)="logout()">
+                        <fa name="sign-out"></fa> SALIR
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
 </nav>
 <div class="footer">
     <img src="../assets/images/commzgate.png" alt="" class="img-responsive">
@@ -72,20 +88,19 @@
 <router-outlet></router-outlet>
 <app-login [hidden]="token || resetPass" (loginResetPass)="onLoginResetPass($event)"></app-login>
 <app-new-pass (resetPass)="onResetPass()" [hidden]="!resetPass || !userToReset"></app-new-pass>
-<simple-notifications  [options]="notificationsOptions"></simple-notifications>
+<simple-notifications [options]="notificationsOptions"></simple-notifications>
 
 <ng-template #changePass let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title">Complete los datos</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-new-pass [fromModal]="true" (resetPass)="c(''); onResetPass()" [userName]="identity.username" (resetPass)="onResetPass()"></app-new-pass>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
-  </div>
+    <div class="modal-header">
+        <h4 class="modal-title">Complete los datos</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-new-pass [fromModal]="true" (resetPass)="c(''); onResetPass()" [userName]="identity.username" (resetPass)="onResetPass()"></app-new-pass>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+    </div>
 </ng-template>
-

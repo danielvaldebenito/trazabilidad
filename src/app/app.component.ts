@@ -104,4 +104,20 @@ export class AppComponent implements OnInit {
           //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
   }
+  isSuperAdmin () {
+    const identity = this._userService.getUserIdentity()
+    return identity.isAdmin && identity.distributor.intern 
+  }
+  isIntern () {
+    const identity = this._userService.getUserIdentity()
+    return identity.distributor.intern 
+  }
+  isAdminFromDependence() {
+    const identity = this._userService.getUserIdentity()
+    return identity.dependence && identity.roles.indexOf('ADMIN') > -1
+  }
+  isAdminFromAnyDependence() {
+    const identity = this._userService.getUserIdentity()
+    return !identity.dependence && identity.roles.indexOf('ADMIN') > -1
+  }
 }

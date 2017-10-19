@@ -24,7 +24,7 @@ export class UsersService {
   getUsers (filter, limit, page) {
     
     var url = this.url + 'users/' + this.user.distributor._id;
-    var params = { filter: filter, limit: limit, page: page }
+    var params = { filter: filter, limit: limit, page: page, dependence: this.user.dependence }
     return this._http.get(url, { headers: this.headers, params: params })
             .map(res => res.json());
   }

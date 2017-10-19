@@ -210,13 +210,14 @@
                 </div>
                 <div class="col align-items-start">
                   <div class="form-group">
-                    <label class="form-control-label">Lista de Precios a utilizar</label>
+                    <label class="form-control-label">Lista de Precios a utilizar (*)</label>
                     <div class="input-group">
-                      <ng-select #priceList="ngModel" name="priceList" filterPlaceholder="Buscar lista de precio..." notFoundMsg="No se encontró ninguna lista de precios"
+                      <ng-select #priceList="ngModel" required name="priceList" filterPlaceholder="Buscar lista de precio..." notFoundMsg="No se encontró ninguna lista de precios"
                         highlightColor="#37424A" highlightTextColor="#fff" placeholder="Seleccione lista de precios" [options]="priceLists"
                         [allowClear]="true" [noFilter]="5" (selected)="onSelectPriceList($event)" (deselected)="onDeselectPriceList($event)"
                         [(ngModel)]="order.priceList">
                       </ng-select>
+
                       <button type="button" class="btn btn-outline-primary" (click)="open(newpl)">
                         <fa name="plus"></fa>
                       </button>
@@ -224,7 +225,13 @@
                         <fa name="eye"></fa>
                       </button>
                     </div>
-
+                    <div class="form-control-feedback">
+                        <div *ngIf="priceList.errors && (priceList.dirty || priceList.touched)" class="danger">
+                          <div [hidden]="!priceList.errors.required">
+                            Ingrese una lista de precio para el pedido
+                          </div>
+                        </div>
+                      </div>
                   </div>
                 </div>
                 <div class="col align-items-start">

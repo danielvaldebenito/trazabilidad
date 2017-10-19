@@ -72,7 +72,7 @@ export class UsersNewComponent implements OnInit {
         isVehicle: [this.fromVehiclesModule],
         isOperator: [false]
       }, { validator: minOne })
-    }, { validator: vehicleValidator })
+    })
   }
   initProcess (process?) {
     return this._fb.group({

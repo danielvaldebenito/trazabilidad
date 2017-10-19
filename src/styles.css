@@ -21,6 +21,9 @@
     text-transform: uppercase;
     padding: 5px 20px;
 }
+.navbar-inverse .navbar-nav .nav-link.active {
+    color: var(--color-primary);
+}
     .navbar-inverse .navbar-nav .nav-link fa {
         font-size: 14pt;
         margin-right: 10px;

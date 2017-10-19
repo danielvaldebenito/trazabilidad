@@ -10,15 +10,13 @@ import { Location } from '@angular/common';
 import { GLOBAL } from '../../../global'
 import { InternalProcessesService } from 'app/services/internal-processes.service';
 import { DependencesService } from 'app/services/dependences.service';
+import { UserService } from 'app/services/user.service';
 
 function minOne (c: AbstractControl) {
   return c.get('isAdmin').value === true || c.get('isVehicle').value === true || c.get('isOperator').value === true
     ? null : { minOne: true }
 }
-function vehicleValidator (c: AbstractControl) {
-  return c.get('roles').get('isVehicle').value === true && !c.get('vehicle').value ?
-    { vehicleValidator: true } : null
-}
+
 
 @Component({
   selector: 'app-users-edit',
@@ -40,6 +38,7 @@ export class UsersEditComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _selectsService: SelectsService,
+    private _userService: UserService,
     private _usersService: UsersService,
     private _notify: NotificationsService,
     private _swal2: SweetAlertService,
@@ -59,9 +58,9 @@ export class UsersEditComponent implements OnInit {
     this.getOne (this.id);
     const self = this
     setTimeout(function() {
-      if(self.user.dependence)
+      if(self.user.dependence) 
         this.selectedDependence = self.user.dependence
-        self.getInternalProcesses(self.user.dependence, self.user.internalProcessTypes)
+      self.getInternalProcesses(self.user.dependence, self.user.internalProcessTypes)
       self.getProcesses();
     }, 500);
     
@@ -104,11 +103,11 @@ export class UsersEditComponent implements OnInit {
       internalProcess: [user.internalProcess],
       dependence: user.dependence,
       roles: this._fb.group({
-        isAdmin: new FormControl(user.isAdmin),
+        isAdmin: new FormControl(user.roles.indexOf('ADMIN') > -1),
         isVehicle: new FormControl(user.roles.indexOf('VEHÍCULO') > -1),
         isOperator: new FormControl(this.user.internalProcessTypes != null && this.user.internalProcessTypes.length > 0)
       }, { validator: minOne })
-    }, { validator: vehicleValidator })
+    })
 
     
   }
@@ -256,5 +255,9 @@ export class UsersEditComponent implements OnInit {
   onDeselectDependence (algo) {
     this.selectedDependence = null;
     this.internalProcesses = [];
+  }
+
+  isIntern() {
+    return this._userService.getUserIdentity().distributor.intern;
   }
 }

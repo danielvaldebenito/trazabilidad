@@ -74,7 +74,7 @@
               <button type="button" class="btn btn-outline-secondary" *ngIf="vehicle.dependence" (click)="open(viewdependence)">
                 <fa name="eye"></fa>
               </button>
-              <button type="button" class="btn btn-outline-primary" (click)="open(newdependence)" >
+              <button type="button" class="btn btn-outline-primary" (click)="open(newdependence)" *ngIf="isAdminFromAnyDependence()" >
                 <fa name="plus"></fa>
               </button>
             </div>

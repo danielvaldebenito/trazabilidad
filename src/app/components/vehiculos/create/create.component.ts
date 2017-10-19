@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { VehicleService } from '../../../services/vehicles.service'
 import { SelectsService } from '../../../services/selects.service'
+import { UserService } from '../../../services/user.service'
 import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common'
 import { IOption } from "ng-select"
@@ -28,7 +29,8 @@ export class CreateVehicleComponent implements OnInit {
       private _vehicleService: VehicleService,
       private _swal2: SweetAlertService,
       private _selectsService: SelectsService,
-      private _modalService: NgbModal
+      private _modalService: NgbModal,
+      private _userService: UserService
     ) {
     
    }
@@ -143,5 +145,10 @@ export class CreateVehicleComponent implements OnInit {
   refreshDependence (dependenceId) {
     this.getDependences();
     this.vehicle.dependence = dependenceId;
+  }
+
+  isAdminFromAnyDependence() {
+    const identity = this._userService.getUserIdentity()
+    return !identity.dependence && identity.roles.indexOf('ADMIN') > -1
   }
 }

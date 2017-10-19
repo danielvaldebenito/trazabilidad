@@ -20,10 +20,9 @@ export class VehicleService {
     }
 
     getVehicles (filter: string, limit: number, page: number) {
-        console.log('user', this.user)
-        var myDistributor = this.user.distributor._id;
-        var url = this.url + 'vehicles/' + myDistributor;
-        var params = { filter: filter, limit: limit, page: page }
+        const myDistributor = this.user.distributor._id;
+        const url = this.url + 'vehicles/' + myDistributor;
+        const params = { filter: filter, limit: limit, page: page, dependence: this.user.dependence }
         return this._http.get(url, { headers: this.headers, params: params })
                 .map(res => res.json());
     }

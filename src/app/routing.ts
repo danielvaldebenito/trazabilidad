@@ -52,7 +52,7 @@ export const appRoutes: Routes = [
   { path: 'internalprocess/edit/:id', component: InternalProcessesEditComponent },
   { path: 'distributors', component: DistributorsComponent },
   { path: 'distributors/new', component: DistributorsNewComponent },
-  { path: 'distributors/edit', component: DistributorsEditComponent },
+  { path: 'distributors/edit/:id', component: DistributorsEditComponent },
   { path: 'products', component: ProductsComponent }
 
 ];

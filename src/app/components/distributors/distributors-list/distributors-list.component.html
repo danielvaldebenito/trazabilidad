@@ -17,7 +17,7 @@
       <td> {{ distributor.email }}</td>
       <td> {{ distributor.contact }}</td>
       <th>
-        <button class="btn btn-sm btn-primary">
+        <button class="btn btn-sm btn-primary" [routerLink]="['/distributors/edit', distributor._id]">
           <fa name="pencil"></fa>
         </button>
       </th>
