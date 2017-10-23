@@ -26,6 +26,7 @@ import { DistributorsComponent } from './components/distributors/distributors.co
     import { DistributorsNewComponent } from './components/distributors/distributors-new/distributors-new.component'
     import { DistributorsEditComponent } from './components/distributors/distributors-edit/distributors-edit.component'
 import { ProductsComponent } from 'app/components/products/products.component';
+import { DevicesComponent } from 'app/components/devices/devices.component'
 export const appRoutes: Routes = [
   { path: 'vehicles', component: VehiculosComponent },
   { path: 'vehicles/create', component: CreateVehicleComponent },
@@ -53,6 +54,6 @@ export const appRoutes: Routes = [
   { path: 'distributors', component: DistributorsComponent },
   { path: 'distributors/new', component: DistributorsNewComponent },
   { path: 'distributors/edit/:id', component: DistributorsEditComponent },
-  { path: 'products', component: ProductsComponent }
-
+  { path: 'products', component: ProductsComponent },
+  { path: 'devices', component: DevicesComponent }
 ];

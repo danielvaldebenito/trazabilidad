@@ -37,6 +37,7 @@ import { InternalProcessesService } from './services/internal-processes.service'
 import { DistributorsService } from './services/distributors.service'
 import { SaleService } from './services/sale.service'
 import { ProductsService } from './services/products.service'
+import { DevicesService } from './services/devices.service'
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -95,6 +96,9 @@ import { ProductDetailComponent } from './components/products/product-detail/pro
 import { ProductMovementsComponent } from './components/products/product-movements/product-movements.component';
 import { ProductLastPositionComponent } from './components/products/product-last-position/product-last-position.component';
 import { ProductQueryComponent } from './components/products/product-query/product-query.component';
+import { DevicesComponent } from './components/devices/devices.component';
+import { DevicesListComponent } from './components/devices/devices-list/devices-list.component';
+import { DevicesDetailComponent } from './components/devices/devices-detail/devices-detail.component';
 
 
 
@@ -155,7 +159,10 @@ import { ProductQueryComponent } from './components/products/product-query/produ
     ProductDetailComponent,
     ProductMovementsComponent,
     ProductLastPositionComponent,
-    ProductQueryComponent
+    ProductQueryComponent,
+    DevicesComponent,
+    DevicesListComponent,
+    DevicesDetailComponent
   ],
   imports: [
     FormsModule,
@@ -194,7 +201,8 @@ import { ProductQueryComponent } from './components/products/product-query/produ
     GoogleMapService,
     AddressService,
     SweetAlertService,
-    ProductsService
+    ProductsService,
+    DevicesService
 
     //{provide: LocationStrategy, useClass: HashLocationStrategy}
   ],

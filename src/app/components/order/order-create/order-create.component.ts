@@ -62,6 +62,7 @@ export class OrderCreateComponent implements OnInit {
   prev: boolean; next: boolean;
   // config 
   delaySearch: number = 10000 // 10 segundos
+  loading = false
   protected searchStr: string;
   protected dataService: RemoteData;
 
@@ -475,7 +476,7 @@ export class OrderCreateComponent implements OnInit {
     this.selectedVehicle = v.value;
   }
   onSubmit() {
-    console.log(this.items)
+    this.loading = true
     if (this.items.length == 0) {
       this._notificationService.error('Error', 'Debe ingresar al menos 1 ítem');
       return;

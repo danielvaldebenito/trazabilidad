@@ -11,6 +11,7 @@
           <div class="label">Fecha última actualización</div>
           <div class="data">{{ stock.warehouse?.updatedAt | date: 'dd-MM-yyyy HH:mm'}}</div>
         </div>
+        <div class="col"></div>
       </div>
       <!-- Vehicle -->
       <div class="row" *ngIf="response.vehicle">
@@ -36,6 +37,21 @@
         <div class="col">
           <div class="label">{{regionName}}</div>
           <div class="data">{{ response.address.region }}</div>
+        </div>
+      </div>
+      <!-- Client -->
+      <div class="row" *ngIf="response.address && response.address.client">
+        <div class="col">
+          <div class="label">Nit Cliente</div>
+          <div class="data">{{ response.address.client.nit}}</div>
+        </div>
+        <div class="col">
+          <div class="label">Nombre Cliente</div>
+          <div class="data">{{ response.address.client.name}} {{ response.address.client.surname}}</div>
+        </div>
+        <div class="col">
+          <div class="label">Teléfono Cliente</div>
+          <div class="data">{{ response.address.client.phone}}</div>
         </div>
       </div>
       <!-- Store -->

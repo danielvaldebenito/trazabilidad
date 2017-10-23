@@ -1,0 +1,9 @@
+.connected {
+    color: #76FF03;
+}
+.disconnected {
+    color: #AAA;
+}
+.no-assign {
+    color: #d9534f;
+}

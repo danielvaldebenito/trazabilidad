@@ -54,6 +54,15 @@ export class OrderListComponent implements OnInit {
             res => {
               if(res.done) {
                 this.oncancel.emit(id)
+                this._swal2.success({
+                  title: 'Cancelado',
+                  text: res.message
+                })
+              } else {
+                this._swal2.error({
+                  title: 'Error',
+                  text: res.message
+                })
               }
             }, 
             err => console.log(err)
