@@ -61,5 +61,11 @@ export class UserService {
         return this._http.put(url, body)
                     .map(res => res.json())
     }
-    
+    finishTutorial () {
+        const distributor = this.getUserIdentity().distributor._id
+        const url = this.url + '/finish-tutorial/' + distributor
+        const headers = new Headers ({ 'Content-Type': 'application/json', 'Authorization': this.getToken() });
+        return this._http.put(url, {}, { headers: headers })
+            .map(res => res.json())
+    }
 }

@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col" *ngFor="let type of types">
+      <div class="card type" [ngClass]="{'selected': type == selectedType}">
+          <div class="card-block text-center" (click)="onSelectType(type)">
+              {{type}}
+          </div>
+        </div>
+  </div>
+</div>
+

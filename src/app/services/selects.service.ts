@@ -67,4 +67,9 @@ export class SelectsService {
         return this._http.get(url, { headers: this.headers, params: { type: type } })
                 .map(res => res.json())
     }
+    getTransactionTypes() {
+        const url = this.url + 'transaction-types/'
+        return this._http.get(url, { headers: this.headers})
+                .map(res => res.json())
+    }
 }   

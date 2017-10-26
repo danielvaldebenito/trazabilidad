@@ -3,7 +3,7 @@
   <div class="col">
     <div class="card">
       <div class="card-header d-flex flex-row justify-content-between align-items-center">
-        <button type="button" class="btn btn-secondary" (click)="onCancel()" title="Volver">
+        <button type="button" class="btn btn-secondary" *ngIf="!fromTutorial" (click)="onCancel()" title="Volver">
           <fa name="arrow-left"></fa>
         </button>
          <h1>Nuevo Vehículo</h1>  

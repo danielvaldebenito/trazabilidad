@@ -1,0 +1,24 @@
+<table class="table table-sm table-bordered table-hover table-striped">
+  <thead>
+    <tr>
+      <th>Evento</th>
+      <th>Fecha</th>
+      <th>POS</th>
+      <th>Usuario</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let history of order.history">
+      <td>{{ history.event }}</td>
+      <td>{{ history.date | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+      <td>{{ history.device?.pos }}</td>
+      <td>{{ history.user?.name }} {{ history.user?.surname }}</td>
+    </tr>
+  </tbody>
+</table>
+<!-- user: { type: Schema.Types.ObjectId, ref: 'User'},
+userName: String,
+device: { type: Schema.Types.ObjectId, ref: 'Device'},
+oldDevice: { type: Schema.Types.ObjectId, ref: 'Device'},
+date: Date,
+event: { type: String, enum: events } -->

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { VehicleService } from '../../../services/vehicles.service'
 import { SelectsService } from '../../../services/selects.service'
 import { UserService } from '../../../services/user.service'
@@ -23,6 +23,8 @@ export class CreateVehicleComponent implements OnInit {
   allUsers: any[] = []
   users: Array<IOption>
   user: any
+  @Input() fromTutorial: boolean = false
+  @Output() submitForm = new EventEmitter();
   constructor(
       private _selectService: SelectsService, 
       private _location: Location,
@@ -92,7 +94,14 @@ export class CreateVehicleComponent implements OnInit {
                 text: res.message,
                 confirmButtonText: 'OK'
               })
-              .then(res => this._location.back())
+              .then(res => {
+                if(this.fromTutorial) {
+                  this.submitForm.emit();
+                } else {
+                  this._location.back()
+                }
+                
+              })
             }
             
           },

@@ -1,0 +1,16 @@
+.selected {
+    background: #DF691A;
+    color: #FFF;
+}
+.panel {
+    border: 1px solid #FFF;
+    padding: 10px 10px;
+    margin: 10px;
+}
+.panel h4 {
+    color: #DF691A;
+    text-align: center;
+}
+.success {
+    color: #5cb85c;
+}

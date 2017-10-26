@@ -1,0 +1,65 @@
+<div *ngIf="!data.order" class="detail-view">
+    <h3>VENTA</h3>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <span class="label">Tipo Venta</span>
+                    <span class="data">{{ data.sale.type }}</span>
+                </li>
+                <li class="list-group-item">
+                    <span class="label">Items</span>
+                    <span class="data">
+                      <table class="table table-sm table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let i of data.sale.items">
+                            <td>
+                              {{ i.productType?.code }}
+                            </td>
+                            <td>
+                              {{ i.quantity }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span class="label">Retiros</span>
+                    <span class="data">
+                      <table class="table table-sm table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Producto</th>
+                            <th>NIF</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let r of data.sale.retreats">
+                            <td>
+                              {{ r.productType?.code || 'Desconocido' }}
+                            </td>
+                            <td>
+                              {{ r.nif }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div *ngIf="data.order">
+    <app-sale-detail [orderId]="data.order._id"></app-sale-detail>
+</div>
+
+

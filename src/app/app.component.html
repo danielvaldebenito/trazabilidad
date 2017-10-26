@@ -1,4 +1,4 @@
-<nav *ngIf="token" class="navbar navbar-toggleable-md navbar-inverse bg-primary">
+<nav *ngIf="token && !tutorial()" class="navbar navbar-toggleable-md navbar-inverse bg-primary">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
         aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -17,7 +17,9 @@
                     <a class="nav-link" routerLink="/products" routerLinkActive="active">
                         <fa name="tag"></fa> CONSULTA POR NIF
                     </a>
-
+                    <a class="nav-link" routerLink="/movements" routerLinkActive="active">
+                        <fa name="arrows-alt"></fa> MOVIMIENTOS
+                    </a>
                 </div>
             </li>
             <li class="nav-item">
@@ -107,3 +109,5 @@
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
     </div>
 </ng-template>
+
+<app-tutorial  *ngIf="token && tutorial()" (onfinish)="finishTutorial()"></app-tutorial>

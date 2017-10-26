@@ -1,0 +1,34 @@
+<div class="row detail-view">
+  <div class="col">
+      <h3>DESCARGA</h3>
+      <section>
+        <div class="row">
+          <div class="col">
+              <div class="label">Vehículo Origen</div>
+              <div class="data">{{ data.truckunload.originWarehouse?.name || 'Desconocido'}}</div>
+          </div>
+          <div class="col">
+              <div class="label">Tipo Destino</div>
+              <div class="data">{{ data.truckunload.destinyWarehouse?.type || 'Desconocido'}}</div>
+          </div>
+          <div class="col">
+              <div class="label">Lugar de descarga</div>
+              <div class="data">{{ data.truckunload.destinyWarehouse?.name }} {{ data.vehicle?.disabled ? '(DESHABILITADO)' : ''}}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+              <div class="label">Tipo Documento</div>
+              <div class="data">{{ data.truckunload.document?.type}}</div>
+          </div>
+          <div class="col">
+              <div class="label">Folio Documento</div>
+              <div class="data">{{ data.truckunload.document?.folio}}</div>
+          </div>
+          <div class="col"></div>
+        </div>
+      </section>
+  </div>
+
+    
+</div>

@@ -120,4 +120,15 @@ export class AppComponent implements OnInit {
     const identity = this._userService.getUserIdentity()
     return !identity.dependence && identity.roles.indexOf('ADMIN') > -1
   }
+  tutorial() {
+    const identity = this._userService.getUserIdentity()
+    const tutorial = !identity.distributor.tutorial && identity.isAdmin
+    return tutorial
+  }
+  finishTutorial() {
+    const identity = this._userService.getUserIdentity();
+    identity.distributor.tutorial = true;
+    this._userService.setUserIdentity(identity);
+    this.refresh()
+  }
 }

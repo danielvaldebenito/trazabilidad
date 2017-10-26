@@ -1,0 +1,13 @@
+.description {
+    margin-top: 40px;
+    font-size: 11pt;
+    font-style: italic;
+}
+h1, h3 {
+    color: #DF691A;
+}
+.welcome {
+    text-align: center;
+    margin-bottom: 50px;
+    font-style: italic;
+}

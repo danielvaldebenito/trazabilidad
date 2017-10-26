@@ -4,7 +4,7 @@
       <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="card">
           <div class="card-header d-flex flex-row justify-content-between align-items-center">
-            <button class="btn btn-secondary" *ngIf="!fromModal" (click)="onCancel()" title="Volver">
+            <button class="btn btn-secondary" *ngIf="!fromModal && !fromTutorial" (click)="onCancel()" title="Volver">
         <fa name="arrow-left"></fa>
       </button>
             <h2>Nuevo Usuario</h2>

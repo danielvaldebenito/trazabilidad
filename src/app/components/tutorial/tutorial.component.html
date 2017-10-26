@@ -1,0 +1,108 @@
+<div class="container-fluid principal">
+    <div class="row">
+        <div class="col">
+            <wizard [navigationMode]="strict">
+                <wizard-step stepTitle="Bienvenida">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="text-center">BIENVENIDO AL SISTEMA DE TRAZABILIDAD</h1>
+                            <hr>
+                            <p class="welcome">
+                                El sistema de trazabilidad tiene por objetivo principal, controlar cada movimiento de cilindros. Para hacerte más fácil el
+                                uso del sistema, hemos preparado un módulo de iniciación en el cual podrás ingresar tus primeros
+                                recursos como distribuidor.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <span></span>
+                        <button type="button" class="btn btn-outline-primary btn-lg" nextStep>Empezar!</button>
+                        <span></span>
+                    </div>
+                </wizard-step>
+
+                <wizard-step stepTitle="Dependencia">
+                    <div class="row">
+                        <div class="col col-sm-6 col-md-4 col-lg-4">
+                            <div class="description">
+                                <h3>DEPENDENCIA</h3>
+                                <p>
+                                    {{ dependenceDescription }}
+                                </p>
+                            </div>
+                            <div class="d-flex flex-row justify-content-between align-items-center">
+                                <button type="button" class="btn btn-outline-secondary" previousStep>Anterior</button>
+                                <button type="button" class="btn btn-outline-primary" nextStep>Siguiente</button>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6 col-md-8 col-lg-8">
+                            <app-dependences-new *ngIf="!dependenceOK" (submitForm)="okTutorial(1)" [fromTutorial]="true"></app-dependences-new>
+                            <div class="ok" *ngIf="dependenceOK">
+                                Gracias! Presione el botón "Siguiente"
+                            </div>
+                        </div>
+                    </div>
+
+                </wizard-step>
+                <wizard-step stepTitle="Vehículo">
+                    <div class="row">
+                        <div class="col col-sm-6 col-md-4 col-lg-4">
+                            <div class="description">
+                                <h3>VEHÍCULO</h3>
+                                <p>
+                                    {{ vehicleDescription }}
+                                </p>
+                            </div>
+                            <div class="d-flex flex-row justify-content-between align-items-center">
+                                <button type="button" class="btn btn-outline-secondary" previousStep>Anterior</button>
+                                <button type="button" class="btn btn-outline-primary" nextStep>Siguiente</button>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6 col-md-8 col-lg-8">
+                            <app-create *ngIf="!vehicleOK" [fromTutorial]="true" (submitForm)="vehicleOK = true"></app-create>
+                            <div class="ok" *ngIf="vehicleOK">
+                                Gracias! Presione el botón "Siguiente"
+                            </div>
+                        </div>
+                    </div>
+                </wizard-step>
+                <wizard-step stepTitle="Usuario">
+                    <div class="row">
+                        <div class="col col-sm-6 col-md-4 col-lg-4">
+                            <div class="description">
+                                <h3>USUARIOS</h3>
+                                <p>
+                                    {{ userDescription }}
+                                </p>
+                            </div>
+                            <div class="d-flex flex-row justify-content-between align-items-center">
+                                <button type="button" class="btn btn-outline-secondary" previousStep>Anterior</button>
+                                <button type="button" class="btn btn-outline-primary" nextStep>Siguiente</button>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6 col-md-8 col-lg-8">
+                            <app-users-new *ngIf="!userOK" [fromTutorial]="true" (onSubmitForm)="userOK = true"></app-users-new>
+                            <div class="ok" *ngIf="userOK">
+                                Gracias! Presione el botón "Siguiente"
+                            </div>
+                        </div>
+                    </div>
+
+                </wizard-step>
+                <wizard-step stepTitle="Gracias">
+                    <div class="description">
+                        <h3 class="text-center">¡GRACIAS!</h3>
+                        <p class="welcome">
+                            {{ thankYouDescription }}
+                        </p>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <span></span>
+                        <button type="button" class="btn btn-outline-primary btn-lg" (click)="finish()">Finalizar</button>
+                        <span></span>
+                    </div>
+                </wizard-step>
+            </wizard>
+        </div>
+    </div>
+</div>

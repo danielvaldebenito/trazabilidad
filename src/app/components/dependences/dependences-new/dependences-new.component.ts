@@ -13,6 +13,7 @@ import { SweetAlertService } from 'ngx-sweetalert2'
 export class DependencesNewComponent implements OnInit {
   form: FormGroup
   @Input() fromModal: boolean = false
+  @Input() fromTutorial:boolean = false
   @Input() fromVehiclesModule: boolean = false
   @Output() submitForm = new EventEmitter <string>()
   constructor(
@@ -49,23 +50,21 @@ export class DependencesNewComponent implements OnInit {
             this._swal2.success({
               title: 'Dependencia creada',
               text: res.message,
-              showCancelButton: !this.fromModal,
+              showCancelButton: !this.fromModal && !this.fromTutorial,
               cancelButtonText: 'NUEVA',
               confirmButtonText: 'LISTO'
             })
             .then(ok => {
-              if(this.fromModal)
+              if(this.fromModal || this.fromTutorial)
                 this.submitForm.emit(res.stored._id)
               else
                 this.onCancel()
             }, nook => {
-              if(this.fromModal) {
+              if(this.fromModal || this.fromTutorial) {
                 this.submitForm.emit(res.stored._id)
-                
               } else {
                 this.form.reset()
               }
-              
             })
           } else {
             this._swal2.error({

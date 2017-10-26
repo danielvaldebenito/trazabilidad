@@ -1,0 +1,38 @@
+<div class="detail-view">
+    <h3>CARGA</h3>
+    <div class="row">
+        <div class="col">
+            <section>
+                <div class="row">
+                    <div class="col">
+                        <div class="label">Tipo Origen</div>
+                        <div class="data">{{ data.truckload.originWarehouse?.type}}</div>
+                    </div>
+                    <div class="col">
+                        <div class="label">Nombre Origen</div>
+                        <div class="data">{{ data.truckload.originWarehouse?.name}}</div>
+                    </div>
+                    <div class="col">
+                        <div class="label">Dependencia Origen</div>
+                        <div class="data">{{ data.truckload.originWarehouse?.dependence?.name }}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="label">Placa Vehículo</div>
+                        <div class="data">{{ data.truckload.destinyWarehouse?.name }} {{ data.vehicle?.disabled ? '(DESHABILITADO)' : ''}}</div>
+                    </div>
+                    <div class="col">
+                        <div class="label">Tipo Documento</div>
+                        <div class="data">{{ data.truckload.document?.type}}</div>
+                    </div>
+                    <div class="col">
+                        <div class="label">Folio Documento</div>
+                        <div class="data">{{ data.truckload.document?.folio}}</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,56 @@
+<div class="container-fluid principal">
+  <div class="row">
+    <div class="col">
+      <div class="page-header d-flex flex-row justify-content-between align-items-center">
+        <fa name="arrows-alt" size="2x"></fa>
+        <h1>Movimientos</h1>
+        <fa name="sss"></fa>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-block">
+          <app-movements-types (select)="selectType($event)" [types]="types"></app-movements-types>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+        <ngb-panel title="Filtro de Fechas">
+          <ng-template ngbPanelContent>
+            <div class="row">
+              <div class="col text-center">
+                <app-datepicker-range [months]="2" (change)="changeDate($event)"></app-datepicker-range>
+                <div class="row">
+                  <div class="col" *ngIf="from">
+                    <div class="card">
+                      <label for="">Fecha Inicio</label>
+                      <span class="date">{{ (from.year + '-' + from.month + '-' + from.day) | date: 'dd-MM-yyyy' }}</span>
+                    </div>
+                  </div>
+                  <div class="col" *ngIf="to">
+                    <div class="card">
+                      <label for="">Fecha Fin</label>
+                      <span class="date">{{ (to.year + '-' + to.month + '-' + to.day) | date: 'dd-MM-yyyy' }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <app-movements-list (select)="onSelectTransactionOrMovement($event)" [movements]="movements" [selectedTransaction]="selectedTransaction" [selectedMovement]="selectedMovement"></app-movements-list>
+      <app-pager [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>
+    </div>
+  </div>
+</div>

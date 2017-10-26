@@ -5,7 +5,7 @@
         <div class="card principal">
 
           <div class="card-header d-flex flex-row justify-content-between align-items-center">
-            <button class="btn btn-secondary" type="button" (click)="onCancel()" title="Volver" *ngIf="!fromVehiclesModule">
+            <button class="btn btn-secondary" type="button" (click)="onCancel()" title="Volver" *ngIf="!fromVehiclesModule && !fromTutorial">
           <fa name="arrow-left"></fa>
         </button>
             <h1>Nueva Dependencia</h1>
@@ -54,7 +54,7 @@
             </div>
           </div>
           <div class="card-footer">
-            <button type="submit" class="btn btn-primary btn-block" [disabled]="!form.valid">
+            <button type="submit" class="btn btn-primary btn-block btn-lg" [disabled]="!form.valid">
               <fa name="save"></fa> GUARDAR
             </button>
           </div>

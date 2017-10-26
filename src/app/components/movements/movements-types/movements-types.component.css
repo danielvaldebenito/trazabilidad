@@ -1,0 +1,10 @@
+.type {
+    cursor: pointer;
+}
+.type:hover {
+    border-color: #FFF;
+}
+.type.selected {
+    background: #DF691A;
+    color: #FFFFFF;
+}

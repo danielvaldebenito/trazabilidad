@@ -36,6 +36,7 @@
     "linq": "^3.0.8",
     "ng-pick-datetime": "^4.2.2",
     "ng-select": "^1.0.0-beta.6",
+    "ng2-archwizard": "^2.1.0",
     "ng2-completer": "^1.5.2",
     "ngx-date-picker": "0.0.24",
     "ngx-sweetalert2": "^0.2.4",

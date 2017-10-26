@@ -1,0 +1,27 @@
+<div class="detail-view">
+    <h3>ESTACIÓN</h3>
+    <div class="row">
+        <div class="col">
+            <section>
+                <div class="row">
+                    <div class="col">
+                        <div class="label">Dependencia</div>
+                        <div class="data">{{ data.destinyDependence?.name }}</div>
+                    </div>
+                    <div class="col">
+                        <div class="label">Documentos</div>
+                        <div class="data">{{ data.documents }}</div>
+                    </div>
+                    <div class="col">
+                        <div class="label">Cilindros subidos</div>
+                        <div class="data">{{ data.putUp ? data.putUp.length : 0 }}</div>
+                    </div>
+                    <div class="col">
+                        <div class="label">Cilindros bajados</div>
+                        <div class="data">{{ data.putDown ? data.putDown.length : 0 }}</div>
+                    </div>
+                </div>
+                
+            </section>
+        </div>
+    </div>

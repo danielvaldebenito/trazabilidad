@@ -97,8 +97,13 @@ export class OrderCreateComponent implements OnInit {
     this.getProductTypes();
     this.getDevices();
     this.getPriceLists();
-    this.getDefaultData();
     this.getPayMethods();
+    const self = this
+    setTimeout(function() {
+      self.getDefaultData()
+    }, 1000);
+    
+    
   }
   addItem() {
     if (this.item.quantity <= 0) {
@@ -160,10 +165,11 @@ export class OrderCreateComponent implements OnInit {
     this.selectedClient = obj;
     this.getCities()
     setTimeout(() => {
-      this.order.city = obj.addresses && obj.addresses.length > 0 ? obj.addresses[0].city : ''
+      this.order.city = obj.addresses && obj.addresses.length > 0 ? obj.addresses[0].city : null
+      this.selectedCity = this.order.city ? { label: this.order.city, value: this.order.city }: {}
       this.findCoords()
       this.searchStr = obj.fullname
-    }, 100);
+    }, 500);
     this.prev = false
     this.next = obj.addresses.length > 1
     this.updateDiscountSurcharge()
@@ -246,7 +252,7 @@ export class OrderCreateComponent implements OnInit {
     var region = this.selectedRegion;
     if (region) {
       var element = Enumerable.from(this.allRegions)
-        .where((w) => { return w.departamento === region.value })
+        .where((w) => { return w.departamento == region.value })
         .firstOrDefault();
 
       if (element) {
@@ -283,20 +289,22 @@ export class OrderCreateComponent implements OnInit {
   }
   getDefaultData() {
     var self = this;
-    setTimeout(() => {
-      var regionUser = self._userService.getRegionLocalUser();
-      if (regionUser) {
-        self.order.region = regionUser.value;
-        self.selectedRegion = regionUser;
-        var cityUser = self._userService.getCityLocalUser();
-        console.log('city user', cityUser)
-        if (cityUser) {
-          self.getCities();
+    var regionUser = self._userService.getRegionLocalUser();
+    if (regionUser) {
+      self.order.region = regionUser.value;
+      self.selectedRegion = regionUser;
+      var cityUser = self._userService.getCityLocalUser();
+
+      if (cityUser) {
+        self.getCities();
+        setTimeout(() => {
           self.order.city = cityUser.value;
           self.selectedCity = cityUser;
-        }
+
+        }, 500);
       }
-    }, 1000);
+    }
+    
   }
   getPrice(item: any) {
     if (!item) return 0;
@@ -541,7 +549,7 @@ export class OrderCreateComponent implements OnInit {
             this._swal2.swal({
               title: 'Buscando',
               text: 'Buscando vehículos cercanos a ' + this.order.location + '... Espere ' + this.delaySearch / 1000 + ' segundos por favor',
-              timer: 10000,
+              timer: 30000,
               showCancelButton: true,
               showConfirmButton: false,
               cancelButtonText: 'Cancelar',
@@ -557,16 +565,16 @@ export class OrderCreateComponent implements OnInit {
                     res => {
                       if (res.done) {
                         if (res.data) {
-                          if (res.data.veh) {
-                            var licensePlate = res.data.veh.licensePlate;
+                          if (res.data.dev) {
+                            var pos = res.data.dev.pos;
                             this._swal2.success({
-                              title: 'Vehículo encontrado',
-                              text: 'Se encontró el vehículo ' + licensePlate + ', como más cercano al destino señalado',
+                              title: 'Dispositivo encontrado',
+                              text: 'Se encontró el dispositivo ' + pos + ', como más cercano al destino señalado',
                               confirmButtonText: 'Asignar'
                             })
                               .then(
                               response => {
-                                this.order.vehicle = res.data.veh._id;
+                                this.order.device = res.data.dev._id;
                               },
                               cancel => {
 
@@ -628,6 +636,7 @@ export class OrderCreateComponent implements OnInit {
     if (this.selectedRegion && this.selectedCity) {
       this._userService.setRegionLocalUser(this.selectedRegion);
       this._userService.setCityLocalUser(this.selectedCity);
+      console.log('set default data:', this.selectedRegion, this.selectedCity)
     }
 
   }

@@ -16,7 +16,8 @@ import { SelectModule } from 'ng-select';
 import { AgmCoreModule } from '@agm/core';
 import { Ng2CompleterModule } from "ng2-completer";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DatepickerModule } from 'ngx-date-picker'
+import { DatepickerModule } from 'ngx-date-picker';
+import { ArchwizardModule } from 'ng2-archwizard';
 // routes
 import { RouterModule, Routes } from '@angular/router';
 import { appRoutes } from './routing';
@@ -38,6 +39,7 @@ import { DistributorsService } from './services/distributors.service'
 import { SaleService } from './services/sale.service'
 import { ProductsService } from './services/products.service'
 import { DevicesService } from './services/devices.service'
+import { MovementsService } from './services/movements.service'
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -99,10 +101,19 @@ import { ProductQueryComponent } from './components/products/product-query/produ
 import { DevicesComponent } from './components/devices/devices.component';
 import { DevicesListComponent } from './components/devices/devices-list/devices-list.component';
 import { DevicesDetailComponent } from './components/devices/devices-detail/devices-detail.component';
-
-
-
-
+import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
+import { TutorialComponent } from './components/tutorial/tutorial.component';
+import { MovementsComponent } from './components/movements/movements.component';
+import { MovementsListComponent } from './components/movements/movements-list/movements-list.component';
+import { MovementsItemComponent } from './components/movements/movements-item/movements-item.component';
+import { MovementsTypesComponent } from './components/movements/movements-types/movements-types.component';
+import { DatepickerRangeComponent } from './components/utilities/datepicker-range/datepicker-range.component';
+import { MovementsDetailsTruckloadComponent } from './components/movements/movements-details/movements-details-truckload/movements-details-truckload.component';
+import { MovementsDetailsTruckunloadComponent } from './components/movements/movements-details/movements-details-truckunload/movements-details-truckunload.component';
+import { MovementsDetailsSaleComponent } from './components/movements/movements-details/movements-details-sale/movements-details-sale.component';
+import { MovementsDetailsTransferComponent } from './components/movements/movements-details/movements-details-transfer/movements-details-transfer.component';
+import { MovementsDetailsStationComponent } from './components/movements/movements-details/movements-details-station/movements-details-station.component';
+import { MovementsDetailsComponent } from './components/movements/movements-details/movements-details.component';
 
 @NgModule({
   declarations: [
@@ -162,7 +173,20 @@ import { DevicesDetailComponent } from './components/devices/devices-detail/devi
     ProductQueryComponent,
     DevicesComponent,
     DevicesListComponent,
-    DevicesDetailComponent
+    DevicesDetailComponent,
+    OrderHistoryComponent,
+    TutorialComponent,
+    MovementsComponent,
+    MovementsListComponent,
+    MovementsItemComponent,
+    MovementsTypesComponent,
+    DatepickerRangeComponent,
+    MovementsDetailsTruckloadComponent,
+    MovementsDetailsTruckunloadComponent,
+    MovementsDetailsSaleComponent,
+    MovementsDetailsTransferComponent,
+    MovementsDetailsStationComponent,
+    MovementsDetailsComponent
   ],
   imports: [
     FormsModule,
@@ -177,6 +201,7 @@ import { DevicesDetailComponent } from './components/devices/devices-detail/devi
     NgxChartsModule,
     SelectModule,
     Ng2CompleterModule,
+    ArchwizardModule,
     NgbModule.forRoot(),
     AgmCoreModule.forRoot({ apiKey: environment.GOOGLE_MAPS_API_KEY }),
     RouterModule.forRoot(
@@ -202,8 +227,8 @@ import { DevicesDetailComponent } from './components/devices/devices-detail/devi
     AddressService,
     SweetAlertService,
     ProductsService,
-    DevicesService
-
+    DevicesService,
+    MovementsService
     //{provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

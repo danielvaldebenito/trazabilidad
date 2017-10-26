@@ -21,33 +21,38 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item justify-content-between">
-          <fa name="truck"></fa> 
+          <fa name="truck"></fa>
           <span *ngIf="order.vehicle">{{ order.vehicle ? order.vehicle?.licensePlate: 'No asignado' }}</span>
-          
+
         </li>
         <li class="list-group-item justify-content-between">
           <fa name="user"></fa>
           <span *ngIf="order.userName">{{ order.userName ? order.userName : 'No asignado' }}</span>
         </li>
         <li class="list-group-item justify-content-between">
-            <fa name="mobile" size="2x" placement="right" ngbTooltip="{{ order.status == 'CANCELADO' && order.pendingConfirmCancel ? 'CANCELACIÓN NO CONFIRMADA DESDE EL DISPOSITIVO' : '' }}" animation="{{ order.status == 'CANCELADO' && order.pendingConfirmCancel ? 'spin' : '' }}"></fa>
-            <button *ngIf="order.device && order.status != 'ENTREGADO' && order.status != 'CANCELADO'" type="button" class="btn btn-primary" (click)="open(vehiclesReassign, order, 'lg')">REASIGNAR</button>
-            <span *ngIf="!order.device && order.status == 'RECIBIDO'">
-              <button type="button" class="btn btn-primary" (click)="open(vehicles, order, 'lg')">ASIGNAR</button>
-            </span>
-            <span>{{ order.device?.pos }}</span>
-          </li>
+          <fa name="mobile" size="2x" placement="right" ngbTooltip="{{ order.status == 'CANCELADO' && order.pendingConfirmCancel ? 'CANCELACIÓN NO CONFIRMADA DESDE EL DISPOSITIVO' : '' }}"
+            animation="{{ order.status == 'CANCELADO' && order.pendingConfirmCancel ? 'spin' : '' }}"></fa>
+          <button *ngIf="order.device && order.status != 'ENTREGADO' && order.status != 'CANCELADO'" type="button" class="btn btn-primary"
+            (click)="open(vehiclesReassign, order, 'lg')">REASIGNAR</button>
+          <span *ngIf="!order.device && order.status == 'RECIBIDO'">
+            <button type="button" class="btn btn-primary" (click)="open(vehicles, order, 'lg')">ASIGNAR</button>
+          </span>
+          <span>{{ order.device?.pos }}</span>
+        </li>
       </ul>
       <div class="card-footer">
         <button class="btn btn-outline-secondary" ngbTooltip="DETALLE DE PEDIDO" (click)="open(detail, order, 'lg')">
-            <fa name="list"></fa>
-          </button>
+          <fa name="list"></fa>
+        </button>
         <button class="btn btn-outline-danger" ngbTooltip="CANCELAR PEDIDO" (click)="cancel(order._id)" *ngIf="order.status != 'CANCELADO' && order.status != 'ENTREGADO'">
-            <fa name="times"></fa>    
-          </button>
+          <fa name="times"></fa>
+        </button>
         <button class="btn btn-outline-success" ngbTooltip="DETALLE ENTREGA" (click)="open(saleDetail, order, 'lg')" *ngIf="order.status == 'ENTREGADO'">
-            <fa name="check-square-o"></fa>    
-          </button>
+          <fa name="check-square-o"></fa>
+        </button>
+        <button class="btn btn-outline-info" ngbTooltip="HISTÓRICO" (click)="open(history, order, 'lg')">
+          <fa name="clock-o"></fa>
+        </button>
       </div>
     </div>
 
@@ -63,8 +68,8 @@
   <div class="modal-header">
     <h4 class="modal-title">Datos Pedido</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   <div class="modal-body">
     <app-order-detail [order]="orderSelected"></app-order-detail>
@@ -78,8 +83,8 @@
   <div class="modal-header">
     <h4 class="modal-title">Asignar vehículo</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   <div class="modal-body">
     <app-vehiculos [fromModal]="true" (selected)="d(''); onSelectedVehicle($event, null)"></app-vehiculos>
@@ -93,8 +98,8 @@
   <div class="modal-header">
     <h4 class="modal-title">Reasignar vehículo</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   <div class="modal-body">
     <app-vehiculos [fromModal]="true" [noShow]="orderSelected.vehicle?._id" (selected)="d(''); onSelectedVehicle($event, orderSelected.device)"></app-vehiculos>
@@ -106,17 +111,31 @@
 
 
 <ng-template #saleDetail let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Detalle de Entrega</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-      <app-sale-detail [orderId]="orderSelected._id"></app-sale-detail>    
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
-    </div>
-  </ng-template>
-  
+  <div class="modal-header">
+    <h4 class="modal-title">Detalle de Entrega</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-sale-detail [orderId]="orderSelected._id"></app-sale-detail>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #history let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Histórico Pedido #{{orderSelected.orderNumber}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-order-history [order]="orderSelected"></app-order-history>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>

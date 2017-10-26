@@ -36,6 +36,7 @@ export class UsersNewComponent implements OnInit {
   internalProcesses: any[];
   userExistsError: boolean = false
   @Input() fromModal: boolean = false
+  @Input() fromTutorial: boolean = false
   @Input() fromVehiclesModule: boolean = false
   @Output() onSubmitForm = new EventEmitter ()
   get proccesses () { return this.form.get('process') as FormArray; }
@@ -186,7 +187,7 @@ export class UsersNewComponent implements OnInit {
                 showCancelButton: true
               })
               .then(ok => {
-                if(this.fromModal)
+                if(this.fromModal || this.fromTutorial)
                   this.onSubmitForm.emit(res.stored._id);
                 else
                   this._router.navigate(['/users'])
