@@ -21,6 +21,36 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group" [ngClass]="{'has-success': plForm.get('region').valid, 'has-danger': plForm.get('region').errors && (plForm.get('region').dirty || plForm.get('region').touched) }">
+                  <label class="form-control-label">{{ regionName }} (*)</label>
+                  <ng-select filterPlaceholder="Buscar {{ regionName }}..." notFoundMsg="No se encontró ningún {{ regionName }}" highlightColor="#37424A"
+                    highlightTextColor="#fff" placeholder="Seleccione {{ regionName }}..." [options]="regions" [allowClear]="true"
+                    [noFilter]="5" formControlName="region" (selected)="onSelectRegion($event)" (deselected)="onDeselectRegion($event)">
+                  </ng-select>
+                  <div class="form-control-feedback">
+                    <div *ngIf="!plForm.get('region').valid && plForm.get('region').touched">
+                      Ingrese un {{ regionName }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group" [ngClass]="{'has-success': plForm.get('city').valid, 'has-danger': plForm.get('city').errors && (plForm.get('city').dirty || plForm.get('city').touched) }">
+                  <label class="form-control-label">{{ cityName }} (*)</label>
+                  <ng-select filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró {{ cityName }}" highlightColor="#37424A"
+                    highlightTextColor="#fff" placeholder="Seleccione {{ cityName }}..." [options]="cities" [allowClear]="true"
+                    [noFilter]="5" formControlName="city" (selected)="onSelectCity($event)" (deselected)="onDeselectCity($event)">
+                  </ng-select>
+                  <div class="form-control-feedback">
+                    <div *ngIf="!plForm.get('city').valid && plForm.get('city').touched">
+                      Ingrese un {{ cityName }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <hr>
             <h5>Detalle</h5>
             <div formArrayName="items">
@@ -29,19 +59,18 @@
                   <div class="form-group col">
                     <input formControlName="pt" class="form-control" placeholder="Producto">
                   </div>
-                  <div class="form-group col"
-                    [ngClass]="{
+                  <div class="form-group col" [ngClass]="{
                       'has-success': p.valid && p.touched,
                       'has-danger': !p.valid && p.touched
                     }">
                     <div class="input-group">
-                      <span class="input-group-addon"><fa name="usd"></fa></span>
-                      <input type="number" min="0" formControlName="price" class="form-control" placeholder="Precio"
-                      [ngClass]="{
+                      <span class="input-group-addon">
+                        <fa name="usd"></fa>
+                      </span>
+                      <input type="number" min="0" formControlName="price" class="form-control" placeholder="Precio" [ngClass]="{
                       'form-control-success': p.valid && p.touched,
                       'form-control-danger': !p.valid && p.touched
-                    }"
-                      >
+                    }">
                     </div>
                     <div class="form-control-feedback" *ngIf="!p.valid && p.touched">
                       Ingrese una cantidad. (Si no trabaja con el producto indique "0")

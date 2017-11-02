@@ -2,19 +2,20 @@
   <div class="card-header d-flex p-2 flex-row justify-content-between align-items-center">
     <fa name="mobile" size="2x"></fa>
     {{ device.esn }}
-    <fa name="circle" ngbTooltip="{{ !device.user ? 'NO ASIGNADO' : device.user && device.user.online 
-      ? 'ÚLTIMA CONEXIÓN: ' + (device.user.lastLogin | date: 'dd-MM-yyyy HH:mm')
-      : 'DESCONECTADO DESDE: ' + (device.user.lastLogout | date: 'dd-MM-yyyy HH:mm') }}" [ngClass]="{'no-assign': !device.user, 'connected': device.user && device.user.online, 'disconnected': device.user && !device.user.online}"></fa>
+    <fa name="circle" ngbTooltip="{{ !device.user && !device.user2 ? 'NO ASIGNADO' : (device.user && device.user.online || device.user2 && device.user2.online) 
+      ? 'ÚLTIMA CONEXIÓN: ' + (device.user ? (device.user.lastLogin | date: 'dd-MM-yyyy HH:mm') : (device.user2.lastLogin | date: 'dd-MM-yyyy HH:mm'))
+      : 'DESCONECTADO DESDE: ' + (device.user ? (device.user.lastLogout | date: 'dd-MM-yyyy HH:mm') : (device.user2.lastLogout | date: 'dd-MM-yyyy HH:mm')) }}" 
+      [ngClass]="{'no-assign': !device.user && !device.user2, 'connected': (device.user && device.user.online) || (device.user2 && device.user2.online), 'disconnected': (device.user && !device.user.online || device.user2 && !device.user2.online)}"></fa>
   </div>
 
   <ul class="list-group list-group-flush">
     <li class="list-group-item d-flex p-2 flex-row justify-content-between align-items-center">
       <span class="label" for="">Usuario</span>
-      <span class="data" [ngClass]="{'text-danger': !device.user}">{{ device.user ? device.user.name + ' ' + device.user.surname : 'No asignado' }}</span>
+      <span class="data" [ngClass]="{'text-danger': !device.user && !device.user2 }">{{ device.user ? device.user.name + ' ' + device.user.surname : device.user2 ? device.user2.name + ' ' + device.user2.surname : 'No asignado' }}</span>
     </li>
     <li class="list-group-item d-flex p-2 flex-row justify-content-between align-items-center">
       <span class="label" for="">Distribuidor</span>
-      <span class="data" [ngClass]="{'text-danger': !device.user}">{{ device.user ? device.user.distributor?.name : 'No asignado' }}</span>
+      <span class="data" [ngClass]="{'text-danger': !device.user  && !device.user2 }">{{ device.user ? device.user.distributor?.name : device.user2 ? device.user2.name + ' ' + device.user2.surname :  'No asignado' }}</span>
     </li>
     <li class="list-group-item d-flex p-2 flex-row justify-content-between align-items-center">
       <label>POS</label>

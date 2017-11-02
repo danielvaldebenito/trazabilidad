@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { GLOBAL } from '../../../global';
 import { SelectsService } from '../../../services/selects.service'
 import { DistributorsService } from '../../../services/distributors.service'
@@ -19,6 +19,8 @@ export class DistributorsNewComponent implements OnInit {
   cityName = GLOBAL.cityName
   regions: any[] = []
   cities: any[] = []
+  regionsArray: any[] = []
+  citiesArray: any[] = []
   selectedRegion: any
   selectedCity: any
   constructor(
@@ -43,10 +45,28 @@ export class DistributorsNewComponent implements OnInit {
       email: [ null, Validators.email ],
       address: [null, Validators.required ],
       city: [null, Validators.required],
-      region: [null, Validators.required]
+      region: [null, Validators.required],
+      deliveryLocations: this._fb.array([
+        this.initDeliveryLocation()
+      ])
     })
   }
 
+  initDeliveryLocation() {
+    return this._fb.group({
+      region: [null, Validators.required],
+      city: [null, Validators.required]
+    })
+  }
+  addDeliveryLocation() {
+    const control = <FormArray>this.form.controls['deliveryLocations'];
+    control.push(this.initDeliveryLocation())
+  }
+  removeDeliveryLocation(i: number) {
+    // remove address from the list
+    const control = <FormArray>this.form.controls['deliveryLocations'];
+    control.removeAt(i);
+  }
   getRegions() {
     this._selectsService.getCountryData()
       .subscribe(
@@ -81,6 +101,15 @@ export class DistributorsNewComponent implements OnInit {
     this.selectedRegion = region;
     this.getCities()
   }
+
+  onSelectRegion2(region, index) {
+    this.regionsArray[index] = region
+    this.getCities2(index)
+  }
+  onDeselectRegion2(region, index) {
+    this.regionsArray[index] = null;
+    this.getCities2(index)
+  }
   getCities() {
     var region = this.selectedRegion;
     if (region) {
@@ -100,6 +129,27 @@ export class DistributorsNewComponent implements OnInit {
     }
     else {
       this.cities = []
+    }
+  }
+  
+  getCities2(index) {
+    const region = this.regionsArray[index];
+    if (region) {
+      const element = Enumerable.from(this.allRegions)
+        .where((w) => { return w.departamento === region.value })
+        .firstOrDefault();
+
+      if (element) {
+        const cities = element.ciudades;
+        const array = []
+        cities.forEach(c => {
+          array.push({ label: c, value: c });
+        })
+        this.citiesArray[index] = array;
+      }
+    }
+    else {
+      this.citiesArray[index] = []
     }
   }
 

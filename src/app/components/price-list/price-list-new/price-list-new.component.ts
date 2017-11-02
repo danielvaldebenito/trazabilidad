@@ -3,7 +3,11 @@ import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@ang
 import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common';
 import { OrderService } from '../../../services/order.service';
+import { SelectsService } from '../../../services/selects.service'
 import { PriceListService } from '../../../services/price-list.service';
+import { IOption } from 'ng-select';
+import * as Enumerable from 'linq'
+import { GLOBAL } from '../../../global'
 @Component({
   selector: 'app-price-list-new',
   templateUrl: './price-list-new.component.html',
@@ -15,22 +19,32 @@ export class PriceListNewComponent implements OnInit {
   @Output() onSubmitForm = new EventEmitter<string>()
   plForm: FormGroup
   productTypes : any[] = []
+  allRegions: any [] = [];
+  regions: Array<IOption>;
+  selectedRegion: any;
+  selectedCity: any;
+  cities: Array<IOption>;
+  regionName = GLOBAL.regionName
+  cityName = GLOBAL.cityName
   get items() { return this.plForm.get('items') as FormArray; }
   constructor(
     private fb: FormBuilder, 
     private _os: OrderService,
     private _plService: PriceListService,
     private _swal2: SweetAlertService,
-    private _location: Location
+    private _location: Location,
+    private _selectsService: SelectsService
   ) {
     
     this.plForm = this.fb.group({
       name: [null, Validators.required],
+      region: [null, Validators.required],
+      city: [null, Validators.required],
       items: this.fb.array([
       ])
     })
     this.getProductTypes();
-    
+    this.getRegions();
   }
   addProduct(pt: any) {
     this.items.push(this.fb.group({
@@ -82,5 +96,56 @@ export class PriceListNewComponent implements OnInit {
   }
   onCancel() {
     this._location.back()
+  }
+
+  getRegions() {
+    this._selectsService.getCountryData()
+      .subscribe(
+      res => {
+        var data = res.data;
+        this.allRegions = data;
+        var array = [];
+        data.forEach(d => {
+          var option = { label: d.departamento, value: d.departamento }
+          array.push(option)
+        })
+        this.regions = array;
+      },
+      error => {
+
+      }
+      )
+  }
+  getCities() {
+    const region = this.selectedRegion;
+    if (region) {
+      let element = Enumerable.from(this.allRegions)
+        .where((w) => { return w.departamento === region.value })
+        .firstOrDefault();
+
+      if (element) {
+        var cities = element.ciudades;
+        var array = []
+        cities.forEach(c => {
+          array.push({ label: c, value: c });
+        })
+        this.cities = array;
+      }
+    }
+    else {
+      this.cities = []
+    }
+  }
+  onSelectRegion(region) {
+    this.selectedRegion = region;
+    this.getCities()
+  }
+  onDeselectRegion(region) {
+    this.selectedRegion = null;
+    this.getCities()
+  }
+  onSelectCity(city) {
+  }
+  onDeselectCity() {
   }
 }

@@ -18,7 +18,8 @@ export class EditVehicleComponent implements OnInit {
   private sub: any
   vehicle: any = {}
   vehicleTypes: any[]
-  dependences: any[] = []
+  allDependences: any[]
+  dependences: Array<IOption>
   allUsers: any[] = []
   users: Array<IOption>
   constructor(
@@ -53,8 +54,14 @@ export class EditVehicleComponent implements OnInit {
         .subscribe(
           res => {
             if(res.done) {
-              this.dependences = res.data
+              var array = []
+              this.allDependences = res.data
+              res.data.forEach(element => {
+                array.push({ label: element.name, value: element._id })
+              });
+              this.dependences = array
             }
+            
           },
           error => console.log(error)
         )

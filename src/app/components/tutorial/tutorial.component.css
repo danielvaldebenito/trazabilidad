@@ -1,3 +1,4 @@
+
 .description {
     margin-top: 40px;
     font-size: 11pt;
@@ -10,4 +11,15 @@ h1, h3 {
     text-align: center;
     margin-bottom: 50px;
     font-style: italic;
+}
+.ok {
+    padding: 50px;
+    text-align: center;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #5cb85c;
+    font-size: 16pt;
+    margin: 50px;
+    opacity: 0.8;
+    text-transform: uppercase;
 }

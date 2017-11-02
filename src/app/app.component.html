@@ -20,6 +20,9 @@
                     <a class="nav-link" routerLink="/movements" routerLinkActive="active">
                         <fa name="arrows-alt"></fa> MOVIMIENTOS
                     </a>
+                    <a class="nav-link" routerLink="/stock" routerLinkActive="active">
+                        <fa name="tags"></fa> STOCK
+                    </a>
                 </div>
             </li>
             <li class="nav-item">
@@ -42,7 +45,7 @@
                     <a class="nav-link" routerLink="/dependences" routerLinkActive="active" *ngIf="isAdminFromAnyDependence() || isSuperAdmin()">
                         <fa name="building"></fa> DEPENDENCIAS
                     </a>
-                    <a class="nav-link" routerLink="/price-list" routerLinkActive="active">
+                    <a class="nav-link" routerLink="/price-list" routerLinkActive="active" *ngIf="isSuperAdmin()">
                         <fa name="usd"></fa> LISTA DE PRECIOS
                     </a>
                     <a class="nav-link" routerLink="/folios" routerLinkActive="active">

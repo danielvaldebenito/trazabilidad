@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid principal">
   <div class="row">
     <div class="col">
       <div class="page-header d-flex flex-row justify-content-between align-items-center">
@@ -9,9 +9,34 @@
       </div>
     </div>
   </div>
-  <app-price-list-list 
-      [priceLists]="priceLists"
-      (onDeletePriceList)="onDelete()"
-    ></app-price-list-list>
+  <div class="row">
+    <div class="col">
+      <form novalidate [formGroup]="filterForm" (ngSubmit)="onSubmitFilter()">
+        <div class="card">
+          <div class="card-block">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <ng-select filterPlaceholder="Buscar {{ regionName }}..." notFoundMsg="No se encontró ningún {{ regionName }}" highlightColor="#37424A"
+                    highlightTextColor="#fff" placeholder="Seleccione {{ regionName }}..." [options]="regions" [allowClear]="true"
+                    [noFilter]="5" formControlName="region" (selected)="onSelectRegion($event)" (deselected)="onDeselectRegion($event)">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <ng-select filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró {{ cityName }}" highlightColor="#37424A"
+                    highlightTextColor="#fff" placeholder="Seleccione {{ cityName }}..." [options]="cities" [allowClear]="true"
+                    [noFilter]="5" formControlName="city" (selected)="onSelectCity($event)" (deselected)="onDeselectCity($event)">
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <app-price-list-list [priceLists]="priceLists" (onDeletePriceList)="onDelete()"></app-price-list-list>
 
 </div>

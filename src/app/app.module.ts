@@ -40,6 +40,7 @@ import { SaleService } from './services/sale.service'
 import { ProductsService } from './services/products.service'
 import { DevicesService } from './services/devices.service'
 import { MovementsService } from './services/movements.service'
+import { StockService } from './services/stock.service'
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -114,6 +115,10 @@ import { MovementsDetailsSaleComponent } from './components/movements/movements-
 import { MovementsDetailsTransferComponent } from './components/movements/movements-details/movements-details-transfer/movements-details-transfer.component';
 import { MovementsDetailsStationComponent } from './components/movements/movements-details/movements-details-station/movements-details-station.component';
 import { MovementsDetailsComponent } from './components/movements/movements-details/movements-details.component';
+import { StockComponent } from './components/stock/stock.component';
+import { StockDependencesComponent } from './components/stock/stock-dependences/stock-dependences.component';
+import { StockWarehousesComponent } from './components/stock/stock-warehouses/stock-warehouses.component';
+import { StockProductsComponent } from './components/stock/stock-products/stock-products.component';
 
 @NgModule({
   declarations: [
@@ -186,7 +191,11 @@ import { MovementsDetailsComponent } from './components/movements/movements-deta
     MovementsDetailsSaleComponent,
     MovementsDetailsTransferComponent,
     MovementsDetailsStationComponent,
-    MovementsDetailsComponent
+    MovementsDetailsComponent,
+    StockComponent,
+    StockDependencesComponent,
+    StockWarehousesComponent,
+    StockProductsComponent
   ],
   imports: [
     FormsModule,
@@ -228,7 +237,8 @@ import { MovementsDetailsComponent } from './components/movements/movements-deta
     SweetAlertService,
     ProductsService,
     DevicesService,
-    MovementsService
+    MovementsService,
+    StockService
     //{provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

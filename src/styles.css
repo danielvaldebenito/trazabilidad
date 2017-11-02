@@ -215,6 +215,10 @@ ng-select > div {
     background: #FFF !important;
     height: 38px;
     outline: none;
+    z-index: 3;
+}
+select-dropdown > div {
+    z-index: 3 !important;
 }
 select-dropdown > div .options ul li {
     color: var(--color-secondary);
@@ -327,7 +331,7 @@ agm-map {
     border-bottom: 1px solid var(--color-inverse)
 }
 .table-details th {
-    color: var(--color-primary);
+    color: var(--color-primary) !important;
     border-bottom: 1px solid var(--color-inverse)
 }
 .progress {
@@ -373,7 +377,28 @@ a:hover, a:focus {
 .detail-view .section-map agm-map {
     height: 200px;
 }
-   
+
+.tree,
+.tree .branch,
+.tree .branch .tree,
+.tree .branch .branch
+ {
+    background: rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+.tree .card-block {
+    padding: 2px 10px;
+}
+    .tree .card-block span {
+        text-align: center;   
+    }
+.tree .selected-row {
+    background-color: var(--color-primary) !important;
+    color:#FFF;
+}
+.tree.selected {
+    border-color: var(--color-primary);
+}
 @media (min-width: 576px) {
     .card-columns {
          -webkit-column-count: 1;

@@ -1,0 +1,19 @@
+<table *ngIf="products && products.length && products.length > 0" class="table table-sm table-striped table-bordered table-details">
+  <thead>
+    <tr>
+      <th>PRODUCTO</th>
+      <th>NIF</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products" [ngClass]="{'selected-row': selectedNif && (product.product?.formatted == selectedNif || product.product?.nif == selectedNif) }">
+      <td>{{ product.product?.productType ? product.product?.productType.name : 'Desconocido' }}</td>
+      <td>{{ product.product?.formatted || product.product?.nif }}</td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="!products || products.length == 0">
+  <div class="card card-danger tree">
+    <div class="card-block">No hay productos en esta ubicación</div>
+  </div>  
+</div>

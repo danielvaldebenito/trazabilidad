@@ -13,7 +13,7 @@
           <div class="card-block">
             <div class="form-group" [ngClass]="{'has-success': form.get('nit').valid && !errorNit, 'has-danger':(!form.get('nit').valid && form.get('nit').touched || errorNit)}">
               <label for="" class="form-control-label">Nit (*)</label>
-              <input type="text" (keyup)="validateNit()" class="form-control" [ngClass]="{'form-control-success': form.get('nit').valid && !errorNit, 'form-control-danger':(!form.get('nit').valid && form.get('nit').touched || errorNit) }"
+              <input type="text" class="form-control" [ngClass]="{'form-control-success': form.get('nit').valid && !errorNit, 'form-control-danger':(!form.get('nit').valid && form.get('nit').touched || errorNit) }"
                 formControlName="nit" placeholder="Nit del distribuidor">
               <div class="form-control-feedback">
                 <div *ngIf="!form.get('nit').valid && form.get('nit').touched">
@@ -90,25 +90,76 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group" [ngClass]="{'has-success': form.get('city').valid && form.get('city').touched, 'has-danger':!form.get('city').valid && form.get('city').touched }">
-                  <label class="form-control-label">{{ cityName }} (*)</label>
-                  <ng-select filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró {{ cityName }}" highlightColor="#37424A"
-                    highlightTextColor="#fff" placeholder="Seleccione {{ cityName }}..." [options]="cities" [allowClear]="true"
-                    [noFilter]="5" formControlName="city">
-                  </ng-select>
-                  <div class="form-control-feedback">
-                    <div *ngIf="!form.get('city').valid && form.get('city').touched">
-                      Ingrese un {{ cityName }}
+              </div>
+              <div class="col">
+                  <div class="form-group" [ngClass]="{'has-success': form.get('city').valid && form.get('city').touched, 'has-danger':!form.get('city').valid && form.get('city').touched }">
+                      <label class="form-control-label">{{ cityName }} (*)</label>
+                      <ng-select filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró {{ cityName }}" highlightColor="#37424A"
+                        highlightTextColor="#fff" placeholder="Seleccione {{ cityName }}..." [options]="cities" [allowClear]="true"
+                        [noFilter]="5" formControlName="city">
+                      </ng-select>
+                      <div class="form-control-feedback">
+                        <div *ngIf="!form.get('city').valid && form.get('city').touched">
+                          Ingrese un {{ cityName }}
+                        </div>
+                      </div>
+                    </div>
+              </div>
+            </div>
+
+            <div formArrayName="deliveryLocations">
+              <label for="">Localidades de reparto:</label>
+              <div *ngFor="let control of form.controls.deliveryLocations.controls; let i=index" class="delivery-locations">
+                <div class="d-flex justify-content-between">
+                  <label class="badge badge-pill badge-default">{{ i + 1 }}</label>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="removeDeliveryLocation(i)" ngbTooltip="Eliminar" placement="right">
+                    <fa name="trash"></fa>
+                  </button>
+                </div>
+                <div [formGroupName]="i">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group" [ngClass]="{'has-success': control.controls.region.valid, 'has-danger': control.controls.region.errors && (control.controls.region.dirty || control.controls.region.touched) }">
+                        <label class="form-control-label">{{ regionName }} (*)</label>
+                        <ng-select filterPlaceholder="Buscar {{ regionName }}..." notFoundMsg="No se encontró ningún {{ regionName }}" highlightColor="#37424A"
+                          highlightTextColor="#fff" placeholder="Seleccione {{ regionName }}..." [options]="regions" [allowClear]="true"
+                          [noFilter]="5" formControlName="region" (selected)="onSelectRegion2($event, i)" (deselected)="onDeselectRegion2($event, i)">
+                        </ng-select>
+                        <div class="form-control-feedback">
+                          <div *ngIf="!control.controls.region.valid && control.controls.region.touched">
+                            Ingrese un {{ regionName }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group" [ngClass]="{'has-success': control.controls.city.valid, 'has-danger': control.controls.city.errors && (control.controls.city.dirty || control.controls.city.touched) }">
+                        <label class="form-control-label">{{ cityName }} (*)</label>
+                        <ng-select filterPlaceholder="Buscar {{ cityName }}..." notFoundMsg="No se encontró {{ cityName }}" highlightColor="#37424A"
+                          highlightTextColor="#fff" placeholder="Seleccione {{ cityName }}..." [options]="citiesArray[i]" [allowClear]="true"
+                          [noFilter]="5" formControlName="city">
+                        </ng-select>
+                        <div class="form-control-feedback">
+                          <div *ngIf="!control.controls.city.valid && control.controls.city.touched">
+                            Ingrese un {{ cityName }}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <button type="button" id="add-dl" class="btn btn-outline-secondary" (click)="addDeliveryLocation()" ngbTooltip="Agregar Dirección">
+                <fa name="plus-circle"></fa>
+              </button>
             </div>
+
+
           </div>
           <div class="card-footer">
             <button class="btn btn-primary btn-block btn-lg" type="submit" [disabled]="!form.valid">
-                <fa name="save"></fa> GUARDAR
-              </button>
+              <fa name="save"></fa> GUARDAR
+            </button>
           </div>
         </div>
       </form>

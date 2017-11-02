@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { GLOBAL } from '../../../global';
 import { SelectsService } from '../../../services/selects.service'
 import { DistributorsService } from '../../../services/distributors.service'
@@ -7,6 +7,7 @@ import * as Enumerable from 'linq'
 import { SweetAlertService } from 'ngx-sweetalert2'
 import { Location } from '@angular/common'
 import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-distributors-edit',
   templateUrl: './distributors-edit.component.html',
@@ -23,6 +24,10 @@ export class DistributorsEditComponent implements OnInit {
   cities: any[] = []
   selectedRegion: any
   selectedCity: any
+  regionsArray: any[] = []
+  citiesArray: any[] = []
+  distributor: any
+  get deliveryLocations() { return this.form.get('deliveryLocations') as FormArray; }
   constructor(
     private _fb: FormBuilder,
     private _selectsService: SelectsService,
@@ -34,26 +39,36 @@ export class DistributorsEditComponent implements OnInit {
 
   ngOnInit() {
     this.id = this._route.snapshot.params['id']
-    this.getOne (this.id);
     this.getRegions()
+    this.getOne (this.id)
+      .then(dist => {
+        this.selectedRegion = { value: this.distributor.region, label: this.distributor.region }
+        this.onSelectRegion(this.selectedRegion)
+        this.initForm(dist)
+      }, error => {
+        console.log(error)
+      })
     
   }
   getOne (id) {
-    this._distributorService.getOne(id)
+    return new Promise((resolve, reject) => {
+      this._distributorService.getOne(id)
       .subscribe(res => {
-        console.log(res);
-        this.selectedRegion = { value: res.record.region, label: res.record.region }
-        this.getCities()
-        const self = this
-        setTimeout(function() {
-          self.initForm(res.record)
-        }, 500);
+        if(res.done){
+          this.distributor = res.record
+          resolve(res.record)
+        }
+        else
+          reject(new Error(res.message))
         
       }, error => {
-        console.log(error);
+        reject(error)
       })
+    })
+    
   }
   initForm(distributor) {
+
     this.form = this._fb.group({
       nit: [ distributor.nit, Validators.required ],
       name: [ distributor.name, Validators.required ],
@@ -62,11 +77,40 @@ export class DistributorsEditComponent implements OnInit {
       email: [ distributor.email, Validators.email ],
       address: [distributor.address, Validators.required ],
       city: [distributor.city, Validators.required],
-      region: [distributor.region, Validators.required]
+      region: [distributor.region, Validators.required],
+      deliveryLocations: this._fb.array([
+        
+      ])
+    })
+
+    this.addDeliveryLocations(distributor);
+  }
+  addDeliveryLocations(distributor) {
+    const dl = distributor.deliveryLocations;
+    console.log('dl', dl)
+    dl.forEach((element, index) => {
+      this.regionsArray[index] = { value: element.region }
+      this.getCities2(index);
+      this.deliveryLocations.push(this.initDeliveryLocation(element))
+    });
+  } 
+  initDeliveryLocation(dl) {
+    return this._fb.group({
+      region: [dl.region, Validators.required],
+      city: [dl.city, Validators.required]
     })
   }
 
-  getRegions() {
+  addDeliveryLocation() {
+    const control = <FormArray>this.form.controls['deliveryLocations'];
+    control.push(this.initDeliveryLocation({region: null, city: null}))
+  }
+  removeDeliveryLocation(i: number) {
+    // remove address from the list
+    const control = <FormArray>this.form.controls['deliveryLocations'];
+    control.removeAt(i);
+  }
+  async getRegions() {
     this._selectsService.getCountryData()
       .subscribe(
       res => {
@@ -96,9 +140,39 @@ export class DistributorsEditComponent implements OnInit {
   //   this.selectedCity = city;
   //   this.onBlur()
   // }
-  onSelectRegion(region) {
+  async onSelectRegion(region) {
     this.selectedRegion = region;
     this.getCities()
+  }
+
+  async onSelectRegion2(region, index) {
+    this.regionsArray[index] = region
+    this.getCities2(index)
+  }
+  onDeselectRegion2(region, index) {
+    this.regionsArray[index] = null;
+    this.getCities2(index)
+  }
+  async getCities2(index) {
+    const region = this.regionsArray[index];
+    console.log('getcities 2', region)
+    if (region) {
+      const element = Enumerable.from(this.allRegions)
+        .where((w) => { return w.departamento === region.value })
+        .firstOrDefault();
+
+      if (element) {
+        const cities = element.ciudades;
+        const array = []
+        cities.forEach(c => {
+          array.push({ label: c, value: c });
+        })
+        this.citiesArray[index] = array;
+      }
+    }
+    else {
+      this.citiesArray[index] = []
+    }
   }
   getCities() {
     var region = this.selectedRegion;

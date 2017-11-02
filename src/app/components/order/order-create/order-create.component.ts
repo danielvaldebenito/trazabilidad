@@ -748,5 +748,9 @@ export class OrderCreateComponent implements OnInit {
       }, 100);
     }
   }
+  iAmSuperAdmin() {
+    const identity = this._userService.getUserIdentity();
+    return identity.isAdmin && identity.distributor.intern
+  }
 }
 

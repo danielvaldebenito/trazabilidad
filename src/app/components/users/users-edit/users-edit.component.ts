@@ -51,33 +51,37 @@ export class UsersEditComponent implements OnInit {
   {
     this.getVehicles();
     this.getDependences();
-    
-    
     this.id =  this._route.snapshot.params["id"];
-    
-    this.getOne (this.id);
-    const self = this
-    setTimeout(function() {
-      if(self.user.dependence) 
-        this.selectedDependence = self.user.dependence
-      self.getInternalProcesses(self.user.dependence, self.user.internalProcessTypes)
-      self.getProcesses();
-    }, 500);
+    this.getOne (this.id)
+      .then(user => {
+        console.log('user', user)
+        if(this.user.dependence) 
+        this.selectedDependence = this.user.dependence
+        this.getInternalProcesses(this.user.dependence, this.user.internalProcessTypes)
+        this.getProcesses();
+      }, error => {
+        console.log('Error', error)
+      });
     
   }
   getOne (id) {
-    this._usersService.getUser (id)
-        .subscribe(res =>{
-          if(res.done) {
-            this.user = res.data
-            console.log('user', this.user)
-            this.initForm(this.user)
-            if(this.user.dependence)
-              this.onSelectDependence({ value: this.user.dependence })
-          }
-        }, error => {
-          console.log(error)
-        })
+    return new Promise((resolve, reject) => {
+      this._usersService.getUser (id)
+      .subscribe(res =>{
+        if(res.done) {
+          this.user = res.data
+          this.initForm(this.user)
+          if(this.user.dependence)
+            this.onSelectDependence({ value: this.user.dependence })
+          resolve(this.user)
+        } else {
+          reject(new Error(res.message))
+        }
+      }, error => {
+        reject(error)
+      })
+    })
+    
   }
   initProcess (process?) {
     var selected = false;
@@ -242,7 +246,7 @@ export class UsersEditComponent implements OnInit {
         )
 
   }
-  onSelectDependence(dependence) {
+  async onSelectDependence(dependence) {
     if(dependence == null) return;
     this.selectedDependence = dependence;
     const value = this.form.value

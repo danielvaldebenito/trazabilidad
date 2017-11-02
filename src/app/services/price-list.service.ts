@@ -19,10 +19,10 @@ export class PriceListService {
         this.user = this._us.getUserIdentity();
     }
 
-    getPriceLists () {
-        var myDistributor = this.user.distributor._id;
-        var url = this.url + 'priceList/' + myDistributor;
-        return this._http.get(url, { headers: this.headers })
+    getPriceLists (city:any, region:any) {
+        const url = this.url + 'pricelist';
+        const params = { city, region }
+        return this._http.get(url, { headers: this.headers, params })
                 .map(res => res.json());
     }
 

@@ -43,8 +43,7 @@ export class OrderService {
                       .map(res => res.json())
   }
   getPriceLists () {
-    var myDistributor = this.user.distributor._id;
-    return this._http.get(this.url + 'pricelist/' + myDistributor, { headers: this.headers })
+    return this._http.get(this.url + 'pricelist/', { headers: this.headers })
                     .map(res => res.json())
   }
   getResume (date) {

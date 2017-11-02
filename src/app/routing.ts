@@ -28,6 +28,8 @@ import { DistributorsComponent } from './components/distributors/distributors.co
 import { ProductsComponent } from 'app/components/products/products.component';
 import { DevicesComponent } from 'app/components/devices/devices.component'
 import { MovementsComponent } from 'app/components/movements/movements.component'
+import { StockComponent } from 'app/components/stock/stock.component'
+
 export const appRoutes: Routes = [
   { path: 'vehicles', component: VehiculosComponent },
   { path: 'vehicles/create', component: CreateVehicleComponent },
@@ -57,5 +59,6 @@ export const appRoutes: Routes = [
   { path: 'distributors/edit/:id', component: DistributorsEditComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'devices', component: DevicesComponent },
-  { path: 'movements', component: MovementsComponent}
+  { path: 'movements', component: MovementsComponent},
+  { path: 'stock', component: StockComponent }
 ];

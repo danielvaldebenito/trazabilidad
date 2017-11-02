@@ -40,6 +40,11 @@ export class DependencesService {
         return this._http.get(url, { headers: this.headers })
                         .map(res => res.json());
     }
+    getWarehousesOfOne(id: string) {
+        const url = this.url + 'dependence/warehouses/' + id;
+        return this._http.get(url, { headers: this.headers })
+                        .map(res => res.json())
+    }
 
     updateDependence (id: string, dependence: any) {
         var url = this.url + 'dependence/' + id;

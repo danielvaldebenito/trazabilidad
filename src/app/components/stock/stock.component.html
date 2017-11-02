@@ -1,0 +1,25 @@
+<div class="container-fluid principal">
+  <div class="row">
+    <div class="col">
+      <div class="page-header d-flex p-2 flex-row justify-content-between align-items-center">
+        <fa name="tag" size="2x"></fa>
+        <h1>Stock</h1>
+        <span></span>
+      </div>
+      <div class="card">
+        <div class="card-block">
+          <form novalidate #formFilter="ngForm" (ngSubmit)="onSubmitFilter()">
+              <input type="text" class="form-control-filter" placeholder="Buscar un producto" name="filter" [(ngModel)]="filter">
+          </form>
+        </div>
+      </div>
+      <app-stock-dependences [dependences]="dependences" 
+        [selectedDependence]="selectedDependence"
+        [selectedType]="selectedType"
+        [selectedWarehouse]="selectedWarehouse"
+        [selectedNif]="selectedNif">
+      </app-stock-dependences>
+    </div>
+  </div>
+
+</div>
