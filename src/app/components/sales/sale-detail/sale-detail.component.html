@@ -57,6 +57,7 @@
                   <th>$ U.</th>
                   <th><fa name="minus-circle"></fa></th>
                   <th><fa name="plus-circle"></fa></th>
+                  <th>Neg.</th>
                   <th>Total</th>
                 </tr>
               </thead>
@@ -64,10 +65,11 @@
                 <tr *ngFor="let item of sale.items">
                   <td>{{ item.productType.name }}</td>
                   <td>{{ item.quantity | number }}</td>
-                  <td>{{ item.price | number }}</td>
-                  <td>{{ item.discount | number }}</td>
-                  <td>{{ item.surcharge | number }}</td>
-                  <td>{{ ((item.price - item.discount + item.surcharge) * item.quantity) | number }}</td>
+                  <td>{{ (item.price || 0) | number }}</td>
+                  <td>{{ (item.discount || 0) | number }}</td>
+                  <td>{{ (item.surcharge || 0) | number }}</td>
+                  <td>{{ (item.negotiable || 0) | number }}</td>
+                  <td>{{ (((item.price || 0) - (item.discount || 0) - (item.negotiable || 0) + (item.surcharge || 0)) * item.quantity) | number:'4.0-2':'es' }}</td>
                 </tr>
               </tbody>
             </table>

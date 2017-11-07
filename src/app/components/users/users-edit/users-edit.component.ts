@@ -49,16 +49,18 @@ export class UsersEditComponent implements OnInit {
     private _dependencesService: DependencesService
   ) 
   {
-    this.getVehicles();
     this.getDependences();
+    
     this.id =  this._route.snapshot.params["id"];
     this.getOne (this.id)
       .then(user => {
-        console.log('user', user)
-        if(this.user.dependence) 
-        this.selectedDependence = this.user.dependence
-        this.getInternalProcesses(this.user.dependence, this.user.internalProcessTypes)
-        this.getProcesses();
+        this.user = user
+        this.initForm(this.user)
+          .then(() => {
+            this.getProcesses();
+            this.preloadUserData()
+          })
+        
       }, error => {
         console.log('Error', error)
       });
@@ -69,11 +71,7 @@ export class UsersEditComponent implements OnInit {
       this._usersService.getUser (id)
       .subscribe(res =>{
         if(res.done) {
-          this.user = res.data
-          this.initForm(this.user)
-          if(this.user.dependence)
-            this.onSelectDependence({ value: this.user.dependence })
-          resolve(this.user)
+          resolve(res.data)
         } else {
           reject(new Error(res.message))
         }
@@ -95,25 +93,28 @@ export class UsersEditComponent implements OnInit {
     });
   }
   initForm (user) {
-    this.form = this._fb.group({
-      name: [user.name, Validators.required],
-      surname: [user.surname, Validators.required],
-      username: [user.username, Validators.required],
-      email: [user.email, Validators.compose([Validators.email, Validators.required])],
-      vehicle: user.vehicle,
-      process: new FormArray([
-
-      ]),
-      internalProcess: [user.internalProcess],
-      dependence: user.dependence,
-      roles: this._fb.group({
-        isAdmin: new FormControl(user.roles.indexOf('ADMIN') > -1),
-        isVehicle: new FormControl(user.roles.indexOf('VEHÍCULO') > -1),
-        isOperator: new FormControl(this.user.internalProcessTypes != null && this.user.internalProcessTypes.length > 0)
-      }, { validator: minOne })
+    return new Promise((resolve, reject) => {
+      this.form = this._fb.group({
+        name: [user.name, Validators.required],
+        surname: [user.surname, Validators.required],
+        username: [user.username, Validators.required],
+        email: [user.email, Validators.compose([Validators.email, Validators.required])],
+        vehicle: user.vehicle,
+        process: new FormArray([
+  
+        ]),
+        internalProcess: [user.internalProcess],
+        dependence: user.dependence,
+        roles: this._fb.group({
+          isAdmin: new FormControl(user.roles.indexOf('ADMIN') > -1),
+          isVehicle: new FormControl(user.roles.indexOf('VEHÍCULO') > -1),
+          isOperator: new FormControl(this.user.internalProcessTypes != null && this.user.internalProcessTypes.length > 0)
+        }, { validator: minOne })
+      })
+      resolve();
     })
-
     
+        
   }
   ngOnInit() {
   }
@@ -132,7 +133,7 @@ export class UsersEditComponent implements OnInit {
         }, error => console.log(error))
   }
   getInternalProcesses(dependence, types) {
-    console.log({dependence, types})
+    console.log('getInternalProcesses', {dependence, types})
     if(!dependence || !types) return;
     this._internalProcessesService.getByDependenceAndType(dependence, types)
       .subscribe(res => {
@@ -143,6 +144,7 @@ export class UsersEditComponent implements OnInit {
             array.push({ value: element._id, label: element.name })
           });
           this.internalProcesses = array;
+          console.log({ ip: this.internalProcesses, this: this.user.internalProcess })
           this.form.get('internalProcess').setValue(this.user.internalProcess)
         }
       }, error => console.log(error))
@@ -197,6 +199,7 @@ export class UsersEditComponent implements OnInit {
     this._selectsService.getProcesses ()
         .subscribe(res => {
           if(res.done) {
+            console.log('getProcesses', res)
             var data = res.data;
             this.allProcess = data;
             var array = []
@@ -246,21 +249,24 @@ export class UsersEditComponent implements OnInit {
         )
 
   }
-  async onSelectDependence(dependence) {
+  onSelectDependence(dependence) {
     if(dependence == null) return;
     this.selectedDependence = dependence;
-    const value = this.form.value
-    const process = value.process.filter((f) => { return f.selected })
-    console.log('select dependence', process)
-    const types = process.map((a) => {return a.id })
-    
+    const user = this.form.value
+    const types = user.process.filter(p => { return p.selected }).map(p => { return p.id });
+    console.log('user', user)
     this.getInternalProcesses(dependence.value, types)
   }
   onDeselectDependence (algo) {
     this.selectedDependence = null;
     this.internalProcesses = [];
   }
-
+  preloadUserData() {
+    const user = this.user;
+    this.selectedDependence = {value: this.user.dependence } 
+    console.log('selected dependence', this.selectedDependence)
+    this.getInternalProcesses(this.selectedDependence.value, this.user.internalProcessTypes)
+  }
   isIntern() {
     return this._userService.getUserIdentity().distributor.intern;
   }

@@ -75,11 +75,12 @@ export class OrderService {
             .map(res => res.json())
 
   }
-  cancelOrder (id: string) {
+  cancelOrder (id: string, reason: string) {
     var url = this.url + 'order-cancel/' + id;
+    const params = { reason }
     return this
             ._http
-            .put (url, {}, { headers: this.headers })
+            .put (url, {}, { headers: this.headers, params })
             .map(res => res.json())
   }
   assignDeviceToOrder (orderId, device, old) {

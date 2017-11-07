@@ -13,7 +13,7 @@
         </div>
         <div class="col">
           <div class="label">Estado</div>
-          <div class="data">{{ order.status }}</div>
+          <div class="data">{{ order.status }} {{ order.reasonCancel ? '(' + order.reasonCancel + ')' : '' }}</div>
         </div>
 
       </div>
@@ -57,6 +57,7 @@
                 <th>$ U.</th>
                 <th><fa name="minus-circle"></fa></th>
                 <th><fa name="plus-circle"></fa></th>
+                <th>Neg.</th>
                 <th>Total</th>
               </tr>
             </thead>
@@ -67,7 +68,8 @@
                 <td>{{ item.price | number }}</td>
                 <td>{{ item.discount | number }}</td>
                 <td>{{ item.surcharge | number }}</td>
-                <td>{{ ((item.price - item.discount + item.surcharge) * item.quantity) | number }}</td>
+                <td>{{ item.negotiable | number }}</td>
+                <td>{{ ((item.price - (item.discount || 0) - (item.negotiable || 0) + (item.surcharge || 0)) * item.quantity) | number:'4.0-2':'es' }}</td>
               </tr>
             </tbody>
           </table>

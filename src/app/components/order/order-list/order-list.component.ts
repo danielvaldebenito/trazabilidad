@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { SweetAlertService } from 'ngx-sweetalert2';
 import { OrderService } from '../../../services/order.service'
+import { GLOBAL } from '../../../global'
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
@@ -18,6 +19,7 @@ export class OrderListComponent implements OnInit {
   orderSelected: any;
   zoom: number = 14;
   minZoom: number = 8;
+  cancelReasons = GLOBAL.reasonsCancelOrder
   constructor(
     private _modalService: NgbModal,
     private _swal2: SweetAlertService,
@@ -42,18 +44,22 @@ export class OrderListComponent implements OnInit {
         });
   }
   cancel(id) {
-    this._swal2.confirm({
+    this._swal2.prompt({
       title: 'Cancelar pedido',
       text: '¿Está seguro que desea cancelar este pedido?',
       cancelButtonText: 'No',
-      confirmButtonText: 'Sí'
+      confirmButtonText: 'Sí',
+      input: 'select',
+      inputClass: 'form-control',
+      inputOptions: this.cancelReasons
     })
     .then(res => {
-      this._orderService.cancelOrder(id)
+      const reason = this.cancelReasons[res]
+      this._orderService.cancelOrder(id, reason)
           .subscribe(
             res => {
               if(res.done) {
-                this.oncancel.emit(id)
+                //this.oncancel.emit(id)
                 this._swal2.success({
                   title: 'Cancelado',
                   text: res.message

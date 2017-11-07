@@ -124,7 +124,13 @@
 .btn-secondary {
     background: var(--color-secondary);
 }
-
+.btn-success {
+    background: var(--color-success);
+    color: #FFF;
+}
+.btn-success fa {
+    color: #FFF;
+}
 .btn-outline-secondary {
     border-color: var(--color-inverse);
     color: var(--color-inverse);

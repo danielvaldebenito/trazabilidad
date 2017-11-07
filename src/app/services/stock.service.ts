@@ -1,11 +1,11 @@
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, ResponseContentType, RequestOptions } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { GLOBAL } from '../global';
 import { UserService } from './user.service';
-
-
+import { saveAs } from 'file-saver/FileSaver'
+import * as moment from 'moment'
 @Injectable()
 export class StockService {
     public url: string = GLOBAL.apiUrl;
@@ -24,4 +24,16 @@ export class StockService {
         return this._http.get(url, { headers: this.headers })
                 .map(res => res.json());
     }
+
+    exportToExcel() {
+        const url = this.url + 'stock-export/';
+        let date = moment().format('DD-MM-YYYY')
+        return this._http.get(url, { headers: this.headers, responseType: ResponseContentType.Blob })
+                .map(res => this.saveToFileSystem(res, `STOCK NIFS AL ${date}.xlsx`));
+    }
+    private saveToFileSystem(response, filename) {
+        const blob = new Blob([response._body], { type: 'text/plain' });
+        saveAs(blob, filename);
+      }
+
 }

@@ -3,6 +3,8 @@ import { DependencesService } from '../../services/dependences.service'
 import { StockService } from '../../services/stock.service'
 import { ProductsService } from '../../services/products.service'
 import { SweetAlertService } from 'ngx-sweetalert2'
+import { GLOBAL } from '../../global'
+import { saveAs } from 'file-saver/FileSaver';
 @Component({
   selector: 'app-stock',
   templateUrl: './stock.component.html',
@@ -14,6 +16,7 @@ export class StockComponent implements OnInit {
   selectedWarehouse: any
   selectedType: any
   selectedNif: any
+  loadingExcel:boolean = false
   constructor(
     private _dependencesService: DependencesService,
     private _stockService: StockService,
@@ -36,7 +39,6 @@ export class StockComponent implements OnInit {
       })
   }
   onSubmitFilter() {
-    console.log('filter', this.filter)
     this._productsService.get(this.filter)
     .subscribe(res => {
       if(res.done) {
@@ -47,7 +49,7 @@ export class StockComponent implements OnInit {
         this.selectedDependence = dependence
         this.selectedType = type
         this.selectedWarehouse = warehouse
-        this.selectedNif = res.data.product.formatted
+        this.selectedNif = res.data.product.formatted || res.data.product.nif
       } else {
         this.selectedDependence = null
         this.selectedType = null
@@ -67,4 +69,18 @@ export class StockComponent implements OnInit {
       })
     })
   }
+
+  export() {
+    this.loadingExcel = true;
+    this._stockService.exportToExcel()
+      .subscribe(res => {
+        this.loadingExcel = false;
+        //this.loadindExcel = false;
+      }, error => {
+        console.log(error)
+        //this.loadindExcel = false;
+      })
+  }
+
+
 }
