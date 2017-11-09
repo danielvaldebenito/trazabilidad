@@ -8,7 +8,7 @@
     </a>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" *ngIf="isSuperAdmin()">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
                     <fa name="barcode"></fa> INVENTARIO
                     <span class="caret"></span>
