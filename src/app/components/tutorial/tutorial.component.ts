@@ -1,10 +1,12 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { SweetAlertService } from 'ngx-sweetalert2';
+import { CreateVehicleComponent } from '../vehiculos/create/create.component'
 @Component({
   selector: 'app-tutorial',
   templateUrl: './tutorial.component.html',
-  styleUrls: ['./tutorial.component.css']
+  styleUrls: ['./tutorial.component.css'],
+  providers: [ CreateVehicleComponent ]
 })
 export class TutorialComponent implements OnInit {
   dependenceDescription = "Las dependencias son tus lugares de trabajo. Por ejemplo tu local de venta. Será necesario que ingreses una dependencia para poder crear lo demás. ¡Crea tu primera dependencia!";
@@ -14,18 +16,26 @@ export class TutorialComponent implements OnInit {
   dependenceOK = false
   vehicleOK = false
   userOK = false
+  updateDependences = false
   @Output() onfinish = new EventEmitter();
   constructor(
     private _userService: UserService,
-    private _swal2: SweetAlertService
+    private _swal2: SweetAlertService,
+    private _createVehicle: CreateVehicleComponent
   ) { }
   ngOnInit() {
+    
   }
 
   okTutorial(number) {
     switch(number) {
-      case 1: this.dependenceOK = true; break;
-      case 2: this.vehicleOK = true; break;
+      case 1: 
+        this.dependenceOK = true;
+        this.updateDependences = true;
+        break;
+      case 2: 
+        this.vehicleOK = true; 
+      break;
       
     }
   }

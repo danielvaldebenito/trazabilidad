@@ -38,8 +38,8 @@
                         <div class="col col-sm-6 col-md-8 col-lg-8">
                             <app-dependences-new *ngIf="!dependenceOK" (submitForm)="okTutorial(1)" [fromTutorial]="true"></app-dependences-new>
                             <div class="ok" *ngIf="dependenceOK">
-                                    <fa name="check"></fa>
-                                    ¡Gracias! Presione el botón "Siguiente"
+                                <fa name="check"></fa>
+                                ¡Gracias! Presione el botón "Siguiente"
                             </div>
                         </div>
                     </div>
@@ -60,10 +60,10 @@
                             </div>
                         </div>
                         <div class="col col-sm-6 col-md-8 col-lg-8">
-                            <app-create *ngIf="!vehicleOK" [fromTutorial]="true" (submitForm)="vehicleOK = true"></app-create>
+                            <app-create *ngIf="!vehicleOK" [updateDependences]="updateDependences" [fromTutorial]="true" (submitForm)="vehicleOK = true"></app-create>
                             <div class="ok" *ngIf="vehicleOK">
-                                    <fa name="check"></fa>
-                                    ¡Gracias! Presione el botón "Siguiente"
+                                <fa name="check"></fa>
+                                ¡Gracias! Presione el botón "Siguiente"
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="col col-sm-6 col-md-8 col-lg-8">
-                            <app-users-new *ngIf="!userOK" [fromTutorial]="true" (onSubmitForm)="userOK = true"></app-users-new>
+                            <app-users-new *ngIf="!userOK" [fromVehiclesModule]="true" [fromTutorial]="true" (onSubmitForm)="userOK = true"></app-users-new>
                             <div class="ok" *ngIf="userOK">
                                 <fa name="check"></fa>
                                 ¡Gracias! Presione el botón "Siguiente"

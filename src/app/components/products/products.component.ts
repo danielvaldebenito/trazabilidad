@@ -29,7 +29,7 @@ export class ProductsComponent implements OnInit {
       this.stock = data.stock
       this.response = data.response
     }
-    
+
   }
   
 }

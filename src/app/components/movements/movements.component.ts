@@ -24,6 +24,9 @@ export class MovementsComponent implements OnInit {
   selectedTransaction: any
   selectedType: any
   data: any
+  loading: boolean = false
+  loadingExcel: boolean = false
+  typesForExcel = ['CARGA', 'DESCARGA']
   constructor(
     private _movementsService: MovementsService,
     private _selectService: SelectsService,
@@ -47,7 +50,7 @@ export class MovementsComponent implements OnInit {
       })
   }
   getMovements() {
-
+    this.loading = true
     const from = this.from ? this.from.year + '-' + this.from.month + '-' + this.from.day : null
     const to = this.to ? this.to.year + '-' + this.to.month + '-' + this.to.day : null
     this._movementsService.get(this.type, this.limit, this.page, from, to)
@@ -58,6 +61,7 @@ export class MovementsComponent implements OnInit {
           this.selectedMovement = null
           this.selectedTransaction = null
         }
+        this.loading = false
       })
   }
   setPage(page: number) {
@@ -83,6 +87,16 @@ export class MovementsComponent implements OnInit {
     
   }
   
-
+  exportTransactions() {
+    this.loadingExcel = true
+    const from = this.from ? this.from.year + '-' + this.from.month + '-' + this.from.day : null
+    const to = this.to ? this.to.year + '-' + this.to.month + '-' + this.to.day : null
+    this._movementsService.exportTransactionToExcel(this.type, from, to)
+        .subscribe(res => {
+          this.loadingExcel = false
+        }, error => {
+          this.loadingExcel = false
+        })
+  }
 
 }

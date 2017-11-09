@@ -1,23 +1,32 @@
 <div class="card tree" *ngFor="let type of classified" [ngClass]="{'selected':selected && selected.type == type.type }">
   <div class="card-block">
-    <div class="d-flex p-2 flex-row justify-content-between align-items-center">
-        <span>{{ type.type }}</span>
-        <button class="btn btn-sm" [ngClass]="{'btn-primary': selected && selected.type == type.type, 'btn-secondary': !selected || selected.type != type.type}" (click)="toggleType(type)">
-          <fa name="{{selected && selected.type == type.type ? 'minus' : 'plus'}}"></fa>
-        </button>
+    <div class="tree-title d-flex p-2 flex-row justify-content-between align-items-center">
+      <button class="btn btn-sm" [ngClass]="{'btn-primary': selected && selected.type == type.type, 'btn-secondary': !selected || selected.type != type.type}"
+        (click)="toggleType(type)">
+        <fa name="{{selected && selected.type == type.type ? 'minus' : 'plus'}}"></fa>
+      </button>
+      <span class="tree-title-span">{{ type.type }}</span>
+      <button class="btn btn-sm btn-success" [disabled]="loadingExcel" (click)="exportType(type.type)">
+        <fa name="{{ loadingExcel ? 'spinner' : 'file-excel-o'}}" animation="{{ loadingExcel ? 'spin' : ''}}"></fa>
+      </button>
     </div>
     <div class="branch" *ngIf="selected && selected.type == type.type">
       <div class="card tree" *ngFor="let warehouse of type.warehouses" [ngClass]="{'selected': selectedWh && selectedWh._id == warehouse._id }">
         <div class="card-block">
-          <div class="d-flex p-2 flex-row justify-content-between align-items-center">
-              <span>{{ warehouse.name }}</span>
-              <button class="btn btn-sm" [ngClass]="{'btn-primary': selectedWh && selectedWh._id == warehouse._id, 'btn-secondary': !selectedWh || selectedWh._id != warehouse._id }" (click)="toggleWarehouse(warehouse)">
-                <fa name="{{selectedWh && selectedWh._id == warehouse._id ? 'minus' : 'plus'}}"></fa>
+          <div class="tree-title d-flex p-2 flex-row justify-content-between align-items-center">
+            
+            <button class="btn btn-sm" [ngClass]="{'btn-primary': selectedWh && selectedWh._id == warehouse._id, 'btn-secondary': !selectedWh || selectedWh._id != warehouse._id }"
+              (click)="toggleWarehouse(warehouse)">
+              <fa name="{{selectedWh && selectedWh._id == warehouse._id ? 'minus' : 'plus'}}"></fa>
+            </button>
+            <span class="tree-title-span">{{ warehouse.name }}</span>
+            <button class="btn btn-sm btn-success" [disabled]="loadingExcel" (click)="exportWarehouse(type.type, warehouse._id)">
+                <fa name="{{ loadingExcel ? 'spinner' : 'file-excel-o'}}" animation="{{ loadingExcel ? 'spin' : ''}}"></fa>
               </button>
           </div>
-          
-          <div class="branch" *ngIf="selectedWh && selectedWh._id == warehouse._id && products"> 
-              <app-stock-products [products]="products" [selectedNif]="selectedNif"></app-stock-products>
+
+          <div class="branch" *ngIf="selectedWh && selectedWh._id == warehouse._id && products">
+            <app-stock-products [products]="products" [selectedNif]="selectedNif"></app-stock-products>
           </div>
         </div>
       </div>

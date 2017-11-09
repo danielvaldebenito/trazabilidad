@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core'
 import { VehicleService } from '../../../services/vehicles.service'
 import { SelectsService } from '../../../services/selects.service'
 import { UserService } from '../../../services/user.service'
@@ -13,7 +13,12 @@ import * as Enumerable from 'linq'
   styleUrls: ['./create.component.css'],
   providers: [SweetAlertService]
 })
-export class CreateVehicleComponent implements OnInit {
+export class CreateVehicleComponent implements OnInit, OnChanges {
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes.updateDependences) {
+      this.getDependences();
+    }
+  }
 
   vehicle: any = { type: 'ENVASADO' }
   vehicleTypes: any[]
@@ -24,6 +29,7 @@ export class CreateVehicleComponent implements OnInit {
   users: Array<IOption>
   user: any
   @Input() fromTutorial: boolean = false
+  @Input() updateDependences: boolean = false
   @Output() submitForm = new EventEmitter();
   constructor(
       private _selectService: SelectsService, 

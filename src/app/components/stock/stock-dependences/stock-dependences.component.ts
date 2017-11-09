@@ -13,6 +13,8 @@ export class StockDependencesComponent implements OnInit, OnChanges {
   @Input() selectedType: any
   @Input() selectedWarehouse: any
   @Input() selectedNif: any
+  @Input() loadingExcel: boolean
+  @Output() exporting = new EventEmitter<any>();
   selected: any
   constructor(
     private _dependencesService: DependencesService,
@@ -32,6 +34,10 @@ export class StockDependencesComponent implements OnInit, OnChanges {
       }
       
     }
+    // if(changes.loadingExcel) {
+    //   if(changes.loadingExcel.currentValue == true)
+    //     this.loadingExcel = changes.loadingExcel.currentValue
+    // }
   }
 
   ngOnInit() {
@@ -51,5 +57,15 @@ export class StockDependencesComponent implements OnInit, OnChanges {
         }
       }, 
       error => console.log(error))
+  }
+
+  exportDependence(dependence) {
+    this.exporting.emit({ dependence })
+  }
+  exportWarehouseType(type) {
+    this.exporting.emit({ dependence: this.selected._id, warehouseType: type })
+  }
+  exportWarehouse(data) {
+    this.exporting.emit({ dependence: this.selected._id, warehouseType: data.type, warehouse: data.warehouse })
   }
 }

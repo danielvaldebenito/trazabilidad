@@ -16,6 +16,8 @@ export class StockWarehousesComponent implements OnInit, OnChanges {
   @Input() selectedWarehouse: any
   @Input() selectedType: any
   @Input() selectedNif: any
+  @Output() exportingType = new EventEmitter<any>();
+  @Output() exportingWarehouse = new EventEmitter<any>();
   constructor(
     private _stockService: StockService
   ) {
@@ -81,5 +83,12 @@ export class StockWarehousesComponent implements OnInit, OnChanges {
       }, error => {
         console.log(error)
       })
+  }
+
+  exportType(type) {
+    this.exportingType.emit(type)
+  }
+  exportWarehouse(type, warehouse) {
+    this.exportingWarehouse.emit({ type, warehouse})
   }
 }

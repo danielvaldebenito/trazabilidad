@@ -11,6 +11,7 @@ export class ProductQueryComponent implements OnInit {
 
   query: any
   form: FormGroup;
+  loading: boolean = false
   @Output() found = new EventEmitter<any>()
   constructor(
     private _fb: FormBuilder,
@@ -27,12 +28,14 @@ export class ProductQueryComponent implements OnInit {
   }
   onSubmit() {
     if(!this.form.value.query) return;
+    this.loading = true
     this._productsService.get(this.form.value.query)
       .subscribe(res => {
         console.log(res)
         if(res.done) {
           this.found.emit(res.data)
         }
+        this.loading = false
       }, err => {
         const body = JSON.parse(err._body)
         this.found.emit(null)
@@ -40,7 +43,7 @@ export class ProductQueryComponent implements OnInit {
           title: 'No encontrado',
           text: body.message
         })
-        
+        this.loading = false
       })
   }
 }

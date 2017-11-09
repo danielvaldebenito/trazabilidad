@@ -119,6 +119,7 @@ import { StockComponent } from './components/stock/stock.component';
 import { StockDependencesComponent } from './components/stock/stock-dependences/stock-dependences.component';
 import { StockWarehousesComponent } from './components/stock/stock-warehouses/stock-warehouses.component';
 import { StockProductsComponent } from './components/stock/stock-products/stock-products.component';
+import { LoadingComponent } from './components/utilities/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -195,7 +196,8 @@ import { StockProductsComponent } from './components/stock/stock-products/stock-
     StockComponent,
     StockDependencesComponent,
     StockWarehousesComponent,
-    StockProductsComponent
+    StockProductsComponent,
+    LoadingComponent
   ],
   imports: [
     FormsModule,

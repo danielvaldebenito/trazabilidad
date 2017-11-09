@@ -10,7 +10,7 @@
               <th>Fecha</th>
               <th>Usuario</th>
               <th>Dispositivo</th>
-              <th></th>
+              <!-- <th></th> -->
             </tr>
           </thead>
           <tbody>
@@ -19,11 +19,11 @@
               <td>{{ transaction.createdAt | date: 'dd-MM-yyyy HH:mm'}}</td>
               <td>{{ transaction.user?.name}} {{ transaction.user?.surname}}</td>
               <td>{{ transaction.device?.pos}}</td>
-              <td>
+              <!-- <td>
                 <button class="btn btn-sm btn-outline-secondary" (click)="showDetails(transaction)">
                   <fa name="list"></fa>
                 </button>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -40,8 +40,8 @@
           </thead>
           <tbody>
             <tr (click)="setSelectedMovement(movement)" *ngFor="let movement of selectedTransaction.movements" [ngClass]="{'selected': movement == selectedMovement}">
-              <td>
-                <fa name="{{ movement?.type == 'E' ? 'arrow-circle-right' : 'arrow-circle-left' }}" ngbTooltip="{{ movement?.type == 'E' ? 'ENTRADA' : 'SALIDA'}}"
+              <td class="text-center">
+                <fa size="2x" name="{{ movement?.type == 'E' ? 'arrow-circle-right' : 'arrow-circle-left' }}" ngbTooltip="{{ movement?.type == 'E' ? 'ENTRADA' : 'SALIDA'}}"
                   [ngClass]="{'success': movement?.type == 'E', 'danger': movement?.type == 'S'}"></fa>
               </td>
               <td>{{ movement.warehouse?.type }}</td>

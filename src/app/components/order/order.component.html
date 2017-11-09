@@ -11,7 +11,7 @@
         <div class="card-block">
           <input type="text" class="form-control-filter" #filter placeholder="Buscar" (keyup)="onKey(filter.value)">
           <input class="form-control-filter" placeholder="Fecha" [ngModel]="momentValue | date:'dd/MM/yyyy'" [dateTimePicker]="momentValue"
-            [autoClose]="true" [locale]="'es'" [theme]=" 'default' " [pickerType]="'date'" (dateTimePickerChange)="setMoment($event)" readonly />
+            [autoClose]="true" [locale]="'es'" [theme]="'default'" [pickerType]="'date'" (dateTimePickerChange)="setMoment($event)" readonly />
         </div>
 
       </div>

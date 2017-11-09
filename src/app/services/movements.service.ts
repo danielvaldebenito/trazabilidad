@@ -1,11 +1,10 @@
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, ResponseContentType } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { GLOBAL } from '../global';
 import { UserService } from './user.service';
-
-
+import { saveAs } from 'file-saver/FileSaver'
 @Injectable()
 export class MovementsService {
     public url: string = GLOBAL.apiUrl;
@@ -39,6 +38,18 @@ export class MovementsService {
             case 'ESTACIÓN': url += 'transaction/station/' + id; break;
         }
         return this._http.get(url, { headers: this.headers })
-        .map(res => res.json());
+            .map(res => res.json());
     }
+    exportTransactionToExcel(type: string, from: string, to: string) {
+        const url = this.url + 'movement-export/'
+        const params = { type, from, to }
+        return this._http.get(url, { headers: this.headers, params, responseType: ResponseContentType.Blob })
+        .map(res => this.saveToFileSystem(res, `MOVIMIENTOS.xlsx`));
+    }
+    private saveToFileSystem(response, filename) {
+        const blob = new Blob([response._body], { type: 'text/plain' });
+        saveAs(blob, filename);
+      }
+
+    
 }

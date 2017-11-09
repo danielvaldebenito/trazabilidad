@@ -3,3 +3,4 @@
     <input type="text" class="form-control-filter" formControlName="query" placeholder="Ingrese NIF del producto que desea buscar">
   </div>
 </form>
+<app-loading *ngIf="loading" [message]="'Buscando información'"></app-loading>

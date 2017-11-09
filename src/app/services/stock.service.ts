@@ -25,10 +25,11 @@ export class StockService {
                 .map(res => res.json());
     }
 
-    exportToExcel() {
+    exportToExcel(dependence?: any, warehouseType?: any, warehouse?: any) {
         const url = this.url + 'stock-export/';
         let date = moment().format('DD-MM-YYYY')
-        return this._http.get(url, { headers: this.headers, responseType: ResponseContentType.Blob })
+        const params = { dependence, warehouseType, warehouse }
+        return this._http.get(url, { headers: this.headers, responseType: ResponseContentType.Blob, params })
                 .map(res => this.saveToFileSystem(res, `STOCK NIFS AL ${date}.xlsx`));
     }
     private saveToFileSystem(response, filename) {

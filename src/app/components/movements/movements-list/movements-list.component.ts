@@ -14,6 +14,7 @@ export class MovementsListComponent implements OnInit {
   tra: any
   @Input() type: any
   @Input() data: any
+
   constructor(
     private _movementsService: MovementsService
   ) { }

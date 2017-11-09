@@ -49,8 +49,15 @@
   </div>
   <div class="row">
     <div class="col">
-      <app-movements-list (select)="onSelectTransactionOrMovement($event)" [movements]="movements" [selectedTransaction]="selectedTransaction" [selectedMovement]="selectedMovement"></app-movements-list>
+      <button type="button" (click)="exportTransactions()" [disabled]="!movements || !movements.length || movements.length == 0 || loadingExcel" class="btn btn-success" *ngIf="type && typesForExcel.indexOf(type) > -1">
+          <fa *ngIf="!loadingExcel" name="file-excel-o"></fa>
+          <fa *ngIf="loadingExcel" name="circle-o-notch" animation="spin"></fa>  
+          {{' EXPORTAR ' + type + 'S'}}
+      </button>
+      <app-movements-list (select)="onSelectTransactionOrMovement($event)" [movements]="movements" [selectedTransaction]="selectedTransaction"
+        [selectedMovement]="selectedMovement"></app-movements-list>
       <app-pager [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>
     </div>
   </div>
 </div>
+<app-loading *ngIf="loading" [message]="'Cargando movimientos'"></app-loading>

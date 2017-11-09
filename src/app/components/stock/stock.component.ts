@@ -17,6 +17,7 @@ export class StockComponent implements OnInit {
   selectedType: any
   selectedNif: any
   loadingExcel:boolean = false
+  loading: boolean = false
   constructor(
     private _dependencesService: DependencesService,
     private _stockService: StockService,
@@ -39,6 +40,7 @@ export class StockComponent implements OnInit {
       })
   }
   onSubmitFilter() {
+    this.loading = true
     this._productsService.get(this.filter)
     .subscribe(res => {
       if(res.done) {
@@ -59,6 +61,7 @@ export class StockComponent implements OnInit {
           text: res.message
         })
       }
+      this.loading = false
     }, error => {
       this.selectedDependence = null
       this.selectedType = null
@@ -67,18 +70,22 @@ export class StockComponent implements OnInit {
       this._swal2.error({
         text: 'Producto no encontrado'
       })
+      this.loading = false
     })
   }
 
-  export() {
+  export(data) {
+    const dependence = data && data.dependence
+    const warehouseType = data && data.warehouseType
+    const warehouse = data && data.warehouse
     this.loadingExcel = true;
-    this._stockService.exportToExcel()
+    this._stockService.exportToExcel(dependence, warehouseType, warehouse)
       .subscribe(res => {
         this.loadingExcel = false;
         //this.loadindExcel = false;
       }, error => {
         console.log(error)
-        //this.loadindExcel = false;
+        this.loadingExcel = false;
       })
   }
 

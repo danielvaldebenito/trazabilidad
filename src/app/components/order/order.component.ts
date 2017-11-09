@@ -6,6 +6,7 @@ import { GLOBAL } from '../../global'
 import * as moment from 'moment'
 import * as Enumerable from 'linq'
 import * as io from 'socket.io-client'
+import * as esLocale from 'date-fns/locale/es'
 moment.locale('es')
 @Component({
   selector: 'app-order',
@@ -33,7 +34,7 @@ export class OrderComponent implements OnInit {
   colors: string[]  = ['#FFFFFF', '#37424A', '#FFFFFF', '#FFFFFF', '#FFFFFF']
   states: any[]
   resume = [];
-
+  es: any;
   constructor(
     private _orderService: OrderService,
     private _pagerService: PagerService,
@@ -53,7 +54,14 @@ export class OrderComponent implements OnInit {
       console.log('Se ha cambiado estado de pedido', data)
       this.refresh()
     })
-
+    this.es = {
+      firstDayOfWeek: 1,
+      dayNames:["domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
+      dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
+      monthNames: [ "enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ],
+      monthNamesShort: [ "ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic" ],
+      dateFns: esLocale
+    };
   }
   getStates () {
     this._selectsService.getOrderStates()
