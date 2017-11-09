@@ -55,10 +55,15 @@ export class InternalProcessesComponent implements OnInit {
             text: res.message
           })
           this.getInternalProcesses();
+        } else {
+
         }
       }, error => {
+        const body = error._body
+        const json = JSON.parse(body)
         this._swal2.error({
-          text: 'Ha ocurrido un error, inténtelo más tarde'
+          title: 'Error',
+          text: json.message
         })
       })
   } 
