@@ -15,6 +15,7 @@ export class StockDependencesComponent implements OnInit, OnChanges {
   @Input() selectedNif: any
   @Input() loadingExcel: boolean
   @Output() exporting = new EventEmitter<any>();
+  @Output() exportingResume = new EventEmitter<any>();
   selected: any
   constructor(
     private _dependencesService: DependencesService,
@@ -60,12 +61,21 @@ export class StockDependencesComponent implements OnInit, OnChanges {
   }
 
   exportDependence(dependence) {
-    this.exporting.emit({ dependence })
+    this.exporting.emit({ dependence: dependence._id, dependenceName: dependence.name })
+  }
+  exportResumeDependence(dependence) {
+    this.exportingResume.emit({ dependence: dependence._id, dependenceName: dependence.name });
   }
   exportWarehouseType(type) {
-    this.exporting.emit({ dependence: this.selected._id, warehouseType: type })
+    this.exporting.emit({ dependence: this.selected._id, dependenceName: this.selected.name, warehouseType: type })
+  }
+  exportResumeWarehouseType(type) {
+    this.exportingResume.emit({ dependence: this.selected._id, dependenceName: this.selected.name, warehouseType: type })
   }
   exportWarehouse(data) {
-    this.exporting.emit({ dependence: this.selected._id, warehouseType: data.type, warehouse: data.warehouse })
+    this.exporting.emit({ dependence: this.selected._id, dependenceName: this.selected.name, warehouseType: data.type, warehouse: data.warehouse._id, warehouseName: data.warehouse.name })
+  }
+  exportResumeWarehouse(data) {
+    this.exportingResume.emit({ dependence: this.selected._id, dependenceName: this.selected.name, warehouseType: data.type, warehouse: data.warehouse._id, warehouseName: data.warehouse.name })
   }
 }

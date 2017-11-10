@@ -1,23 +1,40 @@
 <div class="card tree" *ngFor="let dependence of dependences" [ngClass]="{'selected': selected && selected._id == dependence._id}">
   <div class="card-block">
     <div class="tree-title d-flex p-2 flex-row justify-content-between align-items-center">
-      <button class="btn btn-sm" [ngClass]="{'btn-primary': selected && selected._id == dependence._id, 'btn-secondary': !selected || (selected._id != dependence._id)}" (click)="toggleDependence(dependence)">
+      <button class="btn btn-sm" [ngClass]="{'btn-primary': selected && selected._id == dependence._id, 'btn-secondary': !selected || (selected._id != dependence._id)}"
+        (click)="toggleDependence(dependence)">
         <fa name="{{selected && selected._id == dependence._id ? 'minus' : 'plus'}}"></fa>
       </button>
       <span class="tree-title-span">{{ dependence.name }}</span>
-      <button class="btn btn-sm btn-success" [disabled]="loadingExcel" (click)="exportDependence(dependence._id)">
-          <fa name="{{ loadingExcel ? 'spinner' : 'file-excel-o'}}" animation="{{ loadingExcel ? 'spin' : ''}}"></fa>
+      <div class="btn-group">
+        <button type="button" class="btn btn-success">
+            <fa *ngIf="!loadingExcel" name="file-excel-o"></fa>
+            <fa *ngIf="loadingExcel" name="spinner" animation="spin"></fa>
         </button>
+        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" (click)="exportResumeDependence(dependence)">
+          <fa name="{{ loadingExcel ? 'spinner' : 'file-excel-o'}}" animation="{{ loadingExcel ? 'spin' : ''}}"></fa> RESUMEN
+        </a>
+        <a class="dropdown-item" (click)="exportDependence(dependence)">
+          <fa name="{{ loadingExcel ? 'spinner' : 'file-excel-o'}}" animation="{{ loadingExcel ? 'spin' : ''}}"></fa> DETALLE
+        </a>
+      </div>
+    </div>
     </div>
     <div *ngIf="selected && selected._id == dependence._id" class="branch">
       <app-stock-warehouses *ngIf="selected && selected.warehouses" 
         [warehouses]="selected.warehouses" 
-        [selectedWarehouse]="selectedWarehouse" 
+        [selectedWarehouse]="selectedWarehouse"
         [selectedType]="selectedType" 
-        [selectedNif]="selectedNif"
-        (exportingType)="exportWarehouseType($event)"
+        [selectedNif]="selectedNif" 
+        (exportingType)="exportWarehouseType($event)" 
         (exportingWarehouse)="exportWarehouse($event)"
-      >
+        (exportingResumeType)="exportResumeWarehouseType($event)" 
+        (exportingResumeWarehouse)="exportResumeWarehouse($event)"
+        >
       </app-stock-warehouses>
     </div>
   </div>

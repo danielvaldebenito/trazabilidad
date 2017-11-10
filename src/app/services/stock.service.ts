@@ -25,12 +25,19 @@ export class StockService {
                 .map(res => res.json());
     }
 
-    exportToExcel(dependence?: any, warehouseType?: any, warehouse?: any) {
+    exportToExcel(dependence?: any, dependenceName?: any, warehouseType?: any, warehouse?: any, warehouseName?: any) {
         const url = this.url + 'stock-export/';
         let date = moment().format('DD-MM-YYYY')
-        const params = { dependence, warehouseType, warehouse }
+        const params = { dependence, dependenceName, warehouseType, warehouse, warehouseName }
         return this._http.get(url, { headers: this.headers, responseType: ResponseContentType.Blob, params })
                 .map(res => this.saveToFileSystem(res, `STOCK NIFS AL ${date}.xlsx`));
+    }
+    exportResumeToExcel(dependence?: any, dependenceName?:any, warehouseType?: any, warehouse?: any, warehouseName?: any) {
+        const url = this.url + 'stock-resume-export/';
+        let date = moment().format('DD-MM-YYYY')
+        const params = { dependence, dependenceName, warehouseType, warehouse, warehouseName }
+        return this._http.get(url, { headers: this.headers, responseType: ResponseContentType.Blob, params })
+                .map(res => this.saveToFileSystem(res, `RESUMEN STOCK AL ${date}.xlsx`));
     }
     private saveToFileSystem(response, filename) {
         const blob = new Blob([response._body], { type: 'text/plain' });

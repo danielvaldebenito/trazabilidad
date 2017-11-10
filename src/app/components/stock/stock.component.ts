@@ -76,10 +76,13 @@ export class StockComponent implements OnInit {
 
   export(data) {
     const dependence = data && data.dependence
+    const dependenceName = data && data.dependenceName
     const warehouseType = data && data.warehouseType
     const warehouse = data && data.warehouse
+    const warehouseName = data && data.warehouseName
+    
     this.loadingExcel = true;
-    this._stockService.exportToExcel(dependence, warehouseType, warehouse)
+    this._stockService.exportToExcel(dependence, dependenceName, warehouseType, warehouse, warehouseName)
       .subscribe(res => {
         this.loadingExcel = false;
         //this.loadindExcel = false;
@@ -89,5 +92,21 @@ export class StockComponent implements OnInit {
       })
   }
 
+  exportResume(data) {
+    console.log(data)
+    const dependence = data && data.dependence
+    const dependenceName = data && data.dependenceName
+    const warehouseType = data && data.warehouseType
+    const warehouse = data && data.warehouse
+    const warehouseName = data && data.warehouseName
+    this.loadingExcel = true;
+    this._stockService.exportResumeToExcel(dependence, dependenceName, warehouseType, warehouse, warehouseName)
+      .subscribe(res => {
+        this.loadingExcel = false;
+      }, error => {
+        this.loadingExcel = false;
+        console.log(error)
+      })
+  }
 
 }
