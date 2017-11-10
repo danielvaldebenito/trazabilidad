@@ -13,6 +13,7 @@ export class DevicesComponent implements OnInit {
   limit: number
   currentPage = 1
   pager: any = {}
+  
   constructor(
     private _devicesService: DevicesService,
     private _pagerService: PagerService

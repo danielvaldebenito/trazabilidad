@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SweetAlertService} from 'ngx-sweetalert2'
 import { DevicesService } from '../../../services/devices.service'
 @Component({
@@ -9,6 +9,7 @@ import { DevicesService } from '../../../services/devices.service'
 export class DevicesDetailComponent implements OnInit {
 
   @Input() device: any
+  @Output() deleted = new EventEmitter();
   selected = false
   constructor(
     private _devicesService: DevicesService,
@@ -37,4 +38,42 @@ export class DevicesDetailComponent implements OnInit {
       })
   }
 
+  tryDelete() {
+    this._swal2.confirm({
+      title: 'Eliminar Dispositivo',
+      text: '¿Está seguro de eliminar este dispositivo?',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    })
+    .then(
+      yes => {
+        this.delete();
+      },
+      no => {
+
+      }
+    )
+  }
+  delete() {
+    this._devicesService.delete(this.device._id)
+        .subscribe(res => {
+          if(res.done) {
+            this.deleted.emit()
+            this._swal2.success({
+              title: 'Eliminado',
+              text: res.message
+            })
+          } else {
+            this._swal2.error({
+              title: 'Error',
+              text: res.message
+            })
+          }
+        }, error => {
+          this._swal2.error({
+            title: 'Error',
+            text: error
+          })
+        })
+  }
 }

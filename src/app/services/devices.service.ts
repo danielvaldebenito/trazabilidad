@@ -35,4 +35,10 @@ export class DevicesService {
         return this._http.put(url, body, { headers: this.headers })
             .map(res => res.json())
     }
+
+    delete (device: string) {
+        const url = this.url + 'device/' + device;
+        return this._http.delete(url, { headers: this.headers })
+            .map(res => res.json())
+    }
 }

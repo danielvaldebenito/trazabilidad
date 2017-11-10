@@ -11,7 +11,7 @@
           <input type="text" class="form-control-filter" placeholder="Buscar" [(ngModel)]="filter" (keyup)="refresh()">
         </div>
       </div>
-      <app-devices-list [devices]="devices"></app-devices-list>
+      <app-devices-list [devices]="devices" (deleted)="refresh()"></app-devices-list>
       <app-pager [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>
     </div>
   </div>
