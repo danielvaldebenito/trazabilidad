@@ -49,11 +49,29 @@
   </div>
   <div class="row">
     <div class="col">
-      <button type="button" (click)="exportTransactions()" [disabled]="!movements || !movements.length || movements.length == 0 || loadingExcel" class="btn btn-success" *ngIf="type && typesForExcel.indexOf(type) > -1">
-          <fa *ngIf="!loadingExcel" name="file-excel-o"></fa>
-          <fa *ngIf="loadingExcel" name="circle-o-notch" animation="spin"></fa>  
-          {{' EXPORTAR ' + type + 'S'}}
-      </button>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-block">
+              <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control-filter" placeholder="Buscar por usuario o dispositivo" (keyup)="onKey()" [(ngModel)]="filter">
+                </div>
+                <div class="col col-lg-3" *ngIf="type && typesForExcel.indexOf(type) > -1">
+                    <button type="button" (click)="exportTransactions()" [disabled]="!movements || !movements.length || movements.length == 0 || loadingExcel" class="btn btn-success btn-block" *ngIf="type && typesForExcel.indexOf(type) > -1">
+                        <fa *ngIf="!loadingExcel" name="file-excel-o"></fa>
+                        <fa *ngIf="loadingExcel" name="circle-o-notch" animation="spin"></fa>  
+                        {{' EXPORTAR ' + type + 'S'}}
+                    </button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
       <app-movements-list (select)="onSelectTransactionOrMovement($event)" [movements]="movements" [selectedTransaction]="selectedTransaction"
         [selectedMovement]="selectedMovement"></app-movements-list>
       <app-pager [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>

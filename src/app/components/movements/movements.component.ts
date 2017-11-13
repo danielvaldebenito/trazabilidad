@@ -27,6 +27,7 @@ export class MovementsComponent implements OnInit {
   loading: boolean = false
   loadingExcel: boolean = false
   typesForExcel = ['CARGA', 'DESCARGA']
+  filter: any
   constructor(
     private _movementsService: MovementsService,
     private _selectService: SelectsService,
@@ -53,7 +54,7 @@ export class MovementsComponent implements OnInit {
     this.loading = true
     const from = this.from ? this.from.year + '-' + this.from.month + '-' + this.from.day : null
     const to = this.to ? this.to.year + '-' + this.to.month + '-' + this.to.day : null
-    this._movementsService.get(this.type, this.limit, this.page, from, to)
+    this._movementsService.get(this.type, this.limit, this.page, from, to, this.filter)
       .subscribe(res => {
         if (res.done) {
           this.movements = res.records;
@@ -99,4 +100,7 @@ export class MovementsComponent implements OnInit {
         })
   }
 
+  onKey() {
+    this.getMovements();
+  }
 }

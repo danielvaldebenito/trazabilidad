@@ -18,10 +18,10 @@ export class MovementsService {
         this.user = this._us.getUserIdentity()
     }
 
-    get (type: string, limit: number, page: number, from: string, to: string) {
+    get (type: string, limit: number, page: number, from: string, to: string, filter: string) {
         const url = this.url + 'movements';
         const dist = this.user.distributor._id
-        const params = { type: type, limit: limit, page: page, distributor: dist, from, to }
+        const params = { type: type, limit: limit, page: page, distributor: dist, from, to, filter }
         return this._http.get(url, { headers: this.headers, params: params })
                 .map(res => res.json());
     }
