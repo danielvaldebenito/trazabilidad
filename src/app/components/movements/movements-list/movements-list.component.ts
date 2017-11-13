@@ -28,7 +28,7 @@ export class MovementsListComponent implements OnInit {
   setSelectedTransaction (transaction) {
     this.tra = transaction
     this.selectedTransaction = transaction
-    this.select.emit({ selectedMovement: null, selectedTransaction: transaction})
+    this.select.emit({ selectedMovement: transaction.movements && transaction.movements.length ? transaction.movements[0] : null, selectedTransaction: transaction})
     this.showDetails(transaction)
       
   }

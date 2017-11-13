@@ -28,51 +28,50 @@
           </tbody>
         </table>
       </div>
-      <div class="col panel" *ngIf="selectedTransaction">
-        <h4>MOVIMIENTOS</h4>
-        <table class="table table-sm table-bordered">
-          <thead class="thead-inverse">
-            <tr>
-              <th>Tipo</th>
-              <th>Tipo Bodega</th>
-              <th>Nombre Bodega</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr (click)="setSelectedMovement(movement)" *ngFor="let movement of selectedTransaction.movements" [ngClass]="{'selected': movement == selectedMovement}">
-              <td class="text-center">
-                <fa size="2x" name="{{ movement?.type == 'E' ? 'arrow-circle-right' : 'arrow-circle-left' }}" ngbTooltip="{{ movement?.type == 'E' ? 'ENTRADA' : 'SALIDA'}}"
-                  [ngClass]="{'success': movement?.type == 'E', 'danger': movement?.type == 'S'}"></fa>
-              </td>
-              <td>{{ movement.warehouse?.type }}</td>
-              <td>{{ movement.warehouse?.name }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="col panel">
+        <div *ngIf="selectedTransaction && type && data">
+          <app-movements-details [type]="type" [data]="data"></app-movements-details>
+        </div>
+        <div *ngIf="selectedTransaction">
+          <h4>MOVIMIENTOS</h4>
+          <table class="table table-sm table-bordered">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Tipo</th>
+                <th>Tipo Bodega</th>
+                <th>Nombre Bodega</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr (click)="setSelectedMovement(movement)" *ngFor="let movement of selectedTransaction.movements" [ngClass]="{'selected': movement == selectedMovement}">
+                <td class="text-center">
+                  <fa size="2x" name="{{ movement?.type == 'E' ? 'arrow-circle-right' : 'arrow-circle-left' }}" ngbTooltip="{{ movement?.type == 'E' ? 'ENTRADA' : 'SALIDA'}}"
+                    [ngClass]="{'success': movement?.type == 'E', 'danger': movement?.type == 'S'}"></fa>
+                </td>
+                <td>{{ movement.warehouse?.type }}</td>
+                <td>{{ movement.warehouse?.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="selectedMovement">
+          <h4>DETALLE MOVIMIENTO</h4>
+          <table class="table table-sm table-bordered table-details">
+            <thead class="thead-inverse">
+              <tr>
+                <th>Producto</th>
+                <th>NIF</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of selectedMovement.items">
+                <td>{{ item.product.productType?.name || 'DESCONOCIDO' }}</td>
+                <td>{{ item.product.formatted || item.product.nif }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col panel" *ngIf="selectedTransaction && type && data">
-        <app-movements-details [type]="type" [data]="data"></app-movements-details>
-      </div>
-      <div class="col panel" *ngIf="selectedMovement">
-        <h4>DETALLE MOVIMIENTO</h4>
-        <table class="table table-sm table-bordered">
-          <thead class="thead-inverse">
-            <tr>
-              <th>Producto</th>
-              <th>NIF</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of selectedMovement.items">
-              <td>{{ item.product.productType?.name || 'DESCONOCIDO' }}</td>
-              <td>{{ item.product.formatted || item.product.nif }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
     </div>
 
   </div>
