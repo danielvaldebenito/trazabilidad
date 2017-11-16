@@ -65,8 +65,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of selectedMovement.items">
-                <td>{{ item.product.productType?.name || 'DESCONOCIDO' }}</td>
-                <td>{{ item.product.formatted || item.product.nif }}</td>
+                <td>{{ item.product?.productType?.name || 'DESCONOCIDO' }}</td>
+                <td>{{ item.product?.formatted || item.product?.nif }}</td>
               </tr>
             </tbody>
           </table>
