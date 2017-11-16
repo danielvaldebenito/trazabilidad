@@ -32,10 +32,10 @@
         <li class="list-group-item justify-content-between">
           <fa name="mobile" size="2x" placement="right" ngbTooltip="{{ order.status == 'CANCELADO' && order.pendingConfirmCancel ? 'CANCELACIÓN NO CONFIRMADA DESDE EL DISPOSITIVO' : '' }}"
             animation="{{ order.status == 'CANCELADO' && order.pendingConfirmCancel ? 'spin' : '' }}"></fa>
-          <button *ngIf="order.device && order.status != 'ENTREGADO' && order.status != 'CANCELADO'" type="button" class="btn btn-primary"
+          <button *ngIf="order.device && order.status != 'ENTREGADO' && order.status != 'CANCELADO'" type="button" class="btn btn-primary btn-sm"
             (click)="open(vehiclesReassign, order, 'lg')">REASIGNAR</button>
           <span *ngIf="!order.device && order.status == 'RECIBIDO'">
-            <button type="button" class="btn btn-primary" (click)="open(vehicles, order, 'lg')">ASIGNAR</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="open(vehicles, order, 'lg')">ASIGNAR</button>
           </span>
           <span>{{ order.device?.pos }}</span>
         </li>
