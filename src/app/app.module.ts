@@ -121,6 +121,9 @@ import { StockWarehousesComponent } from './components/stock/stock-warehouses/st
 import { StockProductsComponent } from './components/stock/stock-products/stock-products.component';
 import { LoadingComponent } from './components/utilities/loading/loading.component';
 import { MovementDetailsMaintenanceComponent } from './components/movements/movements-details/movement-details-maintenance/movement-details-maintenance.component';
+import { OrderMonitorComponent } from './components/order/order-monitor/order-monitor.component';
+import { OrderMonitorListComponent } from './components/order/order-monitor/order-monitor-list/order-monitor-list.component';
+import { OrderMonitorItemComponent } from './components/order/order-monitor/order-monitor-item/order-monitor-item.component';
 
 @NgModule({
   declarations: [
@@ -199,7 +202,10 @@ import { MovementDetailsMaintenanceComponent } from './components/movements/move
     StockWarehousesComponent,
     StockProductsComponent,
     LoadingComponent,
-    MovementDetailsMaintenanceComponent
+    MovementDetailsMaintenanceComponent,
+    OrderMonitorComponent,
+    OrderMonitorListComponent,
+    OrderMonitorItemComponent
   ],
   imports: [
     FormsModule,

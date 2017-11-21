@@ -1,0 +1,10 @@
+.page-link {
+    cursor: pointer;
+}
+.pager {
+    background: rgba(0,0,0,0.1);
+    padding: 10px;
+}
+ul {
+    margin: 0;
+}

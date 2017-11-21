@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DistributorsService } from '../../../services/distributors.service'
 @Component({
   selector: 'app-distributors-list',
@@ -10,6 +10,7 @@ export class DistributorsListComponent implements OnInit {
   @Input() distributors: any[]
   @Input() fromModal: boolean = false
   @Input() filter: string
+  @Output() select = new EventEmitter<any>();
   constructor(
   ) { }
 
@@ -17,6 +18,8 @@ export class DistributorsListComponent implements OnInit {
 
   }
 
-  
+  selectOne (distributor) {
+    this.select.emit(distributor);
+  }
 
 }

@@ -15,7 +15,7 @@
     </li>
     <li class="list-group-item d-flex p-2 flex-row justify-content-between align-items-center">
       <span class="label" for="">Distribuidor</span>
-      <span class="data" [ngClass]="{'text-danger': !device.user  && !device.user2 }">{{ device.user ? device.user.distributor?.name : device.user2 ? device.user2.distributor.name : 'No asignado' }}</span>
+      <span class="data" [ngClass]="{'text-danger': !device.user  && !device.user2 }">{{ device.user && device.user.distributor ? device.user.distributor?.name : device.user2 ? device.user2.distributor?.name : 'No asignado' }}</span>
     </li>
     <li class="list-group-item d-flex p-2 flex-row justify-content-between align-items-center">
       <label>POS</label>

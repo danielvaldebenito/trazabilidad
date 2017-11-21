@@ -4,7 +4,7 @@
       <div class="page-header d-flex flex-row justify-content-between align-items-center">
         <fa name="handshake-o" size="2x"></fa>
         <h1>Distribuidores</h1>
-        <a class="btn btn-outline-primary" routerLink="/distributors/new">
+        <a class="btn btn-outline-primary" *ngIf="!fromModal" routerLink="/distributors/new">
           <fa name="plus"></fa> NUEVO</a>
       </div>
     </div>
@@ -20,7 +20,7 @@
   </div>
   <div class="row principal">
     <div class="col">
-      <app-distributors-list [fromModal]="fromModal" (selected)="onSelect($event)" [distributors]="distributors" [filter]="filter"></app-distributors-list>
+      <app-distributors-list [fromModal]="fromModal" (select)="onSelect($event)" [distributors]="distributors" [filter]="filter"></app-distributors-list>
       <app-pager [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>
     </div>
   </div>

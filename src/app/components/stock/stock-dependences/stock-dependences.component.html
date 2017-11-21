@@ -11,15 +11,15 @@
             <fa *ngIf="!loadingExcel" name="file-excel-o"></fa>
             <fa *ngIf="loadingExcel" name="spinner" animation="spin"></fa>
         </button>
-        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" [disabled]="loadingExcel" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="sr-only">Toggle Dropdown</span>
         </button>
       <div class="dropdown-menu">
         <a class="dropdown-item" (click)="exportResumeDependence(dependence)">
-          <fa name="{{ loadingExcel ? 'spinner' : 'file-excel-o'}}" animation="{{ loadingExcel ? 'spin' : ''}}"></fa> RESUMEN
+          <fa name="file-excel-o"></fa> RESUMEN
         </a>
         <a class="dropdown-item" (click)="exportDependence(dependence)">
-          <fa name="{{ loadingExcel ? 'spinner' : 'file-excel-o'}}" animation="{{ loadingExcel ? 'spin' : ''}}"></fa> DETALLE
+          <fa name="file-excel-o"></fa> DETALLE
         </a>
       </div>
     </div>

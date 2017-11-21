@@ -1,0 +1,40 @@
+<div class="card" *ngIf="data && data.length">
+  <div class="card-block">
+    <div *ngFor="let da of data">
+      <app-order-monitor-item [da]="da" [type]="type" [selectedRange]="selectedRange" [distributor]="distributor" [filter]="filter"></app-order-monitor-item>
+    </div>
+  </div>
+</div> 
+
+
+<ng-template #saleDetail let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Detalle de Entrega</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-sale-detail [orderId]="orderSelected.id"></app-sale-detail>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+    </div>
+  </ng-template>
+  
+  <ng-template #history let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Histórico Pedido #{{orderSelected.orderNumber}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-order-history [order]="orderSelected"></app-order-history>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+    </div>
+  </ng-template>
+
+

@@ -29,7 +29,7 @@ import { ProductsComponent } from 'app/components/products/products.component';
 import { DevicesComponent } from 'app/components/devices/devices.component'
 import { MovementsComponent } from 'app/components/movements/movements.component'
 import { StockComponent } from 'app/components/stock/stock.component'
-
+import { OrderMonitorComponent } from 'app/components/order/order-monitor/order-monitor.component'
 export const appRoutes: Routes = [
   { path: 'vehicles', component: VehiculosComponent },
   { path: 'vehicles/create', component: CreateVehicleComponent },
@@ -60,5 +60,6 @@ export const appRoutes: Routes = [
   { path: 'products', component: ProductsComponent },
   { path: 'devices', component: DevicesComponent },
   { path: 'movements', component: MovementsComponent},
-  { path: 'stock', component: StockComponent }
+  { path: 'stock', component: StockComponent },
+  { path: 'order-monitor', component: OrderMonitorComponent }
 ];

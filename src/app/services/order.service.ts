@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, ResponseContentType } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { GLOBAL } from '../global';
 import { UserService } from './user.service';
+import { saveAs } from 'file-saver/FileSaver'
 @Injectable()
 export class OrderService {
   url: string  = GLOBAL.apiUrl;
@@ -22,7 +23,6 @@ export class OrderService {
   }
 
   getOrders (state: string, filter: string, date: Date, limit: number = 200, page: number = 1, sidx? : string, sord?: number) {
-    console.log('servicio orders', {state, filter, date, limit, page })
     var myDistributor = this.user.distributor._id;
         var url = this.url + 'orders/' + myDistributor;
         var params = { 
@@ -36,6 +36,11 @@ export class OrderService {
          }
         return this._http.get(url, { headers: this.headers, params: params })
                 .map(res => res.json());
+  }
+  getOne(id:string) {
+    const url = this.url + 'order/' + id;
+    return this._http.get(url, { headers: this.headers })
+              .map(res => res.json());
   }
   getProductTypes (type? : any) {
       const params = { type: type }
@@ -96,5 +101,33 @@ export class OrderService {
                 .put(url, { order: orderId, device: device, old }, {headers: this.headers})
                 .map(res => res.json())
   }
-  
+
+  getMonitorData (distributor: string, type: string, from: string, to: string, filter: string, page: number, limit: number) {
+    const url = this.url + 'orders-monitor'
+    
+    const params = { distributor, type, from, to, filter, page, limit }
+    console.log('getting monitor, PARAMS:', params)
+    return this._http
+                .get(url, { headers: this.headers, params })
+                .map(res => res.json())
+  }
+  getOthersPages (id: string, type: string, from: string, to: string, filter: string, page: number, limit: number) {
+    const url = this.url + 'orders-monitor-page'
+    const params = { id, type, from, to, filter, page, limit }
+    return this._http
+                .get(url, { headers: this.headers, params })
+                .map(res => res.json())
+  }
+  exportMonitorData (distributor: string, type: string, from: string, to: string, filter: string) {
+    const url = this.url + 'orders-monitor-export'
+    const params = { distributor, type, from, to, filter }
+    console.log('export monitor, PARAMS:', params)
+    return this._http
+                .get(url, { headers: this.headers, params, responseType: ResponseContentType.Blob })
+                .map(res => this.saveToFileSystem(res, `PEDIDOS.xlsx`))
+  }
+  private saveToFileSystem(response, filename) {
+    const blob = new Blob([response._body], { type: 'text/plain' });
+    saveAs(blob, filename);
+  }
 }

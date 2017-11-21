@@ -9,17 +9,15 @@
                 <fa *ngIf="!loadingExcel" name="file-excel-o"></fa>
                 <fa *ngIf="loadingExcel" name="spinner" animation="spin"></fa> EXPORTAR
             </button>
-            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" [disabled]="loadingExcel" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="sr-only">Toggle Dropdown</span>
             </button>
           <div class="dropdown-menu">
             <a (click)="exportResume()" class="dropdown-item">
-              <fa *ngIf="!loadingExcel" name="file-excel-o"></fa>
-              <fa *ngIf="loadingExcel" name="spinner" animation="spin"></fa> RESUMEN
+              <fa name="file-excel-o"></fa> RESUMEN
             </a>
             <a (click)="export()" class="dropdown-item">
-              <fa *ngIf="!loadingExcel" name="file-excel-o"></fa>
-              <fa *ngIf="loadingExcel" name="spinner" animation="spin"></fa> DETALLE
+              <fa name="file-excel-o"></fa> DETALLE
             </a>
           </div>
         </div>

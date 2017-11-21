@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DistributorsService } from '../../services/distributors.service'
 import { PagerService } from '../../services/pager.service'
 @Component({
@@ -8,11 +8,14 @@ import { PagerService } from '../../services/pager.service'
 })
 export class DistributorsComponent implements OnInit {
 
+  @Input() fromModal: boolean = false;
+  @Output() select = new EventEmitter<any>();
   filter: string = ''
   limit: number = 20
   currentPage: number = 1
   pager: any = {}
-  distributors: any[]
+  distributors: any[];
+  
   constructor(
     private _distributorService: DistributorsService,
     private _pagerService: PagerService
@@ -35,5 +38,8 @@ export class DistributorsComponent implements OnInit {
   }
   refresh() {
     this.getDistributors();
+  }
+  onSelect(distributor) {
+    this.select.emit(distributor);
   }
 }

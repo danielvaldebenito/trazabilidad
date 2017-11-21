@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
-    <div class="col">
-      <div class="card" *ngIf="delivery" [ngClass]="{'card-success': delivery && delivery.done, 'card-danger': !delivery || !delivery.done }">
+    <div class="col" *ngIf="delivery">
+      <div class="card" [ngClass]="{'card-success': delivery && delivery.done, 'card-danger': !delivery || !delivery.done }">
         <div class="card-block text-center">
           <h3>
             <fa name="{{ delivery.done ? 'check' : 'times' }}"></fa>

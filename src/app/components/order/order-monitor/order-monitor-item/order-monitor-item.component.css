@@ -1,0 +1,10 @@
+.data-th {
+    text-align: center;
+    background: #37424A;
+    font-size: 20pt;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}

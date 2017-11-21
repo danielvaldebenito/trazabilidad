@@ -25,9 +25,22 @@
                     </a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/order" routerLinkActive="active">
-                    <fa name="phone"></fa> PEDIDOS</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                    <fa name="phone"></fa> PEDIDOS
+                    <span class="caret"></span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="themes">
+                    <a class="nav-link" routerLink="/order/create" routerLinkActive="active">
+                        <fa name="phone"></fa> NUEVO
+                    </a>
+                    <a class="nav-link" routerLink="/order" routerLinkActive="active">
+                        <fa name="calendar-times-o"></fa> RESUMEN
+                    </a>
+                    <a class="nav-link" routerLink="/order-monitor" routerLinkActive="active">
+                        <fa name="table"></fa> REPORTE
+                    </a>
+                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
@@ -113,4 +126,4 @@
     </div>
 </ng-template>
 
-<app-tutorial  *ngIf="token && tutorial()" (onfinish)="finishTutorial()"></app-tutorial>
+<app-tutorial *ngIf="token && tutorial()" (onfinish)="finishTutorial()"></app-tutorial>

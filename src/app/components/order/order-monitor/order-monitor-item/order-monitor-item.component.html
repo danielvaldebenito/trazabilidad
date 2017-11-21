@@ -1,0 +1,75 @@
+<div class="card">
+  <div class="card-block">
+    <div class="row">
+      <div class="col col-sm-4 col-md-3 col-lg-2 data-th">
+        <div *ngIf="da._id">
+          {{ (type == 'vehicle' ? da._id?.licensePlate : da._id) }}
+        </div>
+      </div>
+      <div class="col col-sm-8 col-md-9 col-lg-10">
+        <table class="table table-striped table-hover table-bordered">
+          <thead>
+            <th>#</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of da.orders">
+              <td>{{ order.orderNumber }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                          'badge-success': order.status == 'ENTREGADO',
+                          'badge-danger': order.status ==  'RECIBIDO',
+                          'badge-warning': order.status == 'ASIGNADO',
+                          'badge-default': order.status == 'CANCELADO',
+                          'badge-info': order.status == 'EN RUTA'
+                        }
+                      ">{{ order.status }}</span>
+              </td>
+              <td>{{ order.createdAt | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
+              <td class="text-center">
+                <button *ngIf="order.status == 'ENTREGADO'" class="btn btn-sm btn-outline-success" (click)="open(saleDetail, order, 'lg')">
+                  <fa name="list"></fa>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <app-pager [pager]="pager" (settingPage)="setPage($event)" (refresh)="refresh()"></app-pager>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-template #saleDetail let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Detalle de Entrega</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-sale-detail [orderId]="orderSelected._id"></app-sale-detail>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #history let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Histórico Pedido #{{orderSelected.orderNumber}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-order-history [order]="orderSelected"></app-order-history>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+  </div>
+</ng-template>
