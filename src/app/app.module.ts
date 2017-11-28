@@ -15,7 +15,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SelectModule } from 'ng-select';
 import { AgmCoreModule } from '@agm/core';
 import { Ng2CompleterModule } from "ng2-completer";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { DatepickerModule } from 'ngx-date-picker';
 import { ArchwizardModule } from 'ng2-archwizard';
 // routes
@@ -41,6 +41,7 @@ import { ProductsService } from './services/products.service'
 import { DevicesService } from './services/devices.service'
 import { MovementsService } from './services/movements.service'
 import { StockService } from './services/stock.service'
+import { InventoryService } from './services/inventory.service'
 // components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -89,9 +90,6 @@ import { DistributorsNewComponent } from './components/distributors/distributors
 import { DistributorsEditComponent } from './components/distributors/distributors-edit/distributors-edit.component';
 import { DistributorsListComponent } from './components/distributors/distributors-list/distributors-list.component';
 import { DistributorsDetailComponent } from './components/distributors/distributors-detail/distributors-detail.component';
-
-// entorno
-import { environment } from '../environments/environment';
 import { SalesComponent } from './components/sales/sales.component';
 import { SaleDetailComponent } from './components/sales/sale-detail/sale-detail.component';
 import { ProductsComponent } from './components/products/products.component';
@@ -124,6 +122,12 @@ import { MovementDetailsMaintenanceComponent } from './components/movements/move
 import { OrderMonitorComponent } from './components/order/order-monitor/order-monitor.component';
 import { OrderMonitorListComponent } from './components/order/order-monitor/order-monitor-list/order-monitor-list.component';
 import { OrderMonitorItemComponent } from './components/order/order-monitor/order-monitor-item/order-monitor-item.component';
+import { InventoryListComponent } from './components/inventory/inventory-list/inventory-list.component';
+// entorno
+import { environment } from '../environments/environment';
+import { InventoryListItemComponent } from './components/inventory/inventory-list/inventory-list-item/inventory-list-item.component';
+import { InventoryListItemDetailComponent } from './components/inventory/inventory-list/inventory-list-item/inventory-list-item-detail/inventory-list-item-detail.component';
+
 
 @NgModule({
   declarations: [
@@ -205,7 +209,10 @@ import { OrderMonitorItemComponent } from './components/order/order-monitor/orde
     MovementDetailsMaintenanceComponent,
     OrderMonitorComponent,
     OrderMonitorListComponent,
-    OrderMonitorItemComponent
+    OrderMonitorItemComponent,
+    InventoryListComponent,
+    InventoryListItemComponent,
+    InventoryListItemDetailComponent
   ],
   imports: [
     FormsModule,
@@ -248,7 +255,8 @@ import { OrderMonitorItemComponent } from './components/order/order-monitor/orde
     ProductsService,
     DevicesService,
     MovementsService,
-    StockService
+    StockService,
+    InventoryService
     //{provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

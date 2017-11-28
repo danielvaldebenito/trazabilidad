@@ -1,0 +1,36 @@
+<div class="card tree" [ngClass]="{'selected': selected && selected._id == inventory._id}">
+  <div class="card-block">
+    <div class="tree-title d-flex p-2 flex-row justify-content-between align-items-center">
+      <button class="btn btn-sm" [ngClass]="{'btn-primary': selected && selected._id == inventory._id, 'btn-secondary': !selected || (selected._id != inventory._id)}"
+        (click)="toggleInventory(inventory)">
+        <fa name="{{selected && selected._id == inventory._id ? 'minus' : 'plus'}}"></fa>
+      </button>
+      <span class="tree-title-data">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col">
+              <fa name="building"></fa>
+              <div>{{ inventory.dependence.name }}</div>
+            </div>
+            <div class="col">
+              <fa name="home"></fa>
+              <div>{{ inventory.warehouse.name }}</div>
+            </div>
+            <div class="col">
+              <fa name="calendar"></fa>
+              <div>{{ inventory.date | date:'dd-MM-yyyy HH:mm' }}</div>
+            </div>
+            <div class="col">
+              <fa name="user"></fa>
+              <div>{{ inventory.user.name }} {{ inventory.user.surname }}</div>
+            </div>
+          </div>
+        </div>
+
+      </span>
+    </div>
+    <div class="branch" *ngIf="selected && selected._id == inventory._id">
+      <app-inventory-list-item-detail [takes]="inventory.takes"></app-inventory-list-item-detail>
+    </div>
+  </div>
+</div>

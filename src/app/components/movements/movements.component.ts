@@ -3,6 +3,7 @@ import { MovementsService } from '../../services/movements.service'
 import { SelectsService } from '../../services/selects.service'
 import { PagerService } from '../../services/pager.service'
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import * as moment from 'moment'
 @Component({
   selector: 'app-movements',
   templateUrl: './movements.component.html',
@@ -24,16 +25,19 @@ export class MovementsComponent implements OnInit {
   selectedTransaction: any
   selectedType: any
   data: any
-  loading: boolean = false
-  loadingExcel: boolean = false
+  loading: boolean
+  loadingExcel: boolean
   typesForExcel = ['CARGA', 'DESCARGA']
   filter: any
+  selectedRange: any = { from: moment().add(-2, 'months').format("YYYY-MM-DD"), to: moment().format("YYYY-MM-DD") }
   constructor(
     private _movementsService: MovementsService,
     private _selectService: SelectsService,
     private _pagerService: PagerService,
-    private modalService: NgbModal
-  ) { }
+    private _modalService: NgbModal
+  ) {
+    this.loading = false
+   }
 
   ngOnInit() {
     this.getTransactionTypes();
@@ -52,8 +56,8 @@ export class MovementsComponent implements OnInit {
   }
   getMovements() {
     this.loading = true
-    const from = this.from ? this.from.year + '-' + this.from.month + '-' + this.from.day : null
-    const to = this.to ? this.to.year + '-' + this.to.month + '-' + this.to.day : null
+    const from = this.selectedRange && this.selectedRange.from ? this.selectedRange.from : null
+    const to = this.selectedRange && this.selectedRange.to ? this.selectedRange.to : null
     this._movementsService.get(this.type, this.limit, this.page, from, to, this.filter)
       .subscribe(res => {
         if (res.done) {
@@ -75,10 +79,10 @@ export class MovementsComponent implements OnInit {
     this.refresh();
   }
 
-  changeDate (date: any) {
+  onChangeDates (date: any) {
     this.from = date.from
     this.to = date.to
-    this.refresh();
+    
   }
   
   onSelectTransactionOrMovement(data) {
@@ -90,8 +94,8 @@ export class MovementsComponent implements OnInit {
   
   exportTransactions() {
     this.loadingExcel = true
-    const from = this.from ? this.from.year + '-' + this.from.month + '-' + this.from.day : null
-    const to = this.to ? this.to.year + '-' + this.to.month + '-' + this.to.day : null
+    const from = this.selectedRange.from
+    const to = this.selectedRange.to
     this._movementsService.exportTransactionToExcel(this.type, from, to)
         .subscribe(res => {
           this.loadingExcel = false
@@ -102,5 +106,28 @@ export class MovementsComponent implements OnInit {
 
   onKey() {
     this.getMovements();
+  }
+
+  open(content, size) {
+    this._modalService.open(content, { size: size || 'sm' })
+      .result
+      .then(res => {
+        if (res == 'OK') {
+          let from = this.from
+          if (from)
+            from.month = this.from.month - 1;
+          let to = this.to
+          if (to)
+            to.month = this.to.month - 1;
+          this.selectedRange = {
+            from: from ? moment(this.from).format("YYYY-MM-DD") : null,
+            to: to ? moment(this.to).format("YYYY-MM-DD") : null
+          }
+
+          this.refresh();
+        }
+      }, rej => {
+        console.log(rej)
+      })
   }
 }

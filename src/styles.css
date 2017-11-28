@@ -122,6 +122,10 @@
     cursor: pointer;
     text-transform: uppercase;
 }
+    .btn fa {
+        margin: 0 5px;
+    }
+
 .btn-secondary {
     background: var(--color-secondary);
 }
@@ -406,6 +410,15 @@ a:hover, a:focus {
 .tree.selected {
     border-color: var(--color-primary);
 }
+    .tree > .card-block > .tree-title > .tree-title-data {
+        text-transform: uppercase;
+        font-size: 10pt;
+        flex: 1 
+    }
+        .tree > .card-block > .tree-title > .tree-title-data fa {
+            color: var(--color-primary);
+            margin-right: 5px;
+        }
     .tree > .card-block > .tree-title > .tree-title-span {
         text-transform: uppercase;
     }

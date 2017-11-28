@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col col-sm-4 col-md-3 col-lg-2 data-th">
         <div *ngIf="da._id">
-          {{ (type == 'vehicle' ? da._id?.licensePlate : da._id) }}
+          {{ (type == 'vehicle' ? da._id ? da._id.licensePlate : 'Desconocido' : da._id || 'Desconocido') }}
         </div>
       </div>
       <div class="col col-sm-8 col-md-9 col-lg-10">

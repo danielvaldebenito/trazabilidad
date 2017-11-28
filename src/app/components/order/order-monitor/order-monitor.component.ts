@@ -17,6 +17,7 @@ export class OrderMonitorComponent implements OnInit {
   type: string = 'vehicle'
   data: any[]
   loading: boolean
+  myDistributor: any
   distributor: any
   distributorName: string = 'DISTRIBUIDORES'
   filter: string
@@ -37,6 +38,10 @@ export class OrderMonitorComponent implements OnInit {
       from: date1,
       to: date2
     }
+    
+    this.myDistributor = this.getMyDistributor();
+    this.distributorName = this.myDistributor.intern ? 'DISTRIBUIDORES' : this.myDistributor.name
+    this.distributor = this.myDistributor.intern ? undefined : this.myDistributor._id
     this.getData();
   }
   getData() {
@@ -55,7 +60,7 @@ export class OrderMonitorComponent implements OnInit {
   export() {
     this.loadingExcel = true
     this._orderService.exportMonitorData(this.distributor, this.type, this.selectedRange.from, this.selectedRange.to, this.filter)
-      .subscribe(res => console.log(res), error => console.log(error))
+      .subscribe(res => { this.loadingExcel = false, console.log(res)}, error => console.log(error))
   }
   open(content, size) {
     this._modalService.open(content, { size: size || 'sm' })
@@ -71,8 +76,8 @@ export class OrderMonitorComponent implements OnInit {
 
           console.log('selectedRange before', this.selectedRange)
           this.selectedRange = {
-            from: moment(this.from).format("YYYY-MM-DD"),
-            to: moment(this.to).format("YYYY-MM-DD")
+            from: from ? moment(this.from).format("YYYY-MM-DD") : null,
+            to: to ? moment(this.to).format("YYYY-MM-DD") : null
           }
           console.log('consultando', this.selectedRange)
           this.getData();
@@ -104,5 +109,9 @@ export class OrderMonitorComponent implements OnInit {
   iAmSuperAdmin() {
     const identity = this._userService.getUserIdentity();
     return identity.isAdmin && identity.distributor.intern;
+  }
+  getMyDistributor() {
+    const identity = this._userService.getUserIdentity();
+    return identity.distributor;
   }
 }

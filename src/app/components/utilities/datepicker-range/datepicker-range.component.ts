@@ -58,9 +58,9 @@ export class DatepickerRangeComponent implements OnInit {
   @Output() change = new EventEmitter<any> ();
   @Input() months: number
   constructor(calendar: NgbCalendar) {
-
-    this.fromDate = calendar.getNext(calendar.getToday(), 'd', -10);
-    this.toDate = calendar.getToday(); 
+    let today = calendar.getToday();
+    this.fromDate = calendar.getNext(today, 'd', -10);
+    this.toDate = today; 
     
    }
 

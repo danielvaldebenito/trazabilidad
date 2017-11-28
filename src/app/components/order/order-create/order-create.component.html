@@ -153,32 +153,32 @@
               <div class="row">
                 <div class="col" [hidden]="selectedClient">
                   <button type="button" ngbTooltip="Buscar cliente" class="btn btn-secondary btn-block" (click)="open(listClient)">
-                    <fa name="search"></fa> BUSCAR
+                    <fa name="search" class="pull-left"></fa> BUSCAR
                   </button>
                 </div>
                 <div class="col" [hidden]="!selectedClient">
                   <button type="button" ngbTooltip="Ver datos del cliente seleccionado" class="btn btn-secondary btn-block" (click)="open(viewClient)">
-                    <fa name="eye"></fa> VER
+                    <fa name="eye" class="pull-left"></fa> VER
                   </button>
                 </div>
                 <div class="col" [hidden]="!selectedClient">
                   <button type="button" ngbTooltip="Borrar cliente seleccionado" class="btn btn-outline-danger btn-block" (click)="resetClient()">
-                    <fa name="times"></fa> LIMPIAR
+                    <fa name="times" class="pull-left"></fa> LIMPIAR
                   </button>
                 </div>
                 <div class="col">
                   <button type="button" ngbTooltip="Borrar cliente seleccionado" class="btn btn-primary btn-block" (click)="open(newClient)">
-                    <fa name="user-plus"></fa> NUEVO CLIENTE
+                    <fa name="user-plus" class="pull-left"></fa> NUEVO CLIENTE
                   </button>
                 </div>
                 <div class="col" [hidden]="!(order.lat && order.lng && !order.client)">
                   <button type="button" ngbTooltip="Crear cliente anónimo con dirección" class="btn btn-outline-primary btn-block" (click)="newClientQuick()">
-                    <fa name="bolt"></fa> NUEVO RÁPIDO
+                    <fa name="bolt" class="pull-left"></fa> NUEVO RÁPIDO
                   </button>
                 </div>
                 <div class="col" [hidden]="!(order.lat && order.lng)">
                   <button type="button" ngbTooltip="Ver mapa con ubicación encontrada" class="btn btn-outline-info btn-block" (click)="open(map)">
-                    <fa name="map"></fa> MAPA
+                    <fa name="map"  class="pull-left"></fa> MAPA
                   </button>
                 </div>
               </div>
@@ -206,7 +206,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                           <a class="dropdown-item" (click)="searchClosest() ">
-                            <fa name="search"></fa> Buscar al más cercano</a>
+                            <fa name="search" class="pull-left"></fa> Buscar al más cercano</a>
                         </div>
                       </div>
                     </div>
@@ -285,7 +285,7 @@
                 </div>
                 <div class="col">
                   <button id="add" class="btn btn-primary btn-block align-self-end" type="submit" [disabled]="!formDetail.form.valid">
-                    <fa name="plus"></fa>
+                    <fa class="pull-left" name="plus"></fa>
                     AGREGAR
                   </button>
                 </div>
@@ -346,7 +346,7 @@
         </div>
         <div class="card-footer">
           <button class="btn btn-primary btn-lg btn-block" [disabled]="!form.form.valid || !order.client || loading" (click)="onSubmit()">
-            <fa name="save"></fa> GUARDAR </button>
+            <fa name="save" class="pull-left"></fa> GUARDAR </button>
         </div>
       </div>
     </div>

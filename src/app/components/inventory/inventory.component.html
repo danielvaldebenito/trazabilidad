@@ -1,3 +1,66 @@
-<p>
-  En desarrollo
-</p>
+<div class="container-fluid">
+  <div class="row" *ngIf="!fromModal">
+    <div class="col">
+      <div class="page-header d-flex flex-row justify-content-between align-items-center">
+        <fa name="calculator" size="2x"></fa>
+        <h1>Inventario</h1>
+        <fa name="pico"></fa>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="col">
+                <input type="text" class="form-control-filter" (keyup)="onKey()" [(ngModel)]="filter" 
+                placeholder="Buscar por bodega o dependencia">
+            </div>
+            <div class="col">
+              <div class="input-group" (click)="open(dates, 'lg')">
+                  <input type="text" class="form-control-filter" readonly [value]="selectedRange.from ? (selectedRange.from | date: 'dd-MM-yyyy') : ''" 
+                  placeholder="Desde">
+                  <span class="input-group-item">
+                    <fa name="calendar"></fa>
+                  </span>
+                  <input type="text" class="form-control-filter" readonly [value]="selectedRange.to ? (selectedRange.to | date: 'dd-MM-yyyy') : ''"
+                  placeholder="Hasta"
+                  >
+
+              </div>
+            </div>
+            <div class="col">
+              <button class="btn btn-success btn-block" (click)="exportar()">
+                <fa name="file-excel-o" class="pull-left"></fa> EXPORTAR
+              </button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row principal">
+    <div class="col">
+      <app-inventory-list [inventories]="inventories"></app-inventory-list>
+      <app-pager *ngIf="pager" [pager]="pager" (refresh)="refresh()" (settingPage)="setPage($event)"></app-pager>
+    </div>
+  </div>
+</div>
+
+<ng-template #dates let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Seleccione fechas</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('CLOSE')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body text-center">
+      <app-datepicker-range [months]="2" (change)="onChangeDates($event)"></app-datepicker-range>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('CANCEL')">Cerrar</button>
+      <button type="button" class="btn btn-primary" (click)="c('OK')">Aceptar</button>
+    </div>
+  </ng-template>

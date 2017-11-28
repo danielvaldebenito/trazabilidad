@@ -15,14 +15,14 @@
         <div class="card-block">
           <div class="row d-flex flex-row justify-content-between align-items-center">
             <div class="col text-center">
-              <div class="btn-group" data-toggle="buttons">
+              <div class="btn-group btn-group-sm" data-toggle="buttons">
                 <label class="btn btn-primary active" (click)="changeType('vehicle')">
-                  <fa name="truck"></fa>
+                  <fa class="pull-left" name="truck"></fa>
                   <input type="radio" name="options" id="option1" autocomplete="off" checked> VEHÍCULO
                 </label>
                 <label class="btn btn-primary" (click)="changeType('userName')">
                   <input type="radio" name="options" id="option2" autocomplete="off"> USUARIO
-                  <fa name="user"></fa>
+                  <fa class="pull-rigth" name="user"></fa>
                 </label>
               </div>
             </div>
@@ -30,20 +30,20 @@
                 <input type="text" class="form-control-filter" (keyup)="onKey()" [(ngModel)]="filter" placeholder="Buscar por placa o usuario">
               </div>
             <div class="col text-center">
-              <button class="btn btn-secondary btn-block" *ngIf="selectedRange" (click)="open(dates,'lg')">
-                <fa name="calendar"></fa>
+              <button class="btn btn-secondary btn-block btn-sm" *ngIf="selectedRange" (click)="open(dates,'lg')">
+                <fa class="pull-left" name="calendar"></fa>
                 {{selectedRange.from | date: 'dd-MM-yyyy'}} / {{selectedRange.to | date: 'dd-MM-yyyy'}}
               </button>
             </div>
-            <div class="col text-center" *ngIf="iAmSuperAdmin()">
-              <button class="btn btn-secondary btn-block" (click)="open(distributors, 'lg')">
-                <fa name="handshake-o"></fa>
+            <div class="col text-center" [hidden]="!iAmSuperAdmin()">
+              <button class="btn btn-secondary btn-block btn-sm" [disabled]="!iAmSuperAdmin()" (click)="open(distributors, 'lg')">
+                <fa class="pull-left" name="handshake-o"></fa>
                 {{ distributorName }}
               </button>
             </div>
             <div class="col text-center">
-              <button class="btn btn-success btn-block" (click)="export()">
-                <fa name="file-excel-o"></fa> EXPORTAR
+              <button class="btn btn-success btn-block btn-sm" [disabled]="loadingExcel" (click)="export()">
+                <fa class="pull-left" name="{{ !loadingExcel ? 'file-excel-o' : 'spinner' }}" animation="{{ !loadingExcel ? '' : 'spin'}}"></fa> EXPORTAR
               </button>
             </div>
           </div>

@@ -19,36 +19,6 @@
   </div>
   <div class="row">
     <div class="col">
-      <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-        <ngb-panel title="Filtro de Fechas">
-          <ng-template ngbPanelContent>
-            <div class="row">
-              <div class="col text-center">
-                <app-datepicker-range [months]="2" (change)="changeDate($event)"></app-datepicker-range>
-                <div class="row">
-                  <div class="col" *ngIf="from">
-                    <div class="card">
-                      <label for="">Fecha Inicio</label>
-                      <span class="date">{{ (from.year + '-' + from.month + '-' + from.day) | date: 'dd-MM-yyyy' }}</span>
-                    </div>
-                  </div>
-                  <div class="col" *ngIf="to">
-                    <div class="card">
-                      <label for="">Fecha Fin</label>
-                      <span class="date">{{ (to.year + '-' + to.month + '-' + to.day) | date: 'dd-MM-yyyy' }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </ngb-panel>
-      </ngb-accordion>
-
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
       <div class="row">
         <div class="col">
           <div class="card">
@@ -57,10 +27,17 @@
                 <div class="col">
                     <input type="text" class="form-control-filter" placeholder="Buscar por usuario o dispositivo" (keyup)="onKey()" [(ngModel)]="filter">
                 </div>
+                <div class="col" *ngIf="selectedRange">
+                  <button class="btn btn-secondary btn-block" (click)="open(dates, 'lg')">
+                    <fa name="calendar" class="pull-left"></fa>
+                    {{ selectedRange && selectedRange.from ? (selectedRange.from | date: 'dd-MM-yyyy') : '' }} / 
+                    {{ selectedRange && selectedRange.to ? (selectedRange.to | date: 'dd-MM-yyyy') : '' }}
+                  </button>
+                </div>
                 <div class="col col-lg-3" *ngIf="type && typesForExcel.indexOf(type) > -1">
                     <button type="button" (click)="exportTransactions()" [disabled]="!movements || !movements.length || movements.length == 0 || loadingExcel" class="btn btn-success btn-block" *ngIf="type && typesForExcel.indexOf(type) > -1">
-                        <fa *ngIf="!loadingExcel" name="file-excel-o"></fa>
-                        <fa *ngIf="loadingExcel" name="circle-o-notch" animation="spin"></fa>  
+                        <fa class="pull-left" *ngIf="!loadingExcel" name="file-excel-o"></fa>
+                        <fa class="pull-left" *ngIf="loadingExcel" name="circle-o-notch" animation="spin"></fa>  
                         {{' EXPORTAR ' + type + 'S'}}
                     </button>
                 </div>
@@ -79,3 +56,20 @@
   </div>
 </div>
 <app-loading *ngIf="loading" [message]="'Cargando movimientos'"></app-loading>
+
+
+<ng-template #dates let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Seleccione fechas</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('CLOSE')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <app-datepicker-range [months]="2" (change)="onChangeDates($event)"></app-datepicker-range>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('CANCEL')">Cerrar</button>
+    <button type="button" class="btn btn-primary" (click)="c('OK')">Aceptar</button>
+  </div>
+</ng-template>
