@@ -27,7 +27,7 @@ export class MovementsComponent implements OnInit {
   data: any
   loading: boolean
   loadingExcel: boolean
-  typesForExcel = ['CARGA', 'DESCARGA']
+  typesForExcel = ['CARGA', 'DESCARGA', 'MANTENCIÓN']
   filter: any
   selectedRange: any = { from: moment().add(-2, 'months').format("YYYY-MM-DD"), to: moment().format("YYYY-MM-DD") }
   constructor(
@@ -96,7 +96,7 @@ export class MovementsComponent implements OnInit {
     this.loadingExcel = true
     const from = this.selectedRange.from
     const to = this.selectedRange.to
-    this._movementsService.exportTransactionToExcel(this.type, from, to)
+    this._movementsService.exportTransactionToExcel(this.type, from, to, this.filter)
         .subscribe(res => {
           this.loadingExcel = false
         }, error => {

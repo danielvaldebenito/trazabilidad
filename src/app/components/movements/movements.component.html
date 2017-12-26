@@ -38,7 +38,7 @@
                     <button type="button" (click)="exportTransactions()" [disabled]="!movements || !movements.length || movements.length == 0 || loadingExcel" class="btn btn-success btn-block" *ngIf="type && typesForExcel.indexOf(type) > -1">
                         <fa class="pull-left" *ngIf="!loadingExcel" name="file-excel-o"></fa>
                         <fa class="pull-left" *ngIf="loadingExcel" name="circle-o-notch" animation="spin"></fa>  
-                        {{' EXPORTAR ' + type + 'S'}}
+                        {{' EXPORTAR ' + type }}
                     </button>
                 </div>
               </div>

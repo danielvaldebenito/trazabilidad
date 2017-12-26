@@ -14,3 +14,20 @@
 .success {
     color: #5cb85c;
 }
+.filter-pt {
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    margin: 2px;
+}
+.filter-pt .selected {
+    background: #DF691A;
+    color: #FFF;
+}
+
+#items {
+    max-height: 1200px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

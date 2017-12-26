@@ -40,9 +40,9 @@ export class MovementsService {
         return this._http.get(url, { headers: this.headers })
             .map(res => res.json());
     }
-    exportTransactionToExcel(type: string, from: string, to: string) {
+    exportTransactionToExcel(type: string, from: string, to: string, filter: string) {
         const url = this.url + 'movement-export/'
-        const params = { type, from, to }
+        const params = { type, from, to, filter }
         return this._http.get(url, { headers: this.headers, params, responseType: ResponseContentType.Blob })
         .map(res => this.saveToFileSystem(res, `MOVIMIENTOS.xlsx`));
     }
